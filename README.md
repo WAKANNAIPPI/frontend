@@ -2,7 +2,7 @@
 わかんないッピのフロント用リポジトリ
 
 ## Getting Started
-```terminal
+```bash
 git clone https://github.com/WAKANNAIPPI/frontend.git
 cd frontend
 yarn
