@@ -2,12 +2,15 @@
 わかんないッピのフロント用リポジトリ
 
 ## Getting Started
-```bash
-git clone https://github.com/WAKANNAIPPI/frontend.git
-cd frontend
-yarn
+```terminal
+# Node.jsの確認
+node -v
+
+yarn install --ignore-engines
+
+yarn start
 
 # for browser
-yarb react-native start
-http://localhost:8081/
+yarn react-native start
+http://localhost:19002/
 ```
