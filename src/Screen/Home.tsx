@@ -6,7 +6,7 @@ const HomeApp = () =>{
     return (
         <View style={styles.container}>
             <Text style={styles.title}>
-                Hello Component
+                /src/Screen/Home
             </Text>
         </View>
     );
