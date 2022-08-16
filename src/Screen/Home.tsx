@@ -6,7 +6,7 @@ const HomeApp = () =>{
     return (
         <View style={styles.container}>
             <Text style={styles.title}>
-                /src/Screen/Home
+                ここはホームスクリーンです。
             </Text>
         </View>
     );
