@@ -45,7 +45,7 @@ export default function HomeApp({ navigation }: any){
                     <TouchableOpacity onPress={() => navigation.navigate('Constellation_Creation')}>
                         <Animated.Image
                             source={require("../Assets/Frame 3.png")}
-                            resizeMode="contain"
+                            resizeMode="cover"
                             style={[
                                 {
                                     width: 200,
