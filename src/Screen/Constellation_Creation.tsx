@@ -1,18 +1,17 @@
 import React from "react";
-import { Text, View, Button } from "react-native";
+import { Text, View } from "react-native";
 import { StyleSheet } from "react-native";
 
-export default function HomeApp({ navigation }: any){
+const Constellation_Creation = () =>{
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>HomeApp</Text>
-                <Button 
-                    title="Go to Constellation_Creation"
-                    onPress={() => navigation.navigate('Constellation_Creation')}
-                />
+            <Text style={styles.title}>
+                星座作成画面の予定
+            </Text>
         </View>
     );
 }
+export default Constellation_Creation;
 
 const styles = StyleSheet.create({
     container: {
