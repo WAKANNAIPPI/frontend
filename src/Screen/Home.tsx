@@ -5,12 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 export default function HomeApp({ navigation }: any){
     return (
         <View style={styles.container}>
-                <Image
-                    style={{
-                        resizeMode: "cover",
-                        height: 200,
-                        width: 200
-                    }}
+                <Image style={styles.image}
                     source={require("../Assets/Frame 3.png")}
                 />
                 <Button 
@@ -35,4 +30,9 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: 'white',
     },
+    image: {
+        resizeMode: "cover",
+        height: 200,
+        width: 200
+    }
 });
