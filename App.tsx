@@ -9,16 +9,13 @@ export default function App() {
 
   const Stack = createStackNavigator();
 
-  return (
-    <div className="App">
-      <HomeApp />   
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="Home">
-          <Stack.Screen name="HomeApp" component={HomeApp} />
-          <Stack.Screen name="Constellation_Creation" component={Constellation_Creation} />
-        </Stack.Navigator>
-      </NavigationContainer> 
-    </div>
+  return (   
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="HomeApp" component={HomeApp} />
+        <Stack.Screen name="Constellation_Creation" component={Constellation_Creation} />
+      </Stack.Navigator>
+    </NavigationContainer> 
   );
 }
 
