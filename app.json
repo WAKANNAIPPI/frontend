@@ -19,7 +19,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.meri11ra1.frontend"
     },
     "android": {
       "adaptiveIcon": {

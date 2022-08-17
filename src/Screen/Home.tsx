@@ -12,15 +12,21 @@ const translateY = new Animated.Value(0);
 
 const onPanEvent = Animated.event(
 
-    [{ nativeEvent: {
-          translationX: translateX,
-          translationY: translateY,
-        },},],
+    [
+        { 
+            nativeEvent: {
+          
+                translationX: translateX,
+                translationY: translateY,
+                
+            },
+        },
+    ],
 
     { useNativeDriver: true }
 );
 
-const defaultPosition = {x: 0, y: 0, scale: 1 };
+const defaultPosition = {x: 10, y: 30};
 
 export default function HomeApp({ navigation }: any){
     const imagePan = React.createRef();
@@ -35,7 +41,7 @@ export default function HomeApp({ navigation }: any){
                         if (event.nativeEvent.oldState === State.ACTIVE) {
                             const posX = lastPosition.x + event.nativeEvent.translationX;
                             const posY = lastPosition.y + event.nativeEvent.translationY;
-                            setLastPosition({ x: posX, y: posY, scale: lastPosition.scale });
+                            setLastPosition({ x: posX, y: posY});
                             translateX.setOffset(posX);
                             translateX.setValue(0);
                             translateY.setOffset(posY);
@@ -60,7 +66,6 @@ export default function HomeApp({ navigation }: any){
         </View>
     );
 }
-
 
 const styles = StyleSheet.create({
     container: {
