@@ -1,11 +1,18 @@
-import React from "react";
-import { Text, View, Button } from "react-native";
-import { StyleSheet } from "react-native";
+import React, { Component } from "react";
+import { Text, View, Button, StyleSheet, Image } from "react-native";
+import { StatusBar } from 'expo-status-bar';
 
 export default function HomeApp({ navigation }: any){
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>HomeApp</Text>
+                <Image
+                    style={{
+                        resizeMode: "cover",
+                        height: 200,
+                        width: 200
+                    }}
+                    source={require("../Assets/Frame 3.png")}
+                />
                 <Button 
                     title="Go to Constellation_Creation"
                     onPress={() => navigation.navigate('Constellation_Creation')}
@@ -13,6 +20,7 @@ export default function HomeApp({ navigation }: any){
         </View>
     );
 }
+
 
 const styles = StyleSheet.create({
     container: {
