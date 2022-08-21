@@ -4,34 +4,55 @@ import {
   View, 
   StyleSheet, 
   TouchableOpacity, 
-  Image 
+  Image,
+  InteractionManager
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import 'react-native-gesture-handler';
-  
-const AnimatedIcon = Animated.createAnimatedComponent(Icon);
+import Swiper from 'react-native-swiper';
 
-  export default function App({navigation}: any ) {
+
+  export default function App({navigation}: any){
+
     return (
-      <View style={styles.container}>
-              <TouchableOpacity 
-                onPress={() => {navigation.navigate('Constellation_Creation')}}
-                activeOpacity={1}  
-              >
-                  <Image
+      <Swiper loop={false}>
+        <View style={styles.container}>
+                  <Image 
                         source={require('../Assets/Frame3.png')}
                         resizeMode="cover"
                         style={[
-                            {
+                          {
                             width: 100,
                             height: 100,
                             top: -100,
-                            left: -50,
-                            },
+                            left: -100,
+                          },
                         ]}
                   />
-              </TouchableOpacity>
-      </View>
+                  <Image 
+                        source={require('../Assets/Frame4.png')}
+                        resizeMode="cover"
+                        style={[
+                          {
+                            width: 100,
+                            height: 100,
+                            top: 0,
+                            left: 0,
+                          },
+                        ]}
+                  />
+                  <Image 
+                        source={require('../Assets/Frame5.png')}
+                        resizeMode="cover"
+                        style={[
+                          {
+                            width: 100,
+                            height: 100,
+                            top: 100,
+                            left: 100,
+                          },
+                        ]}
+                  />
+        </View>
+      </Swiper>
     );
 }
 
@@ -41,10 +62,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'black',
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: 'white',
     },
 });
