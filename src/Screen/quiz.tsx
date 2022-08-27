@@ -1,14 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
 
 export default function App() {
     return (
                 <View style={styles.inputContainer}>
-                    <TextInput style={styles.input}/>
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>イーとする</Text>
-                    </TouchableOpacity>
+                    <Text style={styles.Text}>
+                        quizdesu
+                    </Text>
                 </View>
     )
 }
@@ -24,10 +22,12 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
         borderRadius: 20,
     },
-    buttonText: {
+    Text: {
         color: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
         fontweight: '900',
-        fontsize: 16,
+        fontsize: 32,
     },
     inputContainer: {
         flexDirection: 'row',
