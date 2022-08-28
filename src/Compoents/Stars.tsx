@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Animated,  } from 'react-native';
+import { Animated  } from 'react-native';
 
-export default () => {
+const Stars: React.FC =  () => {
     // アニメーションの進行度
     const progress = useRef(new Animated.Value(0)).current;
 
@@ -27,4 +27,5 @@ export default () => {
             }}
         />
     );
-};
+}
+export default Stars;
