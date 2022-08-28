@@ -1,13 +1,6 @@
-import HomeApp from './src/Screen/Home';
-import Stars from './src/Compoents/Stars';
+import React from 'react';
+import { RootNavivgator } from './src/Navigations';
 
-export default function App() {
-  return (
-    <div className="App">
-      <HomeApp />
-      <Stars />
-    </div>
-    
-  );
+export default function App(){
+  return <RootNavivgator />
 }
-
