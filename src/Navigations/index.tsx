@@ -30,7 +30,8 @@ const NestStack = createNativeStackNavigator<NestStackParamList>();
 export const RootNavivgator: React.FC = () =>{
     return(
         <NavigationContainer>
-            <HomeStack.Navigator initialRouteName="Home">
+            {/* HomeのNavigatorを作成。ヘッダーは表示しない */}
+            <HomeStack.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
                 <HomeStack.Screen
                     name="Home"
                     component={HomeScreen}
@@ -50,6 +51,7 @@ export const RootNavivgator: React.FC = () =>{
 
 export const TabNavigator: React.FC = () => {
     return(
+        // TabのNavigatorを作成。ヘッダーを表示しない
         <Tab.Navigator initialRouteName="Tab1" screenOptions={{ headerShown: false }}>
             <Tab.Screen name="Tab1" component={Tab1Screen} />
             <Tab.Screen name="Tab2" component={Tab2Screen} />
@@ -60,6 +62,7 @@ export const TabNavigator: React.FC = () => {
 
 export const NestNavigator: React.FC = () =>{
     return(
+        // NestのNavigatorを作成。ヘッダーを表示しない
         <NestStack.Navigator initialRouteName="Tab3" screenOptions={{ headerShown: false }}>
             <NestStack.Screen
                 name="Tab3"

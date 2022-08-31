@@ -24,6 +24,7 @@ export const HogeScreen: React.FC = () => {
     return(
         <View style={styles.container}>
             <Text>HogeScreen</Text>
+            
         </View>
     )
 }
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'grey',
+        backgroundColor: '#282C3E',
         padding: 500,
     },
 })
