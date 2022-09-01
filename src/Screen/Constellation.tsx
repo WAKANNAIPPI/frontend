@@ -7,7 +7,7 @@ export const Constellation: React.FC = () => {
         <View style={styles.inputContainer}>
             <TextInput style={styles.input} />
             <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>イーとする</Text>
+                <Text style={styles.buttonText}>適当</Text>
             </TouchableOpacity>
         </View>
     )
