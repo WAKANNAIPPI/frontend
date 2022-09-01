@@ -8,7 +8,7 @@ export const HomeScreen: React.FC = () =>{
 
     return(
         <View style={styles.container}>
-            {/* buttonを画像に置き換える */}
+            {/*要修正！ buttonを画像に置き換える */}
             <Button
                 title="Go To constallation"
                 onPress={() => navigation.navigate('Constellation')}
