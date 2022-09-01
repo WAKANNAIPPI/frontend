@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
 
-export default function App() {
+export const Constellation: React.FC = () => {
     return (
         <View style={styles.inputContainer}>
             <TextInput style={styles.input} />
