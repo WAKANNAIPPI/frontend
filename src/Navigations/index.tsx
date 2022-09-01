@@ -1,10 +1,12 @@
 import React from "react";
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { StyleSheet } from 'react-native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { NavigationContainer } from "@react-navigation/native";
-import { HomeScreen, QuizScreen} from '../Screen';
+
+import { HomeScreen } from '../Screen';
 import { Constellation } from "../Screen/Constellation";
-import { StyleSheet } from 'react-native';
+import { QuizScreen } from "../Screen/Quiz";
+
 
 type RootStackParamList = {
     Home: undefined;

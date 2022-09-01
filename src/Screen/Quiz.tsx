@@ -1,5 +1,5 @@
 import React from "react";
 
-export const Constellation: React.FC = () => {
+export const QuizScreen: React.FC = () => {
     return (null)
 }

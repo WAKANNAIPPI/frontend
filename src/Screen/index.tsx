@@ -20,13 +20,6 @@ export const HomeScreen: React.FC = () =>{
         </View>
     )
 }
-export const QuizScreen: React.FC = () => {
-    return (
-        <View style={styles.container}>
-            <Text>Quiz screen</Text>
-        </View>
-    )
-}
 
 const styles = StyleSheet.create({
     container: {
