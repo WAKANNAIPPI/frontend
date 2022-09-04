@@ -1,50 +1,73 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Animated } from 'react-native';
+import Swiper from "react-native-swiper/src"
 
-export const Constellation: React.FC = () => {
+function Edit(props: any, navigation: any) {
     return (
-        <View style={styles.inputContainer}>
-            <TextInput style={styles.input} />
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}></Text>
-                <Text>適当</Text>
+        <View style={styles.editButton}>
+            <TouchableOpacity 
+                //onPress={() => navigation.navigator()} 画面遷移
+            >
+                <Image
+                    style={styles.editImage}
+                    source={require('../Assets/edit.png')}
+                />
             </TouchableOpacity>
         </View>
     )
 }
 
+export const Constellation: React.FC = () => {
+    return (
+        <View style={styles.page}>
+            <Swiper showsButtons={true} loop={false}>
+                <View style={styles.slide}>
+                    <Text style={styles.testText}>
+                       Test1 画像                   
+                    </Text>
+                </View>
+                <View style={styles.slide}>
+                    <Text style={styles.testText}>
+                        Test2
+                    </Text>
+                </View>
+                <View style={styles.slide}>
+                    <Text style={styles.testText}>
+                        Test3
+                    </Text>
+                </View>
+            </Swiper>
+        <Edit/>
+        </View>
+    )
+}
+
 const styles = StyleSheet.create({
-    safeArea: {
+    slide: {
         flex: 1,
-        backgroundColor: '#222',
+        padding: 30
     },
-    button: {
-        backgroundColor: 'rgb(29, 161, 242)',
-        paddingHorizontal: 20,
-        paddingVertical: 15,
-        borderRadius: 20,
+    page: {
+        flex: 1,
+        backgroundColor: '#232946'
     },
-    buttonText: {
+    pictorial: {
+        flex: 0.25,
+        backgroundColor: '#232946'
+    },
+    testText: {
         color: 'white',
-        fontweight: '900',
-        fontsize: 16,
+        fontSize: 30,
+        fontWeight: 'bold',
     },
-    inputContainer: {
-        flexDirection: 'row',
-        paddingHorizontal: 10,
+    editButton: {
+        flex: 0.25,
+        justifyContent: 'center',
+        alignItems: 'center',
+        transform: [{translateX: 120}, {translateY: -30}],
     },
-    input: {
-        flex: 1,
-        borderColor: 'white',
-        borderwidth: 2,
-        marginRight: 10,
-        color: 'white',
-        paddingHorizontal: 20,
-        fontsize: 20,
-    },
-    container: {
-        flex: 1,
-        paddingTop: 20,
+    editImage: {
+        width: 60,
+        height: 60
     }
 });
