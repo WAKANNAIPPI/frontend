@@ -16,7 +16,7 @@ export const Constellation: React.FC = () => {
                         Test2
                     </Text>
                 </View>
-                <View style={styles.page}>
+                <View >
                     <Text style={styles.testText}>
                         Test3
                     </Text>
