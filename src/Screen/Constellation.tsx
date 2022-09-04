@@ -6,17 +6,17 @@ export const Constellation: React.FC = () => {
     return (
         <View style={styles.page}>
             <Swiper>
-                <View>
+                <View style={styles.page}>
                     <Text style={styles.testText}>
                         Test1
                     </Text>
                 </View>
-                <View>
+                <View style={styles.page}>
                     <Text style={styles.testText}>
                         Test2
                     </Text>
                 </View>
-                <View>
+                <View style={styles.page}>
                     <Text style={styles.testText}>
                         Test3
                     </Text>
