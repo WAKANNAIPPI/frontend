@@ -10,12 +10,24 @@ export const HomeScreen: React.FC = () =>{
         <View style={styles.container}>
             {/*要修正！ buttonを画像に置き換える */}
             <Button
-                title="Go To constallation"
+                title="constallation"
                 onPress={() => navigation.navigate('Constellation')}
             />
             <Button
-                title="Go to Quiz"
+                title="Quiz"
                 onPress={() => navigation.navigate('Quiz')}
+            />
+            <Button
+                title="Procection"
+                onPress={() => navigation.navigate('Projection')}
+            />
+            <Button
+                title="Account"
+                onPress={() => navigation.navigate('Account')}
+            />            
+            <Button
+                title="Help"
+                onPress={() => navigation.navigate('Help')}
             />
         </View>
     )
@@ -28,6 +40,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         backgroundColor: '#282C3E',
         // 要修正！　画面サイズに合わせて設定
-        padding: 500,
+        padding: 250,
     },
 })
