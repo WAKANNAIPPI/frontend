@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { NavigationContainer } from "@react-navigation/native";
 
-import { HomeScreen } from '../Screen';
+import { HomeScreen } from '../Screen/Home';
 import { Constellation } from "../Screen/Constellation";
 import { create } from "../Screen/create";
 
