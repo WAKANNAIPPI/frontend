@@ -44,7 +44,7 @@ export const RootNavivgator: React.FC = () =>{
                 />
                 <HomeStack.Screen
                     name="Constellation"
-                    component={Constellation}
+                    component={StarsNavigator}
                 />
                 <HomeStack.Screen
                     name="Quiz"
@@ -76,23 +76,20 @@ type StarsStackParamList = {
 export type StarsStackNavProp<T extends keyof StarsStackParamList> = NativeStackNavigationProp<StarsStackParamList, T>
 const StarsStack = createNativeStackNavigator<StarsStackParamList>();
 
-export const StarsNavivgator: React.FC = () => {
-    return (
-        <NavigationContainer>
-            <StarsStack.Navigator initialRouteName="Constellation" screenOptions={{ headerStyle: styles.header, headerTitleStyle: { color: '#FFFFFF', }, }}>
-                <StarsStack.Screen
-                    name="Constellation"
-                    component={Constellation}
-                />
-                <StarsStack.Screen
-                    name="create"
-                    component={create}
-                />
-            </StarsStack.Navigator>
-        </NavigationContainer>
+export const StarsNavigator: React.FC = ()=>{
+    return(
+        <StarsStack.Navigator initialRouteName="Constellation" screenOptions={{ headerShown: false }}>
+            <StarsStack.Screen
+                name="Constellation"
+                component={Constellation}
+            />
+            <StarsStack.Screen
+                name="create"
+                component={create}
+            />
+        </StarsStack.Navigator>
     )
 }
-
 
 // クイズセット
 type QuizStackParamList = {
