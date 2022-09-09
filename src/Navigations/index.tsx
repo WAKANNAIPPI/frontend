@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 import { createNativeStackNavigator, NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { NavigationContainer } from "@react-navigation/native";
 
-import { HomeScreen } from '../Screen';
+import { HomeScreen } from '../Screen/Home';
 import { Constellation } from "../Screen/Constellation";
 import { create } from "../Screen/create";
 
@@ -44,11 +44,11 @@ export const RootNavivgator: React.FC = () =>{
                 />
                 <HomeStack.Screen
                     name="Constellation"
-                    component={Constellation}
+                    component={StarsNavigator}
                 />
                 <HomeStack.Screen
                     name="Quiz"
-                    component={QuizScreen}
+                    component={QuizNav}
                 />
                 <HomeStack.Screen
                     name="Projection"
@@ -56,7 +56,7 @@ export const RootNavivgator: React.FC = () =>{
                 />
                 <HomeStack.Screen
                     name="Account"
-                    component={Account}
+                    component={AccountNav}
                 />
                 <HomeStack.Screen
                     name="Help"
@@ -76,23 +76,20 @@ type StarsStackParamList = {
 export type StarsStackNavProp<T extends keyof StarsStackParamList> = NativeStackNavigationProp<StarsStackParamList, T>
 const StarsStack = createNativeStackNavigator<StarsStackParamList>();
 
-export const StarsNavivgator: React.FC = () => {
-    return (
-        <NavigationContainer>
-            <StarsStack.Navigator initialRouteName="Constellation" screenOptions={{ headerStyle: styles.header, headerTitleStyle: { color: '#FFFFFF', }, }}>
-                <StarsStack.Screen
-                    name="Constellation"
-                    component={Constellation}
-                />
-                <StarsStack.Screen
-                    name="create"
-                    component={create}
-                />
-            </StarsStack.Navigator>
-        </NavigationContainer>
+export const StarsNavigator: React.FC = ()=>{
+    return(
+        <StarsStack.Navigator initialRouteName="Constellation" screenOptions={{ headerShown: false }}>
+            <StarsStack.Screen
+                name="Constellation"
+                component={Constellation}
+            />
+            <StarsStack.Screen
+                name="create"
+                component={create}
+            />
+        </StarsStack.Navigator>
     )
 }
-
 
 // クイズセット
 type QuizStackParamList = {
@@ -103,20 +100,18 @@ type QuizStackParamList = {
 export type QuizStackNavProp<T extends keyof QuizStackParamList> = NativeStackNavigationProp<QuizStackParamList, T>
 const QuizStack = createNativeStackNavigator<QuizStackParamList>();
 
-export const QuizNavivgator: React.FC = () => {
+export const QuizNav: React.FC = () => {
     return (
-        <NavigationContainer>
-            <QuizStack.Navigator initialRouteName="Quiz" screenOptions={{ headerStyle: styles.header, headerTitleStyle: { color: '#FFFFFF', }, }}>
-                <QuizStack.Screen
-                    name="Quiz"
-                    component={QuizScreen}
-                />
-                <QuizStack.Screen
-                    name="Gift"
-                    component={Gift}
-                />
-            </QuizStack.Navigator>
-        </NavigationContainer>
+        <QuizStack.Navigator initialRouteName="Quiz" screenOptions={{ headerShown: false }}>
+            <QuizStack.Screen
+                name="Quiz"
+                component={QuizScreen}
+            />
+            <QuizStack.Screen
+                name="Gift"
+                component={Gift}
+            />
+        </QuizStack.Navigator>
     )
 }
 
@@ -130,7 +125,7 @@ type AccountStackParamList = {
 export type AccountStackNavProp<T extends keyof AccountStackParamList> = NativeStackNavigationProp<AccountStackParamList, T>
 const AccountStack = createNativeStackNavigator<AccountStackParamList>();
 
-export const AccountNavivgator: React.FC = () => {
+export const AccountNav: React.FC = () => {
     return (
         <NavigationContainer>
             <AccountStack.Navigator initialRouteName="Account" screenOptions={{ headerStyle: styles.header, headerTitleStyle: { color: '#FFFFFF', }, }}>
