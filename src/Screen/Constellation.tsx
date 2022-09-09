@@ -4,14 +4,17 @@ import Swiper from "react-native-swiper/src"
 
 function Edit(props: any, navigation: any) {
     return (
-        <View style={styles.editButton}>
+        <View style={styles.editArea}>
             <TouchableOpacity 
                 //onPress={() => navigation.navigator()} 画面遷移
+                style={styles.editButton}
             >
-                <Image
-                    style={styles.editImage}
-                    source={require('../Assets/edit.png')}
-                />
+                <View style={styles.editSet1}>
+                    <View style={styles.editPlus1}/>
+                </View>
+                <View style={styles.editSet2}>
+                    <View style={styles.editPlus2}/>
+                </View>
             </TouchableOpacity>
         </View>
     )
@@ -19,7 +22,7 @@ function Edit(props: any, navigation: any) {
 
 export const Constellation: React.FC = () => {
     return (
-        <View style={styles.page}>
+        <View style={styles.container}>
             <Swiper showsButtons={true} loop={false}>
                 <View style={styles.slide}>
                     <Text style={styles.testText}>
@@ -43,31 +46,52 @@ export const Constellation: React.FC = () => {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#232946'
+    },
     slide: {
         flex: 1,
         padding: 30
-    },
-    page: {
-        flex: 1,
-        backgroundColor: '#232946'
-    },
-    pictorial: {
-        flex: 0.25,
-        backgroundColor: '#232946'
     },
     testText: {
         color: 'white',
         fontSize: 30,
         fontWeight: 'bold',
     },
-    editButton: {
+    editArea: {
         flex: 0.25,
         justifyContent: 'center',
         alignItems: 'center',
-        transform: [{translateX: 120}, {translateY: -30}],
+        paddingLeft: 100
     },
-    editImage: {
+    editButton: {
         width: 60,
-        height: 60
+        height: 60,
+        borderRadius: 60,
+        backgroundColor: '#BDBAFA'
+    },
+    editSet1: {
+        flex: 0,
+        paddingTop: 30, 
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    editSet2: {
+        flex: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    editPlus1: {
+        backgroundColor: 'white' ,
+        borderRadius: 20,
+        width: 40, 
+        height: 10,
+    },
+    editPlus2: {
+        backgroundColor: 'white',
+        borderRadius: 20,
+        width: 10,
+        height: 40,
     }
 });
