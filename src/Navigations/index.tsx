@@ -48,7 +48,7 @@ export const RootNavivgator: React.FC = () =>{
                 />
                 <HomeStack.Screen
                     name="Quiz"
-                    component={QuizScreen}
+                    component={QuizNavivgator}
                 />
                 <HomeStack.Screen
                     name="Projection"
@@ -102,18 +102,16 @@ const QuizStack = createNativeStackNavigator<QuizStackParamList>();
 
 export const QuizNavivgator: React.FC = () => {
     return (
-        <NavigationContainer>
-            <QuizStack.Navigator initialRouteName="Quiz" screenOptions={{ headerStyle: styles.header, headerTitleStyle: { color: '#FFFFFF', }, }}>
-                <QuizStack.Screen
-                    name="Quiz"
-                    component={QuizScreen}
-                />
-                <QuizStack.Screen
-                    name="Gift"
-                    component={Gift}
-                />
-            </QuizStack.Navigator>
-        </NavigationContainer>
+        <QuizStack.Navigator initialRouteName="Quiz" screenOptions={{ headerShown: false }}>
+            <QuizStack.Screen
+                name="Quiz"
+                component={QuizScreen}
+            />
+            <QuizStack.Screen
+                name="Gift"
+                component={Gift}
+            />
+        </QuizStack.Navigator>
     )
 }
 
