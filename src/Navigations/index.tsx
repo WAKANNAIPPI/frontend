@@ -86,6 +86,7 @@ export const StarsNavigator: React.FC = ()=>{
             <StarsStack.Screen
                 name="create"
                 component={create}
+                options={{headerShown: false}}
             />
         </StarsStack.Navigator>
     )
