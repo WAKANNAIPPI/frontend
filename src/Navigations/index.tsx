@@ -48,7 +48,7 @@ export const RootNavivgator: React.FC = () =>{
                 />
                 <HomeStack.Screen
                     name="Quiz"
-                    component={QuizNavivgator}
+                    component={QuizNav}
                 />
                 <HomeStack.Screen
                     name="Projection"
@@ -56,7 +56,7 @@ export const RootNavivgator: React.FC = () =>{
                 />
                 <HomeStack.Screen
                     name="Account"
-                    component={Account}
+                    component={AccountNav}
                 />
                 <HomeStack.Screen
                     name="Help"
@@ -100,7 +100,7 @@ type QuizStackParamList = {
 export type QuizStackNavProp<T extends keyof QuizStackParamList> = NativeStackNavigationProp<QuizStackParamList, T>
 const QuizStack = createNativeStackNavigator<QuizStackParamList>();
 
-export const QuizNavivgator: React.FC = () => {
+export const QuizNav: React.FC = () => {
     return (
         <QuizStack.Navigator initialRouteName="Quiz" screenOptions={{ headerShown: false }}>
             <QuizStack.Screen
@@ -125,7 +125,7 @@ type AccountStackParamList = {
 export type AccountStackNavProp<T extends keyof AccountStackParamList> = NativeStackNavigationProp<AccountStackParamList, T>
 const AccountStack = createNativeStackNavigator<AccountStackParamList>();
 
-export const AccountNavivgator: React.FC = () => {
+export const AccountNav: React.FC = () => {
     return (
         <NavigationContainer>
             <AccountStack.Navigator initialRouteName="Account" screenOptions={{ headerStyle: styles.header, headerTitleStyle: { color: '#FFFFFF', }, }}>
