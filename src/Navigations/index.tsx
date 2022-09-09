@@ -45,6 +45,7 @@ export const RootNavivgator: React.FC = () =>{
                 <HomeStack.Screen
                     name="Constellation"
                     component={StarsNavigator}
+                    options={{headerShown: false}}
                 />
                 <HomeStack.Screen
                     name="Quiz"
@@ -86,7 +87,6 @@ export const StarsNavigator: React.FC = ()=>{
             <StarsStack.Screen
                 name="create"
                 component={create}
-                options={{headerShown: false}}
             />
         </StarsStack.Navigator>
     )
