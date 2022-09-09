@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Animated } from 'react-native';
 import { useNavigation } from "@react-navigation/native";
+import { RootStackNavProp } from "../Navigations";
 import { StarsStackNavProp } from "../Navigations";
 import Swiper from "react-native-swiper/src";
 
@@ -24,8 +25,19 @@ function Edit() {
 }
 
 export const Constellation: React.FC = () => {
+    const navigation = useNavigation< RootStackNavProp<'Constellation'> >();
     return (
         <View style={styles.container}>
+           <View style={styles.header}>
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('Home')}
+                    style={styles.backButton}
+                >
+                        <Text style={styles.direction}>
+                            ＜
+                        </Text>
+                </TouchableOpacity>
+            </View>
             <Swiper showsButtons={true} loop={false}>
                 <View style={styles.slide}>
                     <Text style={styles.testText}>
@@ -52,6 +64,22 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#232946'
+    },
+    header: {
+        alignItems: 'center',
+        paddingEnd: 200,
+        paddingTop: 10,
+        flex: 0.1,
+        backgroundColor: '#806BFF'
+    },
+    backButton: {
+        width: 30,
+        height: 30,
+    },
+    direction: {
+        color: 'white',
+        fontSize: 30,
+        fontWeight: 'bold',
     },
     slide: {
         flex: 1,
