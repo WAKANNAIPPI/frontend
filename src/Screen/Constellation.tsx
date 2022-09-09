@@ -1,12 +1,15 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Animated } from 'react-native';
-import Swiper from "react-native-swiper/src"
+import { useNavigation } from "@react-navigation/native";
+import { StarsStackNavProp } from "../Navigations";
+import Swiper from "react-native-swiper/src";
 
-function Edit(props: any, navigation: any) {
+function Edit() {
+    const navigation = useNavigation< StarsStackNavProp<'Constellation'> >();
     return (
         <View style={styles.editArea}>
             <TouchableOpacity 
-                //onPress={() => navigation.navigator()} 画面遷移
+                onPress={() => navigation.navigate('create')}
                 style={styles.editButton}
             >
                 <View style={styles.editSet1}>
