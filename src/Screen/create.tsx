@@ -1,16 +1,21 @@
 import React from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
+import { View, Text, StyleSheet, Button, TouchableOpacity } from "react-native";
+import { StarsStackNavProp } from "../Navigations";
+import { useNavigation } from "@react-navigation/native"
 
 export const create: React.FC = () => {
+    const navigation = useNavigation< StarsStackNavProp<'create'> >();
     return (
         <>
         <View style={styles.header}>
-            <View style={styles.completion}>
-                <Button
-                    title="完了"
-                    //onPress={() => } 完了（セーブ）
-                />
-            </View>
+            <TouchableOpacity
+                onPress={() => navigation.navigate('Constellation')}
+                style={styles.backButton}
+            >
+                    <Text style={styles.direction}>
+                        ＜
+                    </Text>
+            </TouchableOpacity>
         </View>
         <View style={styles.pallet}>
         </View>
@@ -22,10 +27,20 @@ export const create: React.FC = () => {
 
 const styles = StyleSheet.create({
     header: {
-        flex: 0.1,
-        justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: "#806BFF",
+        paddingEnd: 200,
+        paddingTop: 15,
+        flex: 0.1,
+        backgroundColor: '#806BFF'
+    },
+    backButton: {
+        width: 30,
+        height: 30,
+    },
+    direction: {
+        color: 'white',
+        fontSize: 30,
+        fontWeight: 'bold',
     },
     pallet: {
         flex: 1,
