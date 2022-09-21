@@ -1,10 +1,71 @@
-import React from "react";
-import { View, Text, StyleSheet, Button, TouchableOpacity, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, Button, TouchableOpacity, Image, PanResponder } from "react-native";
 import { StarsStackNavProp } from "../Navigations";
-import { useNavigation } from "@react-navigation/native"
+import { useNavigation } from "@react-navigation/native";
+import Canvas from "react-native-canvas"
 
 export const create: React.FC = () => {
     const navigation = useNavigation< StarsStackNavProp<'create'> >();
+    var canvasRef: any = React.createRef();
+
+    const [ drawFlag, setCount ] = useState(false);
+    const [ previousX, setCountX ] = useState("");
+    const [ previousY, setCountY ] = useState("");
+    const [ currentX, setCountCX ] = useState("");
+    const [ currentY, setCountCY ] = useState("");
+    const [ color, setColor ] = useState("white");
+
+    
+    useEffect (() => {
+        const ctx = canvasRef.current.getContext('2d');
+        canvasRef.current.width = 300;
+        canvasRef.current.height = 300;
+        ctx.strokeStyle = "rgb(00, 00, 00)";
+        ctx.strokeRect(0, 0, 300, 300);
+    })
+
+    function onTouch(e: any) {
+        setCount(true);  //フラグをオンにする
+        setCountX( e.nativeEvent.locationX );
+        setCountY( e.nativeEvent.locationY );
+      }
+    
+    function onMove(e: any){
+        if (!drawFlag) return;
+
+        const ctx = canvasRef.current.getContext('2d');
+
+        if (currentX === ""){
+            setCountCX( previousX );
+            setCountCY( previousY );
+        }   
+        else {
+            setCountX( e.nativeEvent.locationX );
+            setCountY( e.nativeEvent.locationY );
+            ctx.moveTo( Number( previousX ), Number( previousY ) );
+        }
+
+        ctx.lineTo( Number( currentX ), Number( currentY )) ;
+        ctx.lineCap = "round";
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "white";
+        ctx.stroke();
+
+        setCountCX( previousX );
+        setCountCY( previousY );
+    }
+
+    const onTouchEnd = () => {
+        setCountX("");
+        setCountY("");
+        setCountCX("");
+        setCountCY("");
+    }
+
+    function completionButtonAction() {
+
+    }
+
     return (
         <>
 
@@ -18,7 +79,7 @@ export const create: React.FC = () => {
                     </Text>
             </TouchableOpacity>
             <TouchableOpacity
-                onPress={() => navigation.navigate('Constellation')}
+                onPress={completionButtonAction}
                 style={styles.completion}
             >
                     <Text style={styles.completionText}>
@@ -27,7 +88,16 @@ export const create: React.FC = () => {
             </TouchableOpacity>
         </View>
 
-        <View style={styles.pallet}>
+        <View style={styles.paint}>
+            <Text>ペイント</Text>
+            <View
+                style = {styles.canvas}
+                onTouchStart = {onTouch}
+                onTouchMove = {onMove}
+                onTouchEnd = {onTouchEnd}
+            >
+                <Canvas ref = {canvasRef} />
+            </View>
         </View>
 
         <View style={styles.create}>
@@ -36,7 +106,7 @@ export const create: React.FC = () => {
             >
                 <Image
                     style={styles.starsImage}
-                    source={require('../Assets/Create/Star1')}
+                    source={require('../Assets/Create/Star1.png')}
                 />
             </TouchableOpacity>
             <TouchableOpacity
@@ -81,7 +151,7 @@ export const create: React.FC = () => {
 
 const styles = StyleSheet.create({
     header:{
-        flex: 0.1,
+        flex: 0.15,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -90,6 +160,8 @@ const styles = StyleSheet.create({
     backButton: {
         alignItems: 'center',
         justifyContent: 'center',
+        marginEnd: 100,
+        top: 20,
         width: 30,
     },
     direction: {
@@ -104,16 +176,23 @@ const styles = StyleSheet.create({
         width: 75,
         backgroundColor: '#43C58C',
         borderRadius: 30,
+        top: 20,
         marginLeft: 100,
     },
     completionText: {
     },
-    pallet: {
+    paint: {
         flex: 1,
-        backgroundColor: "white",
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: "#232946",
+    },
+    canvas: {
+        width: 300,
+        height: 300,
     },
     create: {
-        flex: 0.1,
+        flex: 0.15,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -149,11 +228,12 @@ const styles = StyleSheet.create({
     returnView: {
         alignItems: 'center',
         justifyContent: 'center',
+        marginLeft: 30,
         marginEnd: 10,
     },
     returnText: {
         color: 'white',
-        fontSize: 25,
+        fontSize: 30,
         fontWeight: 'bold',
     },
     goView: {
@@ -162,7 +242,7 @@ const styles = StyleSheet.create({
     },
     goText: {
         color: 'white',
-        fontSize: 25,
+        fontSize: 30,
         fontWeight: 'bold',
     },
 })
