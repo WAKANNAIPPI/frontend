@@ -4,30 +4,28 @@ import { StarsStackNavProp } from "../Navigations";
 import { useNavigation } from "@react-navigation/native";
 import Canvas from "react-native-canvas"
 
-export const create: React.FC = () => {
+export const create = () => {
     const navigation = useNavigation< StarsStackNavProp<'create'> >();
-    const canvasRef = useRef(null);
-    let number: string = "hoge";
+    const canvasRef: any = React.createRef();
     
-    const getContext = (): CanvasRenderingContext2D => {
-        const canvas: any = canvasRef.current;
-
-        return canvas.getContext('2d');
-    }
-
     const [ drawFlag, setCount ] = useState(false);
     const [ previousX, setCountX ] = useState("");
     const [ previousY, setCountY ] = useState("");
     const [ currentX, setCountCX ] = useState("");
     const [ currentY, setCountCY ] = useState("");
-    const [ color, setColor ] = useState("white");
+    const [ count, setColor ] = useState(0);
     
     useEffect (() => {
-        const ctx: CanvasRenderingContext2D = getContext();
+        canvasRef.current.width = 300;
+        canvasRef.current.height = 300;
+        updateCanvas();
+    }, []);
+    
+    function updateCanvas() {
+        const ctx = canvasRef.current.getContext('2d');
         ctx.strokeStyle = "#FFFFFF"
         ctx.strokeRect(0, 0, 300, 300);
-    });
-
+    }
 
     function onTouch(e: any) {
         setCount(true);  //フラグをオンにする
@@ -39,7 +37,7 @@ export const create: React.FC = () => {
 
         if (!drawFlag) return;
 
-        const ctx: CanvasRenderingContext2D = getContext();
+        const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
 
         ctx.beginPath();
 
@@ -65,13 +63,20 @@ export const create: React.FC = () => {
     }
 
     const onTouchEnd = () => {
+        const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
         setCountX("");
         setCountY("");
         setCountCX("");
         setCountCY("");
+        setCount(false);
     }
 
     function completionButtonAction() {
+        canvasRef.current.width = 300;
+        canvasRef.current.height = 300;
+    }
+
+    function Action() {
     }
 
     return (
@@ -95,17 +100,18 @@ export const create: React.FC = () => {
                     </Text>
             </TouchableOpacity>
         </View>
-
+        
         <View style={styles.paint}>
+            <Text></Text>
             <View
                 style = {styles.canvas}
                 onTouchStart = {onTouch}
                 onTouchMove = {onMove}
                 onTouchEnd = {onTouchEnd}
             >
-            <Canvas style={styles.canvas1} ref = {canvasRef} />
+            <Canvas ref = {canvasRef} />
                 
-            <Text>{Number(number)}</Text>
+            <Text></Text>
             </View>
         </View>
 
@@ -198,6 +204,7 @@ const styles = StyleSheet.create({
     },
     canvas: {
         flex: 1,
+        top: 120,
     },
     create: {
         flex: 0.15,
@@ -253,10 +260,6 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
     },
-    canvas1: {
-        width: 300,
-        height: 300,
-    }
 })
 
 
