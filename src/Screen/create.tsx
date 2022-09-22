@@ -21,8 +21,6 @@ export const create: React.FC = () => {
     const [ currentX, setCountCX ] = useState("");
     const [ currentY, setCountCY ] = useState("");
     const [ color, setColor ] = useState("white");
-
-
     
     useEffect (() => {
         const ctx: CanvasRenderingContext2D = getContext();
