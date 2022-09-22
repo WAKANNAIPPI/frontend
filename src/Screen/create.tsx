@@ -13,7 +13,7 @@ export const create = () => {
     const [ previousY, setCountY ] = useState("");
     const [ currentX, setCountCX ] = useState("");
     const [ currentY, setCountCY ] = useState("");
-    const [ count, setColor ] = useState(0);
+    const [ count, set ] = useState(0);
     
     useEffect (() => {
         canvasRef.current.width = 300;
@@ -28,9 +28,12 @@ export const create = () => {
     }
 
     function onTouch(e: any) {
+        const ctx = canvasRef.current.getContext('2d');
         setCount(true);  //フラグをオンにする
         setCountX( e.nativeEvent.locationX );
         setCountY( e.nativeEvent.locationY );
+        ctx.moveTo( Number(previousX), Number(previousY) )
+        set(count + 1);
       }
     
     function onMove(e: any){
@@ -48,7 +51,6 @@ export const create = () => {
         else {
             setCountX( e.nativeEvent.locationX );
             setCountY( e.nativeEvent.locationY );
-            ctx.moveTo( Number( previousX ), Number( previousY ) );
         }
 
         ctx.lineTo( Number( currentX ), Number( currentY )) ;
@@ -76,8 +78,6 @@ export const create = () => {
         canvasRef.current.height = 300;
     }
 
-    function Action() {
-    }
 
     return (
         <>
@@ -111,7 +111,7 @@ export const create = () => {
             >
             <Canvas ref = {canvasRef} />
                 
-            <Text></Text>
+            <Text>{count}</Text>
             </View>
         </View>
 
