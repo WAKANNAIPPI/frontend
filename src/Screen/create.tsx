@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { View, Text, StyleSheet, Button, TouchableOpacity, Image, PanResponder } from "react-native";
 import { StarsStackNavProp } from "../Navigations";
 import { useNavigation } from "@react-navigation/native";
@@ -6,7 +6,14 @@ import Canvas from "react-native-canvas"
 
 export const create: React.FC = () => {
     const navigation = useNavigation< StarsStackNavProp<'create'> >();
-    var canvasRef: any = React.createRef();
+    const canvasRef = useRef(null);
+    let number: string = "hoge";
+    
+    const getContext = (): CanvasRenderingContext2D => {
+        const canvas: any = canvasRef.current;
+
+        return canvas.getContext('2d');
+    }
 
     const [ drawFlag, setCount ] = useState(false);
     const [ previousX, setCountX ] = useState("");
@@ -15,14 +22,14 @@ export const create: React.FC = () => {
     const [ currentY, setCountCY ] = useState("");
     const [ color, setColor ] = useState("white");
 
+
     
     useEffect (() => {
-        const ctx = canvasRef.current.getContext('2d');
-        canvasRef.current.width = 300;
-        canvasRef.current.height = 300;
-        ctx.strokeStyle = "rgb(00, 00, 00)";
+        const ctx: CanvasRenderingContext2D = getContext();
+        ctx.strokeStyle = "#FFFFFF"
         ctx.strokeRect(0, 0, 300, 300);
-    })
+    });
+
 
     function onTouch(e: any) {
         setCount(true);  //フラグをオンにする
@@ -31,11 +38,14 @@ export const create: React.FC = () => {
       }
     
     function onMove(e: any){
+
         if (!drawFlag) return;
 
-        const ctx = canvasRef.current.getContext('2d');
+        const ctx: CanvasRenderingContext2D = getContext();
 
-        if (currentX === ""){
+        ctx.beginPath();
+
+        if (currentX == ""){
             setCountCX( previousX );
             setCountCY( previousY );
         }   
@@ -50,6 +60,7 @@ export const create: React.FC = () => {
         ctx.lineWidth = 2;
         ctx.strokeStyle = "white";
         ctx.stroke();
+        ctx.closePath();
 
         setCountCX( previousX );
         setCountCY( previousY );
@@ -63,7 +74,6 @@ export const create: React.FC = () => {
     }
 
     function completionButtonAction() {
-
     }
 
     return (
@@ -89,14 +99,15 @@ export const create: React.FC = () => {
         </View>
 
         <View style={styles.paint}>
-            <Text>ペイント</Text>
             <View
                 style = {styles.canvas}
                 onTouchStart = {onTouch}
                 onTouchMove = {onMove}
                 onTouchEnd = {onTouchEnd}
             >
-                <Canvas ref = {canvasRef} />
+            <Canvas style={styles.canvas1} ref = {canvasRef} />
+                
+            <Text>{Number(number)}</Text>
             </View>
         </View>
 
@@ -188,8 +199,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#232946",
     },
     canvas: {
-        width: 300,
-        height: 300,
+        flex: 1,
     },
     create: {
         flex: 0.15,
@@ -245,6 +255,10 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
     },
+    canvas1: {
+        width: 300,
+        height: 300,
+    }
 })
 
 
