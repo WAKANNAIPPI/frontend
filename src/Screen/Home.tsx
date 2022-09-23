@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions, Button } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions} from 'react-native';
 import { RootStackNavProp } from "../Navigations";
 import ScatterChart from "react-native-scatter-chart";
 import { chartData } from "../Compoents/dot";
