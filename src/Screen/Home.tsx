@@ -1,67 +1,88 @@
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { Button, View, Text, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions} from 'react-native';
 import { RootStackNavProp } from "../Navigations";
-
-export const { width, height } = Dimensions.get("screen");
+import ScatterChart from "react-native-scatter-chart";
+import { chartData } from "../Compoents/dot";
 
 export const HomeScreen: React.FC = () =>{
     const navigation = useNavigation< RootStackNavProp<'Home'> >()
+    const {width, height} = Dimensions.get("window");
 
     return(
         <View style={styles.container}>
-            {/*要修正！ buttonを画像に置き換える */}
-            <TouchableOpacity onPress={() => navigation.navigate('Constellation')}>
-                <Image
-                    source={require('../Assets/Frame1.png')}
-                    style={{ width: 100, height: 100 }}
-                />
-                <Text>Constellation</Text>
-            </TouchableOpacity>
+            <ScatterChart
+                backgroundColor='#282C3E'
+                data={chartData}
+                style={styles.chart}
+                chartHeight={height}
+                chartWidth={width}
+            />
+            <View style={styles.buttonLayout}>
+                <TouchableOpacity onPress={() => navigation.navigate('Constellation')} style={styles.button}>
+                    <Image
+                        source={require('../Assets/Frame1.png')}
+                        style={{ width: 50, height: 50 }}
+                    />
+                    <Text>Constellation</Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Quiz')}>
-                <Image
-                    source={require('../Assets/Frame2.png')}
-                    style={{ width: 150, height: 150 }}
-                />
-                <Text>Quiz</Text>
-            </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Quiz')} style={styles.button}>
+                    <Image
+                        source={require('../Assets/Frame2.png')}
+                        style={{ width: 50, height: 50 }}
+                    />
+                    <Text>Quiz</Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Projection')}>
-                <Image
-                    source={require('../Assets/Frame3.png')}
-                    style={{ width: 100, height: 100 }}
-                />
-                <Text>Prpjection</Text>
-            </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Projection')} style={styles.button}>
+                    <Image
+                        source={require('../Assets/Frame3.png')}
+                        style={{ width: 50, height: 50 }}
+                    />
+                    <Text>Prpjection</Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Account')}>
-                <Image
-                    source={require('../Assets/Frame4.png')}
-                    style={{ width: 100, height: 100 }}
-                />
-                <Text>Account</Text>
-            </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Account')} style={styles.button}>
+                    <Image
+                        source={require('../Assets/Frame4.png')}
+                        style={{ width: 50, height: 50 }}
+                    />
+                    <Text>Account</Text>
+                </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => navigation.navigate('Help')}>
-                <Image
-                    source={require('../Assets/Frame5.png')}
-                    style={{ width: 100, height: 100 }}
-                />
-                <Text>Help</Text>
-            </TouchableOpacity>
-
+                <TouchableOpacity onPress={() => navigation.navigate('Help')} style={styles.button}>
+                    <Image
+                        source={require('../Assets/Frame5.png')}
+                        style={{ width: 50, height: 50 }}
+                    />
+                    <Text>Help</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#282C3E',
-        // 要修正！　画面サイズに合わせて設定
-        padding: 50,
+        flex:1,
+        position: 'relative',
+
+    },
+    chart:{
+        position: 'absolute',
+        flex:1,
+    },
+    buttonLayout:{
+        position:'absolute',
+        flexDirection: 'column',
+        alignSelf:'center',
+        marginTop: 80,
+        marginHorizontal: 16,
+    },
+    button:{
+        flex:1,
+
     },
 })
+
