@@ -54,7 +54,7 @@ export const RootNavivgator: React.FC = () =>{
                 />
                 <HomeStack.Screen
                     name="Signup"
-                    component={SignupNav}
+                    component={Signup}
                 />
 
             </HomeStack.Navigator>
@@ -111,6 +111,7 @@ export const QuizNav: React.FC = () => {
 }
 
 // アカウントセット
+// 星座作成セット
 type SignupStackParamList = {
     Signup: undefined;
     login: undefined;
@@ -119,20 +120,18 @@ type SignupStackParamList = {
 export type SignupStackNavProp<T extends keyof SignupStackParamList> = NativeStackNavigationProp<SignupStackParamList, T>
 const SignupStack = createNativeStackNavigator<SignupStackParamList>();
 
-export const SignupNav: React.FC = () => {
+export const SignupNavigator: React.FC = () => {
     return (
-        <NavigationContainer>
-            <SignupStack.Navigator initialRouteName="Signup" screenOptions={{ headerStyle: styles.header, headerTitleStyle: { color: '#FFFFFF', }, }}>
-                <SignupStack.Screen
-                    name="Signup"
-                    component={Signup}
-                />
-                <SignupStack.Screen
-                    name="login"
-                    component={login}
-                />
-            </SignupStack.Navigator>
-        </NavigationContainer>
+        <SignupStack.Navigator initialRouteName="Signup" screenOptions={{ headerShown: false }}>
+            <SignupStack.Screen
+                name="Signup"
+                component={Signup}
+            />
+            <SignupStack.Screen
+                name="login"
+                component={login}
+            />
+        </SignupStack.Navigator>
     )
 }
 
