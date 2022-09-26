@@ -43,20 +43,12 @@ export const HomeScreen: React.FC = () =>{
                     <Text>Prpjection</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => navigation.navigate('Account')} style={styles.button}>
+                <TouchableOpacity onPress={() => navigation.navigate('Signup')} style={styles.button}>
                     <Image
                         source={require('../Assets/Frame4.png')}
                         style={{ width: 50, height: 50 }}
                     />
-                    <Text>Account</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={() => navigation.navigate('Help')} style={styles.button}>
-                    <Image
-                        source={require('../Assets/Frame5.png')}
-                        style={{ width: 50, height: 50 }}
-                    />
-                    <Text>Help</Text>
+                    <Text>Signup</Text>
                 </TouchableOpacity>
             </View>
         </View>

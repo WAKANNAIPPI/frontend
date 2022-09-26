@@ -12,11 +12,9 @@ import { Gift } from "../Screen/Gift";
 
 import { Projection } from "../Screen/Projection"
 
-import { Account } from "../Screen/Account";
 import { Signup } from "../Screen/Signup";
 import { login } from "../Screen/login";
 
-import { Help } from "../Screen/Help";
 
 // ルートセット
 type RootStackParamList = {
@@ -24,8 +22,7 @@ type RootStackParamList = {
     Constellation: undefined;
     Quiz: undefined;
     Projection: undefined;
-    Account: undefined;
-    Help: undefined;
+    Signup: undefined;
 }
 
 export type RootStackNavProp<T extends keyof RootStackParamList> = NativeStackNavigationProp<RootStackParamList, T>
@@ -56,13 +53,10 @@ export const RootNavivgator: React.FC = () =>{
                     component={Projection}
                 />
                 <HomeStack.Screen
-                    name="Account"
-                    component={AccountNav}
+                    name="Signup"
+                    component={Signup}
                 />
-                <HomeStack.Screen
-                    name="Help"
-                    component={Help}
-                />
+
             </HomeStack.Navigator>
         </NavigationContainer>
     )
@@ -117,33 +111,27 @@ export const QuizNav: React.FC = () => {
 }
 
 // アカウントセット
-type AccountStackParamList = {
-    Account: undefined;
+// 星座作成セット
+type SignupStackParamList = {
     Signup: undefined;
     login: undefined;
 }
 
-export type AccountStackNavProp<T extends keyof AccountStackParamList> = NativeStackNavigationProp<AccountStackParamList, T>
-const AccountStack = createNativeStackNavigator<AccountStackParamList>();
+export type SignupStackNavProp<T extends keyof SignupStackParamList> = NativeStackNavigationProp<SignupStackParamList, T>
+const SignupStack = createNativeStackNavigator<SignupStackParamList>();
 
-export const AccountNav: React.FC = () => {
+export const SignupNavigator: React.FC = () => {
     return (
-        <NavigationContainer>
-            <AccountStack.Navigator initialRouteName="Account" screenOptions={{ headerStyle: styles.header, headerTitleStyle: { color: '#FFFFFF', }, }}>
-                <AccountStack.Screen
-                    name="Account"
-                    component={Account}
-                />
-                <AccountStack.Screen
-                    name="Signup"
-                    component={Signup}
-                />
-                <AccountStack.Screen
-                    name="login"
-                    component={login}
-                />
-            </AccountStack.Navigator>
-        </NavigationContainer>
+        <SignupStack.Navigator initialRouteName="Signup" screenOptions={{ headerShown: false }}>
+            <SignupStack.Screen
+                name="Signup"
+                component={Signup}
+            />
+            <SignupStack.Screen
+                name="login"
+                component={login}
+            />
+        </SignupStack.Navigator>
     )
 }
 
