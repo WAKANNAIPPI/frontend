@@ -148,8 +148,6 @@ export const create = (props: any) => {
 
             <Canvas ref = {canvasRef} />
 
-            <Text>{storedLines.length}</Text>
-            <Text>{storedLines[(storedLines.length - 1)].fy}</Text>
             </View>
         </View>
 
