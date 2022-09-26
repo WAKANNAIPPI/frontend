@@ -1,81 +1,117 @@
 import React, { useEffect, useState, useRef } from "react";
-import { View, Text, StyleSheet, Button, TouchableOpacity, Image, PanResponder } from "react-native";
+import { View, Text, StyleSheet, Button, TouchableOpacity, Image, PanResponder, Animated } from "react-native";
 import { StarsStackNavProp } from "../Navigations";
-import { useNavigation } from "@react-navigation/native";
+import { CurrentRenderContext, useNavigation } from "@react-navigation/native";
 import Canvas from "react-native-canvas"
 
-export const create = () => {
+let p: number = 1
+
+export const create = (props: any) => {
     const navigation = useNavigation< StarsStackNavProp<'create'> >();
+
     const canvasRef: any = React.createRef();
+    const canvasTransparentRef: any = React.createRef();
     
-    const [ drawFlag, setCount ] = useState(false);
-    const [ previousX, setCountX ] = useState("");
-    const [ previousY, setCountY ] = useState("");
-    const [ currentX, setCountCX ] = useState("");
-    const [ currentY, setCountCY ] = useState("");
-    const [ count, set ] = useState(0);
-    
+    const [ drawFlag, setDrawFlag ] = useState(false);
+    const [ startX, setStartX ] = useState("");
+    const [ startY, setStartY ] = useState("");
+    const [ finishX, setFinishX] = useState("");
+    const [ finishY, setFinishY ] = useState("");
+    const [ currentX, setCurrentX ] = useState("");
+    const [ currentY, setCurrentY ] = useState("");
+    const [ count, setCount ] = useState(0);
+    const [ storedLines, setStoredLines ] = useState([{
+        sx: "",
+        sy: "",
+        fx: "",
+        fy: ""
+    }]);
+
     useEffect (() => {
-        canvasRef.current.width = 300;
-        canvasRef.current.height = 300;
+        canvasRef.current.width = 500;
+        canvasRef.current.height = 1000;
         updateCanvas();
     }, []);
     
     function updateCanvas() {
+        const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
+
+    }
+
+    function onTouch(e: any) {
+        setDrawFlag(true);  //フラグをオンにする
+      }
+    
+    function onMove(e: any){
+        const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
+
+        if (!drawFlag) return;
+
+        if ( currentX == "" ){
+            setStartX( e.nativeEvent.locationX );
+            setStartY( e.nativeEvent.locationY );
+            setCurrentX( e.nativeEvent.locationX );
+            setCurrentY( e.nativeEvent.locationY );
+        }
+        else {
+            Redraw();
+
+            ctx.beginPath();
+
+            ctx.lineCap = "round";
+            ctx.lineJoin  = "round";
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "white";
+
+            ctx.moveTo( Number( startX ), Number( startY ) );
+            ctx.lineTo( Number( currentX ), Number( currentY ) );
+
+            ctx.stroke();
+            setCurrentX( e.nativeEvent.locationX );
+            setCurrentY( e.nativeEvent.locationY );
+        }
+    }
+
+    const onTouchEnd = (e: any) => {
+        setDrawFlag(false);
+
+        setCurrentX("");
+        setCurrentY("");
+
+        storedLines.push({
+            sx: startX,
+            sy: startY,
+            fx: currentX,
+            fy: currentY
+        })
+    }
+
+    function Redraw(){
+        const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
+
+        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        if(storedLines.length == 1){
+            return;
+        }
+
+        for(let i = 1; i < storedLines.length; i++){
+            ctx.beginPath();
+            ctx.moveTo( Number( storedLines[i].sx ), Number( storedLines[i].sy ) );
+            ctx.lineTo( Number( storedLines[i].fx ), Number( storedLines[i].fy ) );
+            ctx.stroke();
+        }
+    }
+
+    function completionButtonAction() {
+        canvasRef.current.width = 500;
+        canvasRef.current.height = 1000;
         const ctx = canvasRef.current.getContext('2d');
         ctx.strokeStyle = "#FFFFFF"
         ctx.strokeRect(0, 0, 300, 300);
     }
 
-    function onTouch(e: any) {
-        const ctx = canvasRef.current.getContext('2d');
-        setCount(true);  //フラグをオンにする
-        setCountX( e.nativeEvent.locationX );
-        setCountY( e.nativeEvent.locationY );
-        ctx.moveTo( Number(previousX), Number(previousY) )
-        set(count + 1);
-      }
-    
-    function onMove(e: any){
+    function clear() {
 
-        if (!drawFlag) return;
-
-        const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
-
-        ctx.beginPath();
-
-        if (currentX == ""){
-            setCountCX( previousX );
-            setCountCY( previousY );
-        }   
-        else {
-            setCountX( e.nativeEvent.locationX );
-            setCountY( e.nativeEvent.locationY );
-        }
-
-        ctx.lineTo( Number( currentX ), Number( currentY )) ;
-        ctx.lineCap = "round";
-        ctx.lineWidth = 2;
-        ctx.strokeStyle = "white";
-        ctx.stroke();
-        ctx.closePath();
-
-        setCountCX( previousX );
-        setCountCY( previousY );
-    }
-
-    const onTouchEnd = () => {
-        const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
-        setCountX("");
-        setCountY("");
-        setCountCX("");
-        setCountCY("");
-        setCount(false);
-    }
-
-    function completionButtonAction() {
-        canvasRef.current.width = 300;
-        canvasRef.current.height = 300;
     }
 
 
@@ -109,9 +145,11 @@ export const create = () => {
                 onTouchMove = {onMove}
                 onTouchEnd = {onTouchEnd}
             >
+
             <Canvas ref = {canvasRef} />
-                
-            <Text>{count}</Text>
+
+            <Text>{storedLines.length}</Text>
+            <Text>{storedLines[(storedLines.length - 1)].fy}</Text>
             </View>
         </View>
 
@@ -204,7 +242,6 @@ const styles = StyleSheet.create({
     },
     canvas: {
         flex: 1,
-        top: 120,
     },
     create: {
         flex: 0.15,
@@ -260,6 +297,19 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
     },
+    canvasTransparent: {
+        position: 'absolute',
+    },
+    exampleImageView: {
+        flex: 1,
+        position: 'absolute',
+        
+    },
+    exampleImage: {
+        width: 50,
+        height: 50,
+    }
+    
 })
 
 
