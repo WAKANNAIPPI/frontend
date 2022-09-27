@@ -4,22 +4,19 @@ import { StarsStackNavProp } from "../Navigations";
 import { CurrentRenderContext, useNavigation } from "@react-navigation/native";
 import Canvas from "react-native-canvas"
 
-let p: number = 1
-
 export const create = (props: any) => {
     const navigation = useNavigation< StarsStackNavProp<'create'> >();
 
     const canvasRef: any = React.createRef();
-    const canvasTransparentRef: any = React.createRef();
     
     const [ drawFlag, setDrawFlag ] = useState(false);
     const [ startX, setStartX ] = useState("");
     const [ startY, setStartY ] = useState("");
-    const [ finishX, setFinishX] = useState("");
-    const [ finishY, setFinishY ] = useState("");
     const [ currentX, setCurrentX ] = useState("");
     const [ currentY, setCurrentY ] = useState("");
-    const [ count, setCount ] = useState(0);
+    const [ starsCount, setStarsCount ] = useState(0);
+    const [ starsListFlag, setStarsListFlag ] = useState(false);
+    const [ starsPutFlag, setStarsPutFlag ] = useState(false);
     const [ storedLines, setStoredLines ] = useState([{
         sx: "",
         sy: "",
@@ -28,19 +25,13 @@ export const create = (props: any) => {
     }]);
 
     useEffect (() => {
-        canvasRef.current.width = 500;
+        canvasRef.current.width = 1000;
         canvasRef.current.height = 1000;
-        updateCanvas();
     }, []);
     
-    function updateCanvas() {
-        const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
-
-    }
-
     function onTouch(e: any) {
         setDrawFlag(true);  //フラグをオンにする
-      }
+    }
     
     function onMove(e: any){
         const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
@@ -78,6 +69,7 @@ export const create = (props: any) => {
         setCurrentX("");
         setCurrentY("");
 
+        //線座標を新しい配列要素に保存
         storedLines.push({
             sx: startX,
             sy: startY,
@@ -103,16 +95,48 @@ export const create = (props: any) => {
     }
 
     function completionButtonAction() {
-        canvasRef.current.width = 500;
-        canvasRef.current.height = 1000;
-        const ctx = canvasRef.current.getContext('2d');
-        ctx.strokeStyle = "#FFFFFF"
-        ctx.strokeRect(0, 0, 300, 300);
     }
 
-    function clear() {
+    function starsButtonAction() {
+        if (starsCount % 2 == 0){
+            setStarsListFlag(true);
+        }
+        else {
+            setStarsListFlag(false);
+        }
+        setStarsCount(starsCount + 1);
+    }
+
+    function StarsItemList() {
+            return (
+                <View
+                    style={styles.starsListContainer}
+                >
+                    <View
+                        style={styles.starsListView}
+                    >
+                        <TouchableOpacity
+                            onPress={() => StarsSelectButtonAction(1)}
+                        >
+                            <Image
+                                source={require("../Assets/Frame1.png")}
+                                style={styles.exImage}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            )
+    }
+
+    function StarsSelectButtonAction(props: any){
+        setStarsPutFlag(true);
 
     }
+
+    function Stars(props: any){
+
+    }
+
 
 
     return (
@@ -145,35 +169,24 @@ export const create = (props: any) => {
                 onTouchMove = {onMove}
                 onTouchEnd = {onTouchEnd}
             >
-
             <Canvas ref = {canvasRef} />
 
             </View>
+            {starsListFlag
+                ? <StarsItemList/>
+                : <></>
+            }
         </View>
+
 
         <View style={styles.create}>
             <TouchableOpacity
                 style={styles.starsView}
+                onPress={starsButtonAction}
             >
                 <Image
                     style={styles.starsImage}
                     source={require('../Assets/Create/Star1.png')}
-                />
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.expansionView}
-            >
-                <Image
-                    style={styles.expansionImage}
-                    source={require('../Assets/Create/expansion.png')}
-                />
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.reductionView}
-            >
-                <Image
-                    style={styles.reductionImage}
-                    source={require('../Assets/Create/reduction.png')}
                 />
             </TouchableOpacity>
             <TouchableOpacity
@@ -251,39 +264,21 @@ const styles = StyleSheet.create({
     starsView: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginEnd: 10,
+        marginEnd: 140,
     },
     starsImage: {
-        width: 30,
-        height: 30,
-    },
-    expansionView: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginEnd: 10,
-    },
-    expansionImage: {
-        width: 30,
-        height: 30,
-    },
-    reductionView: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginEnd: 50,
-    },
-    reductionImage: {
-        width: 30,
-        height: 30,
+        width: 35,
+        height: 35,
     },
     returnView: {
         alignItems: 'center',
         justifyContent: 'center',
         marginLeft: 30,
-        marginEnd: 10,
+        marginEnd: 20,
     },
     returnText: {
         color: 'white',
-        fontSize: 30,
+        fontSize: 35,
         fontWeight: 'bold',
     },
     goView: {
@@ -292,22 +287,31 @@ const styles = StyleSheet.create({
     },
     goText: {
         color: 'white',
-        fontSize: 30,
+        fontSize: 35,
         fontWeight: 'bold',
     },
-    canvasTransparent: {
-        position: 'absolute',
-    },
-    exampleImageView: {
+    starsListContainer: {
         flex: 1,
         position: 'absolute',
-        
     },
-    exampleImage: {
+    starsListView: {
+        flex: 1,
+        alignItems: 'center',
+        justify: 'stretch',
+        backgroundColor: '#806BFF',
+        direction: 'inherit',
+        flexDirection: 'row',
+        borderRadius: 10,
+        marginTop: 525,
+        marginEnd: 50,
+        width: 300,
+        height: 70,
+    },
+    exImage: {
+        marginEnd: 10,
         width: 50,
-        height: 50,
+        height: 50
     }
-    
 })
 
 
