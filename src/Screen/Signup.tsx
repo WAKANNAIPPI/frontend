@@ -1,33 +1,63 @@
-import React from "react";
-import { SafeAreaView, StyleSheet, TextInput } from "react-native";
+import React, {useState} from "react";
+import { View, Text, TextInput, StyleSheet, Button, TouchableOpacity } from "react-native";
 
 export const Signup: React.FC = () => {
-    const [text, onChangeText] = React.useState("Useless Text");
-    const [number, onChangeNumber] = React.useState(null);
+    const [name, setName] = useState('test');
+    const [pas, setPas] = useState('30')
+    const [checkPas, setCheckPas] = useState('30')
 
-    return (
-        <SafeAreaView>
-            <TextInput
+    return(
+        <View style={styles.container}>
+            <TextInput 
                 style={styles.input}
-                onChangeText={onChangeText}
-                value={text}
+                placeholder='ユーザーを入力してください'
+                onChangeText={(val) => setName(val)}
+                keyboardType='default'
             />
-            <TextInput
+            <TextInput 
                 style={styles.input}
-                onChangeText={onChangeNumber}
-                value={number}
-                placeholder="useless placeholder"
-                keyboardType="numeric"
+                placeholder='パスワードを入力してください'
+                onChangeText={(val) => setPas(val)}
+                keyboardType='default'
             />
-        </SafeAreaView>
+            <TextInput 
+                style={styles.input}
+                placeholder='パスワードを再入力してください'
+                onChangeText={(val) => setCheckPas(val)}
+                keyboardType='default'
+            />
+            <TouchableOpacity style={styles.button}>
+                <Text style={styles.btntext}>作成</Text>
+            </TouchableOpacity>
+        </View>
     )
 }
 
 const styles = StyleSheet.create({
-    input: {
-        height: 40,
-        margin: 12,
-        borderWidth: 1,
-        padding: 10,
+    container:{
+        flex:1,
+        backgroundColor: 'D9D9D9',
+        alignItems:'center',
+        justifyContent: 'center',
+        alignSelf: 'stretch',
     },
+    input: {
+        borderWidth: 1,
+        borderColor: 'black',
+        padding: 8,
+        margin: 10,
+        width: 200,
+    },
+    button:{
+        alignItems: 'center',
+        backgroundColor: '#43C58C',
+        width: 100,
+        height: 34,
+
+    },
+    btntext:{
+        color: 'white',
+        fontWeight: 'bold',
+        padding:5,
+    }
 });
