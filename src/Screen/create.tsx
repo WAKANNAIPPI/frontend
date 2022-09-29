@@ -6,17 +6,15 @@ import Canvas from "react-native-canvas"
 
 export const create = (props: any) => {
     const navigation = useNavigation< StarsStackNavProp<'create'> >();
+    const pan: any = useRef(new Animated.ValueXY()).current;
 
+    //線に関するstate
     const canvasRef: any = React.createRef();
-    
-    const [ drawFlag, setDrawFlag ] = useState(false);
+    const [ lineDrawFlag, setLineDrawFlag ] = useState(false);
     const [ startX, setStartX ] = useState("");
     const [ startY, setStartY ] = useState("");
     const [ currentX, setCurrentX ] = useState("");
     const [ currentY, setCurrentY ] = useState("");
-    const [ starsCount, setStarsCount ] = useState(0);
-    const [ starsListFlag, setStarsListFlag ] = useState(false);
-    const [ starsPutFlag, setStarsPutFlag ] = useState(false);
     const [ storedLines, setStoredLines ] = useState([{
         sx: "",
         sy: "",
@@ -24,19 +22,40 @@ export const create = (props: any) => {
         fy: ""
     }]);
 
+    //星に関するstateと変数
+    let starIdPath: any[] = [];
+
+    const [ starListCount, setStarListCount ] = useState(1);
+    const [ starDrawFlag, setstarDrawFlag ] = useState(true)
+    const [ starListFlag, setStarListFlag ] = useState(false);
+    const [ starPutFlagId, setStarPutFlagId ] = useState(0);
+    const [ starRedrawFlag, setStarRedrawFlag ] = useState(false);
+    const [ storedStarsLength, setStoredStarsLength ] = useState(0);
+    const [ storedStars, setStoredStars ] = useState([{
+        starItemId: 0,
+        starLocationX: 0,
+        starLocationY: 0,
+    }]);
+
+    //returnボタンに関するstateと変数
+    const [ returnStar_i, setReturnStar_i ] = useState(0);
+    const [ returnLine_i, setReturnLine_i ] = useState(0)
+
+    //ここから線描画
     useEffect (() => {
         canvasRef.current.width = 1000;
         canvasRef.current.height = 1000;
     }, []);
     
-    function onTouch(e: any) {
-        setDrawFlag(true);  //フラグをオンにする
+    function onTouch() {
+        if (starDrawFlag) return;
+        setLineDrawFlag(true);
     }
-    
+
     function onMove(e: any){
         const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
 
-        if (!drawFlag) return;
+        if (!lineDrawFlag || starDrawFlag) return;
 
         if ( currentX == "" ){
             setStartX( e.nativeEvent.locationX );
@@ -64,7 +83,9 @@ export const create = (props: any) => {
     }
 
     const onTouchEnd = (e: any) => {
-        setDrawFlag(false);
+        if (starDrawFlag) return;
+
+        setLineDrawFlag(false);
 
         setCurrentX("");
         setCurrentY("");
@@ -94,50 +115,231 @@ export const create = (props: any) => {
         }
     }
 
-    function completionButtonAction() {
-    }
+    //ここから星描画
+    let si: number = 0;
 
     function starsButtonAction() {
-        if (starsCount % 2 == 0){
-            setStarsListFlag(true);
-        }
-        else {
-            setStarsListFlag(false);
-        }
-        setStarsCount(starsCount + 1);
+        if (!starDrawFlag) return;
+        setStarListCount((pre_count) => pre_count + 1)
+        setStarListCount((pre_count) => {
+            (pre_count % 2) ? setStarListFlag(false) : setStarListFlag(true);
+
+            return pre_count
+        })
     }
 
     function StarsItemList() {
-            return (
+        return (
+            <View
+                style={styles.starListContainer}
+            >
                 <View
-                    style={styles.starsListContainer}
+                    style={styles.starListView}
                 >
-                    <View
-                        style={styles.starsListView}
+                    <TouchableOpacity
+                        onPress={() => StarsSelectButtonAction(1)}
                     >
-                        <TouchableOpacity
-                            onPress={() => StarsSelectButtonAction(1)}
-                        >
-                            <Image
-                                source={require("../Assets/Frame1.png")}
-                                style={styles.exImage}
+                        <Image
+                            source={require("../Assets/Frame1.png")}
+                            style={styles.listImage}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => StarsSelectButtonAction(2)}
+                    >
+                        <Image
+                            source={require("../Assets/Frame2.png")}
+                            style={styles.listImage}
                             />
-                        </TouchableOpacity>
-                    </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => StarsSelectButtonAction(3)}
+                    >
+                        <Image
+                            source={require("../Assets/Frame3.png")}
+                            style={styles.listImage}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => StarsSelectButtonAction(4)}
+                    >
+                        <Image
+                            source={require("../Assets/Frame4.png")}
+                            style={styles.listImage}
+                        />
+                    </TouchableOpacity>
                 </View>
-            )
+            </View>
+        )
     }
 
-    function StarsSelectButtonAction(props: any){
-        setStarsPutFlag(true);
+    function StarsSelectButtonAction(id: number){
+        setStarPutFlagId(id);
 
+        setStarListFlag(false);   
+        setStarListCount(starListCount + 1); 
     }
 
-    function Stars(props: any){
+    function StarsPut(props: any){
+        const panResponder = useRef(
+            PanResponder.create({
+                onMoveShouldSetPanResponder: () => true,
+                
+                onPanResponderGrant: () => {
+                    pan.setOffset({
+                        x: pan.x.__getValue(),
+                        y: pan.y.__getValue()
+                    });
+                },
+                
+                onPanResponderMove: Animated.event(
+                    [
+                        null,
+                        { dx: pan.x, dy: pan.y }
+                    ],
+                    { useNativeDriver: false }
+                ),
 
+                onPanResponderRelease: () => {
+                    //星座標と星の種類を新しい配列要素に保存
+                    storedStars.push({
+                        starItemId: starPutFlagId,
+                        starLocationX: pan.x.__getValue(),
+                        starLocationY: pan.y.__getValue()
+                    });
+                    pan.flattenOffset();
+                    pan.x.setValue(0);
+                    pan.y.setValue(0);
+
+                    setStarPutFlagId(0);
+                    setStarRedrawFlag(true);
+                    setStoredStarsLength(storedStars.length)
+                }
+            })
+        ).current;
+
+        return (
+            <>
+            {
+                starPutFlagId == 1 ?
+                    <Animated.View
+                        style={[
+                            { transform: [{ translateX: pan.x }, { translateY: pan.y }] },
+                            styles.starAnimatedView,
+                        ]}
+                        {...panResponder.panHandlers}
+                    >
+                        <Image
+                            style={styles.moveImage}
+                            source={require("../Assets/Frame1.png")}
+                        />
+                    </Animated.View>
+                : starPutFlagId == 2 ?
+                    <Animated.View
+                        style={[
+                            { transform: [{ translateX: pan.x }, { translateY: pan.y }] },
+                            styles.starAnimatedView,
+                        ]}
+                        {...panResponder.panHandlers}
+                    >
+                        <Image
+                            style={styles.moveImage}
+                            source={require("../Assets/Frame2.png")}
+                        />
+                    </Animated.View>
+                : starPutFlagId == 3 ?
+                    <Animated.View
+                        style={[
+                            { transform: [{ translateX: pan.x }, { translateY: pan.y }] },
+                            styles.starAnimatedView,
+                        ]}
+                        {...panResponder.panHandlers}
+                    >
+                        <Image
+                            style={styles.moveImage}
+                            source={require("../Assets/Frame3.png")}
+                        />
+                    </Animated.View>
+                : starPutFlagId == 4 ? 
+                    <Animated.View
+                        style={[
+                            { transform: [{ translateX: pan.x }, { translateY: pan.y }] },
+                            styles.starAnimatedView,
+                        ]}
+                        {...panResponder.panHandlers}
+                    >
+                        <Image
+                            style={styles.moveImage}
+                            source={require("../Assets/Frame4.png")}
+                        />
+                    </Animated.View>
+                : <></>
+            }
+            </>
+        )
     }
 
+    function StarsRedraw() {
+        for (let i = 1; i < storedStarsLength - returnStar_i; i++){ //storedStarsLengthは2から
+            switch(storedStars[i].starItemId) {
+                case 1:
+                    starIdPath.push(require("../Assets/Frame1.png"));
+                    break;
+                case 2:
+                    starIdPath.push(require("../Assets/Frame2.png"));
+                    break;
+                case 3:
+                    starIdPath.push(require("../Assets/Frame3.png"));
+                    break;
+                case 4:
+                    starIdPath.push(require("../Assets/Frame4.png"));
+                    break;
+            }
+        };
 
+        return (
+            <View>
+                { starIdPath.map( (data, index) => {
+                    return (
+                        <View>
+                            <Image
+                                style={{
+                                    transform: [
+                                        { translateX: storedStars[index + 1].starLocationX - 25 },
+                                        { translateY: storedStars[index + 1].starLocationY - 25 },
+                                    ],
+                                    width: 50,      
+                                    height: 50,
+                                    position: 'absolute',
+                                }}
+                                source={data}
+                            />
+                        </View>
+                    )
+                    })}
+            </View>
+        )
+    }
+
+    function returnButtonAction() {
+        if ((storedStarsLength - returnStar_i < 2) || (storedLines.length - returnLine_i < 2)){
+            return;
+        }
+
+        if (starDrawFlag || starListFlag){
+            setReturnStar_i(returnStar_i + 1);
+
+        }
+        else {
+            setReturnLine_i(returnLine_i + 1);
+        }
+    }
+
+    function completionButtonAction() {
+        if (starDrawFlag){
+            setstarDrawFlag(false);
+        }
+    }
 
     return (
         <>
@@ -162,22 +364,46 @@ export const create = (props: any) => {
         </View>
         
         <View style={styles.paint}>
-            <Text></Text>
-            <View
-                style = {styles.canvas}
-                onTouchStart = {onTouch}
-                onTouchMove = {onMove}
-                onTouchEnd = {onTouchEnd}
-            >
-            <Canvas ref = {canvasRef} />
-
+            <View>
+                <View
+                    style = {styles.canvas}
+                    onTouchStart = {onTouch}
+                    onTouchMove = {onMove}
+                    onTouchEnd = {onTouchEnd}
+                >
+                    <Canvas ref = {canvasRef} />
+                </View>
             </View>
-            {starsListFlag
-                ? <StarsItemList/>
+            
+            {
+            starRedrawFlag
+                ? <View
+                    style={{
+                        position: 'absolute',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}
+                >
+                    <StarsRedraw />
+                </View>
                 : <></>
             }
-        </View>
 
+            {starPutFlagId
+                ? <View
+                    style={styles.starCanvasView}
+                >
+                    <StarsPut />
+                </View>
+                : <></>
+            }
+
+            {starListFlag
+                ? <StarsItemList />
+                : <></>
+            }
+            
+        </View>
 
         <View style={styles.create}>
             <TouchableOpacity
@@ -267,8 +493,8 @@ const styles = StyleSheet.create({
         marginEnd: 140,
     },
     starsImage: {
-        width: 35,
-        height: 35,
+        width: 40,
+        height: 40,
     },
     returnView: {
         alignItems: 'center',
@@ -290,28 +516,56 @@ const styles = StyleSheet.create({
         fontSize: 35,
         fontWeight: 'bold',
     },
-    starsListContainer: {
+    starListContainer: {
         flex: 1,
         position: 'absolute',
     },
-    starsListView: {
+    starListView: {
         flex: 1,
         alignItems: 'center',
-        justify: 'stretch',
-        backgroundColor: '#806BFF',
+        justifyContent: 'flex-start',
+        backgroundColor: '#BDBAFA',
         direction: 'inherit',
         flexDirection: 'row',
         borderRadius: 10,
         marginTop: 525,
-        marginEnd: 50,
-        width: 300,
+        marginEnd: 75,
+        width: 250,
         height: 70,
     },
-    exImage: {
-        marginEnd: 10,
+    starCanvasView: {
+        flex: 1,
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    starAnimatedView: {
+        justifyContent: 'center',
+        alignItems: 'center', 
+        backgroundColor: "232946",
+        borderWidth: 1,
+        borderColor: "white",
+        borderRadius: 5,
+        width: 60,
+        height: 60,
+    },
+    moveImage: {
+        borderColor: "white",
         width: 50,
-        height: 50
+        height: 50,
+    },
+    listImage: {
+        marginLeft: 10,
+        width: 50,
+        height: 50,
+    },
+    starRedrawView: {
+        backgroundColor: "white",
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
     }
+
 })
 
 
