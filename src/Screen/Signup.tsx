@@ -1,7 +1,10 @@
+import { useNavigation } from "@react-navigation/native";
 import React, {useState} from "react";
 import { View, Text, TextInput, StyleSheet, Button, TouchableOpacity } from "react-native";
+import { SignupStackNavProp } from "../Navigations";
 
 export const Signup: React.FC = () => {
+    const navigation = useNavigation<SignupStackNavProp<'Home'>>()
     const [name, setName] = useState('test');
     const [pas, setPas] = useState('30')
     const [checkPas, setCheckPas] = useState('30')
@@ -26,7 +29,7 @@ export const Signup: React.FC = () => {
                 onChangeText={(val) => setCheckPas(val)}
                 keyboardType='default'
             />
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
                 <Text style={styles.btntext}>作成</Text>
             </TouchableOpacity>
         </View>
