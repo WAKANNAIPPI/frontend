@@ -1,16 +1,27 @@
 import { useNavigation } from "@react-navigation/native";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { View, Text, TextInput, StyleSheet, Button, TouchableOpacity } from "react-native";
 import { SignupStackNavProp } from "../Navigations";
 
 export const Signup: React.FC = () => {
     const navigation = useNavigation<SignupStackNavProp<'Home'>>()
-    const [name, setName] = useState('test');
-    const [pas, setPas] = useState('30')
-    const [checkPas, setCheckPas] = useState('30')
-
+    const [name, setName] = useState("0");
+    const [pas, setPas] = useState("0")
+    const [checkPas, setCheckPas] = useState("0")
+    const [alert, setAlert] = useState("")   
+    
+    const click = () =>{
+        if(name == "0" || pas == "0" || checkPas == "0"){
+            setAlert("ユーザー名・パスワードを入力してください")
+            console.log(alert)
+        }
+        else if(pas == checkPas){
+            navigation.navigate('Home')
+        }
+    }
     return(
         <View style={styles.container}>
+            <Text style={styles.red}>{alert}</Text>
             <TextInput 
                 style={styles.input}
                 placeholder='ユーザーを入力してください'
@@ -29,11 +40,12 @@ export const Signup: React.FC = () => {
                 onChangeText={(val) => setCheckPas(val)}
                 keyboardType='default'
             />
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Home')}>
+
+            <TouchableOpacity style={styles.button} onPress={click}>
                 <Text style={styles.btntext}>作成</Text>
             </TouchableOpacity>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
@@ -43,6 +55,9 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent: 'center',
         alignSelf: 'stretch',
+    },
+    red:{
+        color:'red',
     },
     input: {
         borderWidth: 1,
