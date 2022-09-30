@@ -4,7 +4,8 @@ import { View, Text, TextInput, StyleSheet, Button, TouchableOpacity } from "rea
 import { SignupStackNavProp } from "../Navigations";
 
 export const Signup: React.FC = () => {
-    const navigation = useNavigation<SignupStackNavProp<'Home'>>()
+    const navigation = useNavigation<SignupStackNavProp<'Signup'>>()
+    
     const [name, setName] = useState("0");
     const [pas, setPas] = useState("0")
     const [checkPas, setCheckPas] = useState("0")
@@ -44,6 +45,9 @@ export const Signup: React.FC = () => {
             <TouchableOpacity style={styles.button} onPress={click}>
                 <Text style={styles.btntext}>作成</Text>
             </TouchableOpacity>
+
+
+            <TouchableOpacity onPress={() => navigation.navigate('login')} >login</TouchableOpacity>
         </View>
     );
 }

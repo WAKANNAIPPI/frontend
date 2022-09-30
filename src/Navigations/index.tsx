@@ -54,7 +54,7 @@ export const RootNavivgator: React.FC = () =>{
                 />
                 <HomeStack.Screen
                     name="Signup"
-                    component={Signup}
+                    component={SignupNavigator}
                 />
 
             </HomeStack.Navigator>
