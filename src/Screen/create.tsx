@@ -8,20 +8,25 @@ const canvasRef: any = React.createRef();
 
 const LineComponent = (props: any) => {
     useEffect (() => {
-        canvasRef.current.width =  300;
-        canvasRef.current.height = 300;
+        canvasRef.current.width =  600;
+        canvasRef.current.height = 600;
         const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
         ctx.strokeStyle = "white"
-        ctx.strokeRect(0, 0, 300, 300)
     }, []);
 
     const [ lineDrawFlag, setLineDrawFlag ] = useState(false);
-    const [ touchedStarMarkFlag, setTouchedStarMarkFlag ] = useState(0);
+    const [ starRedrawFlag, setStarRedrawFlag ] = useState(false);
+    const [ touchedStarMarkFlag, setTouchedStarMarkFlag ] = useState(0); //タッチ時の星の有無と種類を判別フラグ
+    const [ touchedStarOrder, setTouchedStarOrder ] = useState(1); //タッチ時の星の番号
+    const [ stampedStarMarkFlag, setStampedStarMarkFlag ] = useState(0); //星を踏んだ時の判別フラグ
+    const [ stampedStarOrder, setStampedStarOrder ] = useState(1); //星を踏んだ時の番号
+    const [ lastFlag, setLastFlag ] = useState(0)
     const [ startX, setStartX ] = useState("");
     const [ startY, setStartY ] = useState("");
     const [ currentX, setCurrentX ] = useState("");
     const [ currentY, setCurrentY ] = useState("");
     const [ touchedStarIdPath, setTouchedStarIdPath ] = useState<any>();
+    const [ stampedStarIdPath, setStampedStarIdPath ] = useState<any>();
     const [ storedLines, setStoredLines ] = useState([{
         sx: "",
         sy: "",
@@ -30,44 +35,65 @@ const LineComponent = (props: any) => {
     }]);
 
     let touchedStar_i: number; //タッチ時の星判別繰り返し用
-    let touchedStarOrder: number;
+    let stampedStar_i: number;
+    let releasedStar_i: number;
+    let touchedId: number;
+    let stampedId: number;
         
     function onTouch(e: any) {
         const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
         const pre_currentX = e.nativeEvent.locationX;
         const pre_currentY = e.nativeEvent.locationY;
 
-        setCurrentX( pre_currentX );
-        setCurrentY( pre_currentY );
-
         for (touchedStar_i = 1; touchedStar_i < props.Star.length; touchedStar_i++){
-            if ( Math.abs(props.Star[touchedStar_i].starLocationX - (pre_currentX)) <= 30 ||
-                 Math.abs(props.Star[touchedStar_i].starLocationY - pre_currentY) <= 30 ){
+            if ( Math.abs(props.Star[touchedStar_i].starLocationX - (pre_currentX - 300)) <= 50 &&
+                 Math.abs(props.Star[touchedStar_i].starLocationY - (pre_currentY - 300)) <= 50 ){
                     setTouchedStarMarkFlag(props.Star[touchedStar_i].starItemId);
+                    setTouchedStarOrder(touchedStar_i);
+                    setCurrentX( String(props.Star[touchedStar_i].starLocationX + 300) );
+                    setCurrentY( String(props.Star[touchedStar_i].starLocationY + 300) );
+                    setStartX( String(props.Star[touchedStar_i].starLocationX + 300) );
+                    setStartY( String(props.Star[touchedStar_i].starLocationY + 300) );
             }
         }
+
         setLineDrawFlag(true);
+        setStarRedrawFlag(false);
     }
 
     function onMove(e: any){
         const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
+        const pre_currentX = e.nativeEvent.locationX;
+        const pre_currentY = e.nativeEvent.locationY;
 
         if (!lineDrawFlag) return;
 
         Redraw();
 
-    }
+        ctx.lineCap = "round";
+        ctx.lineJoin  = "round";
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = "white";
 
-    const onTouchEnd = (e: any) => {
-        setTouchedStarMarkFlag(0);
+        ctx.beginPath();
+        ctx.moveTo( Number( startX ), Number( startY ) );
+        ctx.lineTo( Number( currentX ), Number( currentY ) );
+        ctx.stroke();
 
-        //線座標を新しい配列要素に保存
-        storedLines.push({
-            sx: startX,
-            sy: startY,
-            fx: currentX,
-            fy: currentY
-        })
+        setCurrentX( pre_currentX );
+        setCurrentY( pre_currentY );
+
+        for (stampedStar_i = 1; stampedStar_i < props.Star.length; stampedStar_i++){
+            if ( Math.abs(props.Star[stampedStar_i].starLocationX - (pre_currentX - 300)) <= 40 &&
+                 Math.abs(props.Star[stampedStar_i].starLocationY - (pre_currentY - 300)) <= 40 ){
+                    setStampedStarMarkFlag(props.Star[stampedStar_i].starItemId);
+                    setStampedStarOrder(stampedStar_i);
+            }
+            else {
+                setStampedStarMarkFlag(0);
+            }
+        }
+
     }
 
     function Redraw(){
@@ -85,13 +111,54 @@ const LineComponent = (props: any) => {
         }
     }
 
-    function OnTouchedStar() {
+    const onTouchEnd = (e: any) => {
+        const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
+        setTouchedStarMarkFlag(0);
+
+        const pre_currentX = e.nativeEvent.locationX;
+        const pre_currentY = e.nativeEvent.locationY;
+    
+        for (releasedStar_i = 1; releasedStar_i < props.Star.length; releasedStar_i++){
+            if ( Math.abs(props.Star[releasedStar_i].starLocationX - (pre_currentX - 300)) <= 40 &&
+                 Math.abs(props.Star[releasedStar_i].starLocationY - (pre_currentY - 300)) <= 40 ) 
+                {
+
+                    storedLines.push({
+                        sx: startX,
+                        sy: startY,
+                        fx: String(props.Star[releasedStar_i].starLocationX + 300),
+                        fy: String(props.Star[releasedStar_i].starLocationY + 300),
+                    })
+
+                    setTouchedStarMarkFlag(0);
+                    setStarRedrawFlag(true);
+                    
+                    Redraw();
+            }
+            else {
+                ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+
+                for(let i = 1; i < storedLines.length; i++){
+                    ctx.beginPath();
+                    ctx.moveTo( Number( storedLines[i].sx ), Number( storedLines[i].sy ) );
+                    ctx.lineTo( Number( storedLines[i].fx ), Number( storedLines[i].fy ) );
+                    ctx.stroke();
+                }
+
+                touchedId = touchedStarMarkFlag;
+                setTouchedStarMarkFlag(0);
+
+            }
+        }
+    }
+
+    function TouchedStar() {
         if (!touchedStarMarkFlag){ 
-            setTouchedStarIdPath(0);
+            setLastFlag(0);
             return (<></>)
         }
         else {
-            switch(touchedStarMarkFlag) {
+            switch(touchedId) {
             case 1:
                 setTouchedStarIdPath(require("../Assets/Frame1.png"));
                 break;
@@ -113,8 +180,8 @@ const LineComponent = (props: any) => {
                 <Image
                     style={{
                         transform: [
-                            { translateX: Number( currentX ) },
-                            { translateY: Number( currentY ) },
+                            { translateX: props.Star[touchedStarOrder].starLocationX + 275},
+                            { translateY: props.Star[touchedStarOrder].starLocationY + 275},
                         ],
                         justifyContent: 'center',
                         alignItems: 'center', 
@@ -130,6 +197,152 @@ const LineComponent = (props: any) => {
         )
     }
 
+    function StampedStar() {
+        if (!stampedStarMarkFlag){ 
+            setLastFlag(0);
+            return (<></>)
+        }
+        else {
+            switch(stampedId) {
+            case 1:
+                setStampedStarIdPath(require("../Assets/Frame1.png"));
+                break;
+            case 2:
+                setStampedStarIdPath(require("../Assets/Frame2.png"));
+                break;
+            case 3:
+                setStampedStarIdPath(require("../Assets/Frame3.png"));
+                break;
+            case 4:
+                setStampedStarIdPath(require("../Assets/Frame4.png"));
+                break;
+        }}
+
+
+
+        return (
+            <View
+                style={{position: 'absolute'}}
+            >
+                <Image
+                    style={{
+                        transform: [
+                            { translateX: props.Star[stampedStarOrder].starLocationX + 275},
+                            { translateY: props.Star[stampedStarOrder].starLocationY + 275},
+                        ],
+                        justifyContent: 'center',
+                        alignItems: 'center', 
+                        borderWidth: 1,
+                        borderColor: "white",
+                        borderRadius: 5,
+                        width: 50,
+                        height: 50,
+                    }}
+                    source={stampedStarIdPath}
+                />
+            </View>
+        )
+    }
+
+    function Last() {
+        let starIdPath: any[] = []
+        let i: number;
+
+        setLastFlag(0)
+
+        if (!starRedrawFlag) return <></>
+
+        else {
+            for (i = 1; i < props.Star.length; i++){
+                if (i == touchedStar_i){
+                    switch(touchedId) {
+                        case 1:
+                            starIdPath.push(require("../Assets/Frame1.png"));
+                            break;
+                        case 2:
+                            starIdPath.push(require("../Assets/Frame2.png"));
+                            break;
+                        case 3:
+                            starIdPath.push(require("../Assets/Frame3.png"));
+                            break;
+                        case 4:
+                            starIdPath.push(require("../Assets/Frame4.png"));
+                            break;
+                    }
+                }
+                else if(i == stampedStar_i){
+                    switch(stampedId) {
+                        case 1:
+                            starIdPath.push(require("../Assets/Frame1.png"));
+                            break;
+                        case 2:
+                            starIdPath.push(require("../Assets/Frame2.png"));
+                            break;
+                        case 3:
+                            starIdPath.push(require("../Assets/Frame3.png"));
+                            break;
+                        case 4:
+                            starIdPath.push(require("../Assets/Frame4.png"));
+                            break;
+                    }
+                }
+            }
+        }
+        return(
+            <>
+            { 
+                (i == touchedStar_i) ? 
+                starIdPath.map( (element, index) => {
+                    return (
+                        <View 
+                            key={index}
+                            style={{zIndex: 1000}}
+                        >
+                            <Image
+                                style={{
+                                    transform: [
+                                        { translateX: props.Star[touchedStar_i].starLocationX + 275 },
+                                        { translateY: props.Star[touchedStar_i].starLocationY + 275 },
+                                    ],
+                                    width: 50,      
+                                    height: 50,
+                                    position: 'absolute',
+                                }}
+                                source={element}
+                            />
+                        </View>
+                    )   
+                })
+
+                : (i == stampedStar_i) ?
+                starIdPath.map( (element, index) => {
+                    return (
+                        <View 
+                            key={index}
+                            style={{zIndex: 1000}}
+                        >
+                            <Image
+                                style={{
+                                    transform: [
+                                        { translateX: props.Star[stampedStar_i].starLocationX + 275 },
+                                        { translateY: props.Star[stampedStar_i].starLocationY + 275 },
+                                    ],
+                                    width: 50,      
+                                    height: 50,
+                                    position: 'absolute',
+                                }}
+                                source={element}
+                            />
+                        </View>
+                    )
+                })
+                : <></>
+            }
+        </>
+        )
+        
+    }
+
     return (
         <View>
             <View
@@ -139,13 +352,11 @@ const LineComponent = (props: any) => {
                 onTouchEnd = {onTouchEnd}
             >
                 <Canvas ref = {canvasRef} />
+                <Text style={{marginLeft: 200}}>{props.Star.length}</Text>
             </View>
-            <OnTouchedStar />
-            <Text >{touchedStarMarkFlag}</Text>
-            <Text >{currentX}</Text>
-            <Text >{currentY}</Text>
-            <Text >{props.Star[1].starLocationX}</Text>
-            <Text >{props.Star[1].starLocationY}</Text>
+            <TouchedStar />
+            <StampedStar />
+            <Last />
         </View>
     )
 }
