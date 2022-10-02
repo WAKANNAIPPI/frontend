@@ -9,9 +9,6 @@ import { StyleSheet,
          Button,
         } from 'react-native';
 
-import { useNavigation } from "@react-navigation/native";
-import { QuizStackNavProp } from "../Navigations";
-
 export const QuizScreen: React.FC = () => {
     const navigation = useNavigation<QuizStackNavProp<'Quiz'>>()
 
