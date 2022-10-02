@@ -9,6 +9,8 @@ import { StyleSheet,
          Button,
         } from 'react-native';
 
+import { useNavigation } from "@react-navigation/native";
+import { QuizStackNavProp } from "../Navigations";
 
 export const QuizScreen: React.FC = () => {
     const navigation = useNavigation<QuizStackNavProp<'Quiz'>>()
@@ -22,6 +24,14 @@ export const QuizScreen: React.FC = () => {
             <Image style={{width:277, height:56}}
                 source = {require("../Assets/Quiz/Quiz-start.png")}>
             </Image>
+            <View style={styles.Button}>
+                <Button
+                    title="ボタンをタップしてね"
+                    color="#806BFF"
+                    onPress={() => navigation.navigate('Answer')}
+                />
+            </View>
+f
         </View>
         <View style={styles.Button}>
             <Button
