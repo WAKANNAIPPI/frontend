@@ -22,7 +22,7 @@ type RootStackParamList = {
     Constellation: undefined;
     Quiz: undefined;
     Projection: undefined;
-    Signup: undefined;
+    Login: undefined;
 }
 
 export type RootStackNavProp<T extends keyof RootStackParamList> = NativeStackNavigationProp<RootStackParamList, T>
@@ -53,7 +53,7 @@ export const RootNavivgator: React.FC = () =>{
                     component={Projection}
                 />
                 <HomeStack.Screen
-                    name="Signup"
+                    name="Login"
                     component={SignupNavigator}
                 />
 
@@ -123,7 +123,7 @@ const SignupStack = createNativeStackNavigator<SignupStackParamList>();
 
 export const SignupNavigator: React.FC = () => {
     return (
-        <SignupStack.Navigator initialRouteName="Signup" screenOptions={{ headerShown: false }}>
+        <SignupStack.Navigator initialRouteName="login" screenOptions={{ headerShown: false }}>
             <SignupStack.Screen
                 name="Signup"
                 component={Signup}
