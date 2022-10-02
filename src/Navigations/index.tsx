@@ -8,6 +8,7 @@ import { Constellation } from "../Screen/Constellation";
 import { create } from "../Screen/create";
 
 import { QuizScreen } from "../Screen/Quiz";
+import { Answer } from "../Screen/Answer";
 import { Gift } from "../Screen/Gift";
 
 import { Projection } from "../Screen/Projection"
@@ -89,6 +90,7 @@ export const StarsNavigator: React.FC = ()=>{
 // クイズセット
 type QuizStackParamList = {
     Quiz: undefined;
+    Answer: undefined;
     Gift: undefined;
 }
 
@@ -101,6 +103,10 @@ export const QuizNav: React.FC = () => {
             <QuizStack.Screen
                 name="Quiz"
                 component={QuizScreen}
+            />
+            <QuizStack.Screen
+                name="Answer"
+                component={Answer}
             />
             <QuizStack.Screen
                 name="Gift"

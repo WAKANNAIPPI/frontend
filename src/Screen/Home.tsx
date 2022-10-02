@@ -24,7 +24,7 @@ export const HomeScreen: React.FC = () =>{
                         source={require('../Assets/Frame1.png')}
                         style={{ width: 50, height: 50 }}
                     />
-                    <Text>Constellation</Text>
+                    <Text style={{ color: 'white' }}>Constellation</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => navigation.navigate('Quiz')} style={styles.button}>
@@ -32,7 +32,7 @@ export const HomeScreen: React.FC = () =>{
                         source={require('../Assets/Frame2.png')}
                         style={{ width: 50, height: 50 }}
                     />
-                    <Text>Quiz</Text>
+                    <Text style={{ color: 'white' }}>Quiz</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => navigation.navigate('Projection')} style={styles.button}>
@@ -40,7 +40,7 @@ export const HomeScreen: React.FC = () =>{
                         source={require('../Assets/Frame3.png')}
                         style={{ width: 50, height: 50 }}
                     />
-                    <Text>Prpjection</Text>
+                    <Text style={{ color: 'white' }}>Prpjection</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.button}>
@@ -48,7 +48,7 @@ export const HomeScreen: React.FC = () =>{
                         source={require('../Assets/Frame4.png')}
                         style={{ width: 50, height: 50 }}
                     />
-                    <Text>Login</Text>
+                    <Text style={{ color: 'white' }>Login</Text>
                 </TouchableOpacity>
             </View>
         </View>
