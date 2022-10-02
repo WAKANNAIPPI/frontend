@@ -1,50 +1,60 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
+import { StyleSheet, 
+         Text, 
+         View, 
+         TouchableOpacity, 
+         Image, 
+         Button,
+        } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
+import { QuizStackNavProp } from "../Navigations";
 
 export const QuizScreen: React.FC = () => {
+    const navigation = useNavigation<QuizStackNavProp<'Quiz'>>()
     return (
-
-        <View style={styles.inputContainer}>
-            <TextInput style={styles.input} />
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>イーとする</Text>
-            </TouchableOpacity>
+        <View style={styles.Container}>
+            <Image style={{width:360, height:174}}
+                source = {require("../Assets/logo.png")}>
+            </Image>
+            <Image style={{width:277, height:56}}
+                source = {require("../Assets/Quiz/Quiz-start.png")}>
+            </Image>
+            <View style={styles.Button}>
+                <Button
+                    title="ボタンをタップしてね"
+                    color="#806BFF"
+                    onPress={() => navigation.navigate('Answer')}
+                />
+            </View>
         </View>
 
     )
 }
 
 const styles = StyleSheet.create({
-    safeArea: {
+    Container:{
         flex: 1,
-        backgroundColor: '#222',
+        alignItems: 'center',
+        paddingTop: 100,
     },
-    button: {
-        backgroundColor: 'rgb(29, 161, 242)',
-        paddingHorizontal: 20,
-        paddingVertical: 15,
-        borderRadius: 20,
+    Button:{
+        flex: 1,
+        alignItems: 'center',
+        paddingTop: 100,
     },
-    buttonText: {
-        color: 'white',
-        fontweight: '900',
-        fontsize: 16,
-    },
-    inputContainer: {
+    buttonsContainer: {
         flexDirection: 'row',
-        paddingHorizontal: 10,
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        marginVertical: 20,
     },
-    input: {
-        flex: 1,
-        borderColor: 'white',
-        borderwidth: 2,
-        marginRight: 10,
-        color: 'white',
-        paddingHorizontal: 20,
-        fontsize: 20,
-    },
-    container: {
-        flex: 2,
-        paddingTop: 20,
+    subHeader: {
+        backgroundColor : "#2089dc",
+        color : "white",
+        textAlign : "center",
+        paddingVertical : 5,
+        marginBottom : 10
     }
 });
