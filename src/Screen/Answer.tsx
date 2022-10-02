@@ -13,19 +13,13 @@ export const QuizScreen: React.FC = () => {
     const navigation = useNavigation<QuizStackNavProp<'Quiz'>>()
 
     return (
-        <>
-        <View style={styles.}>
-             
-        </View>
-        <View style={styles.}>
+        <View>
             <Button
                 title="ボタンをタップしてね"
                 color="#806BFF"
-                onPress={() => navigation.navigate('')}
+                onPress={() => navigation.navigate('Quiz')}
             />
         </View>
-        </>
-
     )
 }
 
