@@ -6,8 +6,11 @@ import { StyleSheet,
          Image, 
          Button,
         } from 'react-native';
-        
+import { useNavigation } from "@react-navigation/native";
+import { QuizStackNavProp } from "../Navigations";
+
 export const QuizScreen: React.FC = () => {
+    const navigation = useNavigation<QuizStackNavProp<'Quiz'>>()
     return (
         <View style={styles.Container}>
             <Image style={{width:360, height:174}}
@@ -20,6 +23,7 @@ export const QuizScreen: React.FC = () => {
                 <Button
                     title="ボタンをタップしてね"
                     color="#806BFF"
+                    onPress={() => navigation.navigate('Answer')}
                 />
             </View>
         </View>
