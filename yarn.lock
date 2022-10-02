@@ -2123,33 +2123,17 @@
     "@types/react" "*"
     "@types/react-native" "*"
 
-"@types/react-native@*":
+"@types/react-native@*", "@types/react-native@^0.70.4":
   version "0.70.4"
   resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.70.4.tgz#316f0e9b4b51bbe5cecf09284555f01283afe3b2"
   integrity sha512-z5tKfblHLG6jts2AQcioDw4N+F2EzflO9n495yNyqyMYRkSIVTLX64MHBeqMp5wfOY5mshy0GsOgnFSXrXKQSg==
   dependencies:
     "@types/react" "*"
 
-"@types/react-native@~0.66.13":
-  version "0.66.20"
-  resolved "https://registry.npmjs.org/@types/react-native/-/react-native-0.66.20.tgz"
-  integrity sha512-3c3BFq/skYngafzBPwUiAAuRsueudo83GodarainUXaeq9xdnCmVfmGgC2uTYtZPT9GTzftUkn4/y3HsH3Rw9w==
-  dependencies:
-    "@types/react" "^17"
-
-"@types/react@*":
+"@types/react@*", "@types/react@^18.0.21":
   version "18.0.21"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-18.0.21.tgz#b8209e9626bb00a34c76f55482697edd2b43cc67"
   integrity sha512-7QUCOxvFgnD5Jk8ZKlUAhVcRj7GuJRjnjjiY/IUBWKgOlnvDvTMLD4RTF7NPyVmbRhNrbomZiOepg7M/2Kj1mA==
-  dependencies:
-    "@types/prop-types" "*"
-    "@types/scheduler" "*"
-    csstype "^3.0.2"
-
-"@types/react@^17", "@types/react@~17.0.21":
-  version "17.0.47"
-  resolved "https://registry.npmjs.org/@types/react/-/react-17.0.47.tgz"
-  integrity sha512-mk0BL8zBinf2ozNr3qPnlu1oyVTYq+4V7WA76RgxUAtf0Em/Wbid38KN6n4abEkvO4xMTBWmnP1FtQzgkEiJoA==
   dependencies:
     "@types/prop-types" "*"
     "@types/scheduler" "*"
