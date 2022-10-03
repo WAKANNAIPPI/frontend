@@ -1,50 +1,60 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, SafeAreaView, TextInput } from 'react-native';
+import { useNavigation } from "@react-navigation/native";
+import { QuizStackNavProp } from "../Navigations";
+import { StyleSheet, 
+         Text, 
+         View, 
+         TouchableOpacity, 
+         Image, 
+         Button,
+        } from 'react-native';
 
 export const QuizScreen: React.FC = () => {
-    return (
+    const navigation = useNavigation<QuizStackNavProp<'Quiz'>>()
 
-        <View style={styles.inputContainer}>
-            <TextInput style={styles.input} />
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>イーとする</Text>
-            </TouchableOpacity>
+    return (
+        <>
+        <View style={styles.Container}>
+            <Image style={{width:360, height:174}}
+                source = {require("../Assets/logo.png")}>
+            </Image>
+            <Image style={{width:277, height:56}}
+                source = {require("../Assets/Quiz/Quiz-start.png")}>
+            </Image>
+            <View style={styles.Button}>
+                <Button
+                    title="ボタンをタップしてね"
+                    color="#806BFF"
+                    onPress={() => navigation.navigate('Answer')}
+                />
+            </View>
+f
         </View>
+        <View style={styles.Button}>
+            <Button
+                title="ボタンをタップしてね"
+                color="#806BFF"
+                onPress={() => navigation.navigate('Answer')}
+            />
+        </View>
+        </>
 
     )
 }
 
 const styles = StyleSheet.create({
-    safeArea: {
+    Container:{
         flex: 1,
-        backgroundColor: '#222',
+        alignItems: 'center',
+        paddingTop: 100,
     },
-    button: {
-        backgroundColor: 'rgb(29, 161, 242)',
-        paddingHorizontal: 20,
-        paddingVertical: 15,
-        borderRadius: 20,
-    },
-    buttonText: {
-        color: 'white',
-        fontweight: '900',
-        fontsize: 16,
-    },
-    inputContainer: {
-        flexDirection: 'row',
-        paddingHorizontal: 10,
-    },
-    input: {
+    Button:{
         flex: 1,
-        borderColor: 'white',
-        borderwidth: 2,
-        marginRight: 10,
-        color: 'white',
-        paddingHorizontal: 20,
-        fontsize: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingTop: 100,
+        paddingBottom: 200,
+  
+        borderRadius: 100,
     },
-    container: {
-        flex: 2,
-        paddingTop: 20,
-    }
 });
