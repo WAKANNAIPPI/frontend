@@ -11,8 +11,7 @@ import { StyleSheet,
 export const Answer: React.FC = () => {
     const navigation = useNavigation<QuizStackNavProp<'Quiz'>>()
     return (
-        <>
-        <View>
+        <View style={styles.container}>
             <Text
               style={{
                 backgroundColor: "#BDBAFA",
@@ -22,8 +21,6 @@ export const Answer: React.FC = () => {
             >
                 ここに問題文を記述する予定です。
             </Text>
-        </View>
-        <View style={styles.container}>
             <TouchableOpacity
                 style ={styles.Button}
                 // onPress={() => navigation.navigate("")}
