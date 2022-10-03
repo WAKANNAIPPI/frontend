@@ -57,7 +57,6 @@ export const Answer: React.FC = () => {
                 </Text>
             </TouchableOpacity>
         </View>
-        </>
     )
 }
 const styles = StyleSheet.create({
