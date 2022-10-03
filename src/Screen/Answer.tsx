@@ -26,7 +26,7 @@ export const Answer: React.FC = () => {
         <View style={styles.container}>
             <TouchableOpacity
                 style ={styles.Button}
-                onPress={() => navigation.navigate("")}
+                // onPress={() => navigation.navigate("")}
             >
                 <Text style={styles.Textfont}>
                     一つ目の選択肢
@@ -34,7 +34,7 @@ export const Answer: React.FC = () => {
             </TouchableOpacity>
             <TouchableOpacity
                 style ={styles.Button}
-                onPress={() => navigation.navigate("")}
+                // onPress={() => navigation.navigate("")}
             >
                 <Text style={styles.Textfont}>
                     二つ目の選択肢
@@ -42,7 +42,7 @@ export const Answer: React.FC = () => {
             </TouchableOpacity>
             <TouchableOpacity
                 style ={styles.Button}
-                onPress={() => navigation.navigate("")}
+                // onPress={() => navigation.navigate("")}
             >
                 <Text style={styles.Textfont}>
                     三つ目の選択肢
@@ -50,7 +50,7 @@ export const Answer: React.FC = () => {
             </TouchableOpacity>
             <TouchableOpacity
                 style ={styles.Button}
-                onPress={() => navigation.navigate("")}
+                // onPress={() => navigation.navigate("")}
             >
                 <Text style={styles.Textfont}>
                     四つ目の選択肢
