@@ -121,7 +121,6 @@ export const QuizNav: React.FC = () => {
 type SignupStackParamList = {
     Signup: undefined;
     login: undefined;
-    Home: undefined;
 }
 
 export type SignupStackNavProp<T extends keyof SignupStackParamList> = NativeStackNavigationProp<SignupStackParamList, T>
@@ -131,16 +130,12 @@ export const SignupNavigator: React.FC = () => {
     return (
         <SignupStack.Navigator initialRouteName="login" screenOptions={{ headerShown: false }}>
             <SignupStack.Screen
-                name="Signup"
-                component={Signup}
-            />
-            <SignupStack.Screen
                 name="login"
                 component={login}
             />
             <SignupStack.Screen
-                name="Home"
-                component={HomeScreen}
+                name="Signup"
+                component={Signup}
             />
         </SignupStack.Navigator>
     )
