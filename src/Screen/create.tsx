@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
-import { View, Text, StyleSheet, Button, TouchableOpacity, Image, PanResponder, Animated } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, PanResponder, Animated } from "react-native";
 import { StarsStackNavProp } from "../Navigations";
-import { CurrentRenderContext, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import Canvas from "react-native-canvas"
-
 
 const canvasRef: any = React.createRef();
 let returnLine_i: number = 0;
@@ -35,7 +34,6 @@ const LineComponent = (props: any) => {
     const [ startY, setStartY ] = useState("");
     const [ currentX, setCurrentX ] = useState("");
     const [ currentY, setCurrentY ] = useState("");
-    const [ returnLineOn, setReturnLineOn] = useState(0); //returnボタンが押されたときにタッチ描画が行われたときに加算される。
     const [ touchedStarIdPath, setTouchedStarIdPath ] = useState<any>();
     const [ stampedStarIdPath, setStampedStarIdPath ] = useState<any>();
 
