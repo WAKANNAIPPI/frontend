@@ -6,6 +6,7 @@ import Canvas from "react-native-canvas"
 
 const canvasRef: any = React.createRef();
 let returnLine_i: number = 0;
+let replaceStoredStars: any = [{}]
 let replaceStoredLines: any = [{
     sx: "",
     sy: "",
@@ -43,7 +44,6 @@ const LineComponent = (props: any) => {
         fx: "",
         fy: ""
     }]);
-
 
     let touchedStar_i: number;
     let releasedStar_i: number;
@@ -564,6 +564,10 @@ export const create = () => {
         if (starDrawFlag){
             setstarDrawFlag(false);
             setCompletionButtonActionBoolean(false);
+        }
+        
+        if (!starDrawFlag){
+            replaceStoredLines = storedStars.slice();
         }
     }
 
