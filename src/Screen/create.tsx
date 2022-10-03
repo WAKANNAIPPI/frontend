@@ -4,15 +4,26 @@ import { StarsStackNavProp } from "../Navigations";
 import { CurrentRenderContext, useNavigation } from "@react-navigation/native";
 import Canvas from "react-native-canvas"
 
+
 const canvasRef: any = React.createRef();
+let returnLine_i: number = 0;
+let replaceStoredLines: any = [{
+    sx: "",
+    sy: "",
+    fx: "",
+    fy: ""
+}];
 
 const LineComponent = (props: any) => {
     useEffect (() => {
+        const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
         canvasRef.current.width =  600;
         canvasRef.current.height = 600;
-        const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
-        ctx.strokeStyle = "white"
-    }, []);
+        ctx.strokeStyle = "white",
+        ctx.lineWidth = 1
+        Redraw();
+        
+    }, [returnLine_i]);
 
     const [ lineDrawFlag, setLineDrawFlag ] = useState(false);
     const [ starRedrawFlag, setStarRedrawFlag ] = useState(false);
@@ -20,13 +31,14 @@ const LineComponent = (props: any) => {
     const [ touchedStarOrder, setTouchedStarOrder ] = useState(1); //タッチ時の星の番号
     const [ stampedStarMarkFlag, setStampedStarMarkFlag ] = useState(0); //星を踏んだ時の判別フラグ
     const [ stampedStarOrder, setStampedStarOrder ] = useState(1); //星を踏んだ時の番号
-    const [ lastFlag, setLastFlag ] = useState(0)
     const [ startX, setStartX ] = useState("");
     const [ startY, setStartY ] = useState("");
     const [ currentX, setCurrentX ] = useState("");
     const [ currentY, setCurrentY ] = useState("");
+    const [ returnLineOn, setReturnLineOn] = useState(0); //returnボタンが押されたときにタッチ描画が行われたときに加算される。
     const [ touchedStarIdPath, setTouchedStarIdPath ] = useState<any>();
     const [ stampedStarIdPath, setStampedStarIdPath ] = useState<any>();
+
     const [ storedLines, setStoredLines ] = useState([{
         sx: "",
         sy: "",
@@ -34,11 +46,13 @@ const LineComponent = (props: any) => {
         fy: ""
     }]);
 
-    let touchedStar_i: number; //タッチ時の星判別繰り返し用
-    let stampedStar_i: number;
+
+    let touchedStar_i: number;
     let releasedStar_i: number;
+    let stampedStar_i: number;
     let touchedId: number;
     let stampedId: number;
+
         
     function onTouch(e: any) {
         const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
@@ -54,11 +68,9 @@ const LineComponent = (props: any) => {
                     setCurrentY( String(props.Star[touchedStar_i].starLocationY + 300) );
                     setStartX( String(props.Star[touchedStar_i].starLocationX + 300) );
                     setStartY( String(props.Star[touchedStar_i].starLocationY + 300) );
+                    setLineDrawFlag(true);
             }
         }
-
-        setLineDrawFlag(true);
-        setStarRedrawFlag(false);
     }
 
     function onMove(e: any){
@@ -72,7 +84,7 @@ const LineComponent = (props: any) => {
 
         ctx.lineCap = "round";
         ctx.lineJoin  = "round";
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1;
         ctx.strokeStyle = "white";
 
         ctx.beginPath();
@@ -88,12 +100,12 @@ const LineComponent = (props: any) => {
                  Math.abs(props.Star[stampedStar_i].starLocationY - (pre_currentY - 300)) <= 40 ){
                     setStampedStarMarkFlag(props.Star[stampedStar_i].starItemId);
                     setStampedStarOrder(stampedStar_i);
+                    break;
             }
             else {
                 setStampedStarMarkFlag(0);
             }
         }
-
     }
 
     function Redraw(){
@@ -103,7 +115,7 @@ const LineComponent = (props: any) => {
             return;
         }
 
-        for(let i = 1; i < storedLines.length; i++){
+        for(let i = 1; i < storedLines.length - returnLine_i; i++){
             ctx.beginPath();
             ctx.moveTo( Number( storedLines[i].sx ), Number( storedLines[i].sy ) );
             ctx.lineTo( Number( storedLines[i].fx ), Number( storedLines[i].fy ) );
@@ -122,6 +134,13 @@ const LineComponent = (props: any) => {
             if ( Math.abs(props.Star[releasedStar_i].starLocationX - (pre_currentX - 300)) <= 40 &&
                  Math.abs(props.Star[releasedStar_i].starLocationY - (pre_currentY - 300)) <= 40 ) 
                 {
+                    if (returnLine_i) { //returnButton押下時の挙動
+                        for (let i = 0; i < returnLine_i; i++) {
+                            storedLines.pop();
+                        }
+                        returnLine_i = 0;
+                        props.handleReturnLine_iChange(returnLine_i)
+                    }
 
                     storedLines.push({
                         sx: startX,
@@ -129,47 +148,41 @@ const LineComponent = (props: any) => {
                         fx: String(props.Star[releasedStar_i].starLocationX + 300),
                         fy: String(props.Star[releasedStar_i].starLocationY + 300),
                     })
-
-                    setTouchedStarMarkFlag(0);
                     setStarRedrawFlag(true);
                     
                     Redraw();
+
+                    replaceStoredLines = storedLines.slice();
             }
             else {
-                ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-
-                for(let i = 1; i < storedLines.length; i++){
-                    ctx.beginPath();
-                    ctx.moveTo( Number( storedLines[i].sx ), Number( storedLines[i].sy ) );
-                    ctx.lineTo( Number( storedLines[i].fx ), Number( storedLines[i].fy ) );
-                    ctx.stroke();
-                }
-
-                touchedId = touchedStarMarkFlag;
-                setTouchedStarMarkFlag(0);
-
+                Redraw();
             }
+
         }
+        setStartX("0");
+        setStartY("0");
+        setLineDrawFlag(false);
+        setTouchedStarMarkFlag(0);
+        setStampedStarMarkFlag(0);
     }
 
     function TouchedStar() {
         if (!touchedStarMarkFlag){ 
-            setLastFlag(0);
             return (<></>)
         }
         else {
-            switch(touchedId) {
+            switch(touchedStarMarkFlag) {
             case 1:
-                setTouchedStarIdPath(require("../Assets/Frame1.png"));
+                setTouchedStarIdPath(require("../Assets/Create/red.png"));
                 break;
             case 2:
-                setTouchedStarIdPath(require("../Assets/Frame2.png"));
+                setTouchedStarIdPath(require("../Assets/Create/blue.png"));
                 break;
             case 3:
-                setTouchedStarIdPath(require("../Assets/Frame3.png"));
+                setTouchedStarIdPath(require("../Assets/Create/yellow.png"));
                 break;
             case 4:
-                setTouchedStarIdPath(require("../Assets/Frame4.png"));
+                setTouchedStarIdPath(require("../Assets/Create/rare.png"));
                 break;
         }}
 
@@ -184,7 +197,7 @@ const LineComponent = (props: any) => {
                             { translateY: props.Star[touchedStarOrder].starLocationY + 275},
                         ],
                         justifyContent: 'center',
-                        alignItems: 'center', 
+                        alignItems: 'center',
                         borderWidth: 1,
                         borderColor: "white",
                         borderRadius: 5,
@@ -199,26 +212,23 @@ const LineComponent = (props: any) => {
 
     function StampedStar() {
         if (!stampedStarMarkFlag){ 
-            setLastFlag(0);
             return (<></>)
         }
         else {
             switch(stampedId) {
             case 1:
-                setStampedStarIdPath(require("../Assets/Frame1.png"));
+                setStampedStarIdPath(require("../Assets/Create/red.png"));
                 break;
             case 2:
-                setStampedStarIdPath(require("../Assets/Frame2.png"));
+                setStampedStarIdPath(require("../Assets/Create/blue.png"));
                 break;
             case 3:
-                setStampedStarIdPath(require("../Assets/Frame3.png"));
+                setStampedStarIdPath(require("../Assets/Create/yellow.png"));
                 break;
             case 4:
-                setStampedStarIdPath(require("../Assets/Frame4.png"));
+                setStampedStarIdPath(require("../Assets/Create/rare.png"));
                 break;
         }}
-
-
 
         return (
             <View
@@ -244,107 +254,11 @@ const LineComponent = (props: any) => {
         )
     }
 
-    function Last() {
-        let starIdPath: any[] = []
-        let i: number;
-
-        setLastFlag(0)
-
-        if (!starRedrawFlag) return <></>
-
-        else {
-            for (i = 1; i < props.Star.length; i++){
-                if (i == touchedStar_i){
-                    switch(touchedId) {
-                        case 1:
-                            starIdPath.push(require("../Assets/Frame1.png"));
-                            break;
-                        case 2:
-                            starIdPath.push(require("../Assets/Frame2.png"));
-                            break;
-                        case 3:
-                            starIdPath.push(require("../Assets/Frame3.png"));
-                            break;
-                        case 4:
-                            starIdPath.push(require("../Assets/Frame4.png"));
-                            break;
-                    }
-                }
-                else if(i == stampedStar_i){
-                    switch(stampedId) {
-                        case 1:
-                            starIdPath.push(require("../Assets/Frame1.png"));
-                            break;
-                        case 2:
-                            starIdPath.push(require("../Assets/Frame2.png"));
-                            break;
-                        case 3:
-                            starIdPath.push(require("../Assets/Frame3.png"));
-                            break;
-                        case 4:
-                            starIdPath.push(require("../Assets/Frame4.png"));
-                            break;
-                    }
-                }
-            }
-        }
-        return(
-            <>
-            { 
-                (i == touchedStar_i) ? 
-                starIdPath.map( (element, index) => {
-                    return (
-                        <View 
-                            key={index}
-                            style={{zIndex: 1000}}
-                        >
-                            <Image
-                                style={{
-                                    transform: [
-                                        { translateX: props.Star[touchedStar_i].starLocationX + 275 },
-                                        { translateY: props.Star[touchedStar_i].starLocationY + 275 },
-                                    ],
-                                    width: 50,      
-                                    height: 50,
-                                    position: 'absolute',
-                                }}
-                                source={element}
-                            />
-                        </View>
-                    )   
-                })
-
-                : (i == stampedStar_i) ?
-                starIdPath.map( (element, index) => {
-                    return (
-                        <View 
-                            key={index}
-                            style={{zIndex: 1000}}
-                        >
-                            <Image
-                                style={{
-                                    transform: [
-                                        { translateX: props.Star[stampedStar_i].starLocationX + 275 },
-                                        { translateY: props.Star[stampedStar_i].starLocationY + 275 },
-                                    ],
-                                    width: 50,      
-                                    height: 50,
-                                    position: 'absolute',
-                                }}
-                                source={element}
-                            />
-                        </View>
-                    )
-                })
-                : <></>
-            }
-        </>
-        )
-        
-    }
 
     return (
         <View>
+            <TouchedStar />
+            <StampedStar />
             <View
                 style = {paintStyles.canvas}
                 onTouchStart = {onTouch}
@@ -352,11 +266,7 @@ const LineComponent = (props: any) => {
                 onTouchEnd = {onTouchEnd}
             >
                 <Canvas ref = {canvasRef} />
-                <Text style={{marginLeft: 200}}>{props.Star.length}</Text>
             </View>
-            <TouchedStar />
-            <StampedStar />
-            <Last />
         </View>
     )
 }
@@ -370,7 +280,7 @@ export const create = () => {
     let starIdPath: any[] = [];
 
     const [ starListCount, setStarListCount ] = useState(1);
-    const [ starDrawFlag, setstarDrawFlag ] = useState(true)
+    const [ starDrawFlag, setstarDrawFlag ] = useState(true);
     const [ starListFlag, setStarListFlag ] = useState(false);
     const [ starPutFlagId, setStarPutFlagId ] = useState(0);
     const [ starRedrawFlag, setStarRedrawFlag ] = useState(false);
@@ -381,9 +291,13 @@ export const create = () => {
         starLocationY: 0,
     }]);
 
-    //returnボタンに関するstateと変数
     const [ returnStar_i, setReturnStar_i ] = useState(0);
-    const [ returnLine_i, setReturnLine_i ] = useState(0);
+    const [ updateReturnLine_i, setUpdateReturnLine_i ] = useState(0);
+    const [ completionButtonActionBoolean, setCompletionButtonActionBoolean] = useState(true);
+
+    useEffect(() => {
+        
+    }, [returnLine_i])
 
     //ここから星描画
     let si: number = 0;
@@ -410,7 +324,7 @@ export const create = () => {
                         onPress={() => StarsSelectButtonAction(1)}
                     >
                         <Image
-                            source={require("../Assets/Frame1.png")}
+                            source={require("../Assets/Create/red.png")}
                             style={paintStyles.listImage}
                         />
                     </TouchableOpacity>
@@ -418,7 +332,7 @@ export const create = () => {
                         onPress={() => StarsSelectButtonAction(2)}
                     >
                         <Image
-                            source={require("../Assets/Frame2.png")}
+                            source={require("../Assets/Create/blue.png")}
                             style={paintStyles.listImage}
                             />
                     </TouchableOpacity>
@@ -426,7 +340,7 @@ export const create = () => {
                         onPress={() => StarsSelectButtonAction(3)}
                     >
                         <Image
-                            source={require("../Assets/Frame3.png")}
+                            source={require("../Assets/Create/yellow.png")}
                             style={paintStyles.listImage}
                         />
                     </TouchableOpacity>
@@ -434,7 +348,7 @@ export const create = () => {
                         onPress={() => StarsSelectButtonAction(4)}
                     >
                         <Image
-                            source={require("../Assets/Frame4.png")}
+                            source={require("../Assets/Create/rare.png")}
                             style={paintStyles.listImage}
                         />
                     </TouchableOpacity>
@@ -444,8 +358,15 @@ export const create = () => {
     }
 
     function StarsSelectButtonAction(id: number){
-        setStarPutFlagId(id);
+        if (returnStar_i) {
+            for (let i = 0; i < returnStar_i; i++) {
+                storedStars.pop();
+            }
+            setReturnStar_i(0);
+        }
+        
 
+        setStarPutFlagId(id);
         setStarListFlag(false);   
         setStarListCount(starListCount + 1); 
     }
@@ -502,7 +423,7 @@ export const create = () => {
                     >
                         <Image
                             style={paintStyles.moveImage}
-                            source={require("../Assets/Frame1.png")}
+                            source={require("../Assets/Create/red.png")}
                         />
                     </Animated.View>
                 : starPutFlagId == 2 ?
@@ -515,7 +436,7 @@ export const create = () => {
                     >
                         <Image
                             style={paintStyles.moveImage}
-                            source={require("../Assets/Frame2.png")}
+                            source={require("../Assets/Create/blue.png")}
                         />
                     </Animated.View>
                 : starPutFlagId == 3 ?
@@ -528,7 +449,7 @@ export const create = () => {
                     >
                         <Image
                             style={paintStyles.moveImage}
-                            source={require("../Assets/Frame3.png")}
+                            source={require("../Assets/Create/yellow.png")}
                         />
                     </Animated.View>
                 : starPutFlagId == 4 ? 
@@ -541,7 +462,7 @@ export const create = () => {
                     >
                         <Image
                             style={paintStyles.moveImage}
-                            source={require("../Assets/Frame4.png")}
+                            source={require("../Assets/Create/rare.png")}
                         />
                     </Animated.View>
                 : <></>
@@ -554,16 +475,16 @@ export const create = () => {
         for (let i = 1; i < storedStars.length - returnStar_i; i++){ //storedStarsLengthは2から
             switch(storedStars[i].starItemId) {
                 case 1:
-                    starIdPath.push(require("../Assets/Frame1.png"));
+                    starIdPath.push(require("../Assets/Create/red.png"));
                     break;
                 case 2:
-                    starIdPath.push(require("../Assets/Frame2.png"));
+                    starIdPath.push(require("../Assets/Create/blue.png"));
                     break;
                 case 3:
-                    starIdPath.push(require("../Assets/Frame3.png"));
+                    starIdPath.push(require("../Assets/Create/yellow.png"));
                     break;
                 case 4:
-                    starIdPath.push(require("../Assets/Frame4.png"));
+                    starIdPath.push(require("../Assets/Create/rare.png"));
                     break;
             }
         };
@@ -595,23 +516,61 @@ export const create = () => {
     }
 
     function returnButtonAction() {
-        if ((storedStars.length - returnStar_i < 2)){
-            return;
+        if (starDrawFlag){ //星モードの時実行
+            if ((storedStars.length - returnStar_i) < 2){
+                return;
+            }
+            else {
+                setReturnStar_i(returnStar_i + 1);
+            }
         }
-
-        if (starDrawFlag || starListFlag){
-            setReturnStar_i(returnStar_i + 1);
-
+        else { //線モードの時実行
+            if ((replaceStoredLines.length - returnLine_i) < 2){
+                return;
+            }
+            else {
+                returnLine_i++;
+                setUpdateReturnLine_i(returnLine_i);
+            }
         }
-        else {
-            setReturnLine_i(returnLine_i + 1);
+    }
+
+    function forwardButtonAction() {
+        if (starDrawFlag){//星モードの時実行
+            if (!returnStar_i){ //returnStar_iが0のとき
+                return;
+            }
+            else if (completionButtonActionBoolean){
+                setReturnStar_i(returnStar_i - 1);
+            }
+        }
+        else {//線モードの時実行
+            if (!returnLine_i){
+                return;
+            }
+            else{
+                returnLine_i -= 1;
+                setUpdateReturnLine_i(returnLine_i);
+            }
         }
     }
 
     function completionButtonAction() {
+        if (returnStar_i) {
+            for (let i = 0; i < returnStar_i; i++) {
+                storedStars.pop();
+            }
+            setReturnStar_i(0);
+        }
+
         if (starDrawFlag){
             setstarDrawFlag(false);
+            setCompletionButtonActionBoolean(false);
         }
+    }
+
+    function handleReturnLine_iChange(changed: number) {
+        setUpdateReturnLine_i(changed) //dummyデータ
     }
 
     return (
@@ -625,14 +584,24 @@ export const create = () => {
                         ＜
                     </Text>
             </TouchableOpacity>
-            <TouchableOpacity
-                onPress={completionButtonAction}
-                style={styles.completion}
-            >
+            {starDrawFlag ?
+                <TouchableOpacity
+                    onPress={completionButtonAction}
+                    style={styles.completion}
+                >
+                        <Text style={styles.completionText}>
+                            次へ
+                        </Text>
+                </TouchableOpacity>
+            : 
+                <TouchableOpacity
+                    style={styles.completion}
+                >
                     <Text style={styles.completionText}>
                         完了
                     </Text>
-            </TouchableOpacity>
+                </TouchableOpacity>
+            }
         </View>
 
         <View style={paintStyles.paint}>
@@ -651,7 +620,7 @@ export const create = () => {
             }
 
             {!starDrawFlag 
-                ? <LineComponent Star={storedStars.slice()}/>
+                ? <LineComponent Star={storedStars.slice()} handleReturnLine_iChange={(e: any) => handleReturnLine_iChange(e)}/>
                 : <></>
             }
 
@@ -671,17 +640,29 @@ export const create = () => {
         </View>
 
         <View style={styles.create}>
-            <TouchableOpacity
-                style={styles.starsView}
-                onPress={starsButtonAction}
-            >
-                <Image
-                    style={styles.starsImage}
-                    source={require('../Assets/Create/Star1.png')}
-                />
-            </TouchableOpacity>
+            {starDrawFlag ?
+                <TouchableOpacity
+                    style={styles.starsView}
+                    onPress={starsButtonAction}
+                >
+                    <Image
+                        style={styles.starsImage}
+                        source={require('../Assets/Create/Star1.png')}
+                    />
+                </TouchableOpacity>
+            : 
+                <View 
+                    style={styles.starsView}
+                >
+                    <Image
+                        style={styles.starsImage}
+                        source={require("../Assets/Create/Line7.png")}
+                    />
+                </View>
+            }       
             <TouchableOpacity
                 style={styles.returnView}
+                onPress={returnButtonAction}
             >
                 <Text
                     style={styles.returnText}
@@ -691,6 +672,7 @@ export const create = () => {
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.goView}
+                onPress={forwardButtonAction}
             >
                 <Text
                     style={styles.goText}
@@ -726,16 +708,19 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     completion: {
-        height: 30,
-        width: 75,
+        height: 35,
+        width: 100,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#43C58C',
         borderRadius: 30,
-        marginLeft: 200,
-        marginBottom: 15,
+        marginLeft: 190,
+        marginBottom: 10,
     },
     completionText: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 20
     },
 
     create: {
