@@ -1,9 +1,19 @@
 # frontend
 わかんないッピのフロント用リポジトリ
 
-# Getting Started
-Node.jsの確認<br>
+# 始めるに当たって必要なもの
+Node.js<br>
+バージョン17未満が必要<br>
 `node -v`
+
+npm<br>
+`npm -v`
+
+yarn<br>
+`yarn -v`
+
+
+# Getting Started
 
 開発環境のインストール<br>
 `yarn install`
