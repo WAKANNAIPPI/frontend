@@ -2,17 +2,18 @@ import React, { useEffect, useState, useRef } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image, PanResponder, Animated } from "react-native";
 import { StarsStackNavProp } from "../Navigations";
 import { useNavigation } from "@react-navigation/native";
-import Canvas from "react-native-canvas"
+import Canvas from "react-native-canvas";
+import axios from 'axios';
 
 const canvasRef: any = React.createRef();
 let returnLine_i: number = 0;
-let replaceStoredStars: any = [{}]
 let replaceStoredLines: any = [{
     sx: "",
     sy: "",
     fx: "",
     fy: ""
 }];
+let replaceStoredStars: any;
 
 const LineComponent = (props: any) => {
     useEffect (() => {
@@ -293,8 +294,10 @@ export const create = () => {
     const [ updateReturnLine_i, setUpdateReturnLine_i ] = useState(0);
     const [ completionButtonActionBoolean, setCompletionButtonActionBoolean] = useState(true);
 
+    const [post, setPost] = React.useState(null);
+
     useEffect(() => {
-        
+
     }, [returnLine_i])
 
     //ここから星描画
@@ -369,7 +372,7 @@ export const create = () => {
         setStarListCount(starListCount + 1); 
     }
 
-    function StarsPut(props: any){
+    function StarsPut(){
         const panResponder = useRef(
             PanResponder.create({
                 onMoveShouldSetPanResponder: () => true,
@@ -554,24 +557,26 @@ export const create = () => {
     }
 
     function completionButtonAction() {
-        if (returnStar_i) {
+        if (starDrawFlag){
             for (let i = 0; i < returnStar_i; i++) {
                 storedStars.pop();
             }
             setReturnStar_i(0);
-        }
-
-        if (starDrawFlag){
             setstarDrawFlag(false);
             setCompletionButtonActionBoolean(false);
         }
         
         if (!starDrawFlag){
-            replaceStoredLines = storedStars.slice();
+            for (let i = 0; i < returnLine_i; i++){
+                replaceStoredLines.pop();
+            }
+            returnLine_i = 0;
+
+            
         }
     }
 
-    function handleReturnLine_iChange(changed: number) {
+    function handleReturnLine_iChange(changed: number) { //親コンポーネントに値を渡すための関数
         setUpdateReturnLine_i(changed) //dummyデータ
     }
 
