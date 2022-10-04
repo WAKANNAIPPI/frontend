@@ -6,13 +6,13 @@ import Canvas from "react-native-canvas";
 
 const canvasRef: any = React.createRef();
 let returnLine_i: number = 0;
-let replaceStoredLines: any = [{
+export let replaceStoredLines: any = [{
     sx: "",
     sy: "",
     fx: "",
     fy: ""
 }];
-let replaceStoredStars: any;
+export let replaceStoredStars: any;
 
 const LineComponent = (props: any) => {
     useEffect (() => {
