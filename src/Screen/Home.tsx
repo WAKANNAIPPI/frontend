@@ -48,7 +48,7 @@ export const HomeScreen: React.FC = () =>{
                         source={require('../Assets/Frame4.png')}
                         style={{ width: 50, height: 50 }}
                     />
-                    <Text style={{ color: 'white' }}>Login</Text>
+                    <Text style={{ color: 'white' }>Login</Text>
                 </TouchableOpacity>
             </View>
         </View>
