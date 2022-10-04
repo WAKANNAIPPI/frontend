@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, PanResponder, Animated
 import { StarsStackNavProp } from "../Navigations";
 import { useNavigation } from "@react-navigation/native";
 import Canvas from "react-native-canvas";
-import axios from 'axios';
 
 const canvasRef: any = React.createRef();
 let returnLine_i: number = 0;
