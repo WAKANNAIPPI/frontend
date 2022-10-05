@@ -1,15 +1,24 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Text, View, TextInput, TouchableOpacity, StyleSheet} from "react-native";
-import { SignupStackNavProp } from "../Navigations";
+import { RootStackNavProp, SignupStackNavProp } from "../Navigations";
 import { useState } from "react";
 
 export const login: React.FC = () => {
     const navigation = useNavigation<SignupStackNavProp<'Signup'>>()
+    const Homenavigation = useNavigation<RootStackNavProp<'Home'>>()
 
     const [name, setName] = useState("");
     const [pas, setPas] = useState("")
+    const [alert, setAlert] = useState("")
 
+    const click = () => {
+        if (name == "" || pas == "" ) {
+            setAlert("ユーザー名・パスワードを入力してください")
+            console.log(setAlert)
+            Homenavigation.navigate('Home')
+        }
+    }
     return (
         <View style={styles.container}>
             <Text style={styles.red}>{alert}</Text>
@@ -26,7 +35,7 @@ export const login: React.FC = () => {
                 keyboardType='default'
             />
 
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Home")}>
+            <TouchableOpacity style={styles.button} onPress={click}>
                 <Text style={styles.btntext}>作成</Text>
             </TouchableOpacity>
 
@@ -36,6 +45,7 @@ export const login: React.FC = () => {
         </View>
     )
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
