@@ -52,6 +52,7 @@ export const RootNavivgator: React.FC = () =>{
                 <HomeStack.Screen
                     name="Projection"
                     component={Projection}
+                    options={{ headerShown: false }}
                 />
                 <HomeStack.Screen
                     name="Login"
