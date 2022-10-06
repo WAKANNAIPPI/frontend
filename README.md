@@ -7,6 +7,7 @@ frontend<br>
 　┣　src<br>
 　┃　┣　Assets　：アイコン画像などを入れる<br>
 　┃　┣　Components　：特定のスクリーンだけで使うコンポーネント<br>
+　┃　┣　Navigation　：ナビゲータファイルがある<br>
 　┃　┗　Screen　：スクリーンを入れる<br>
 　┣　.gitignore　：gitの操作をするときに、無視するファイルを書いておく<br>
 　┣　App.tsx　：アプリの発火元<br>
