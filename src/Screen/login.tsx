@@ -3,6 +3,8 @@ import { useNavigation } from "@react-navigation/native";
 import { Text, View, TextInput, TouchableOpacity, StyleSheet} from "react-native";
 import { RootStackNavProp, SignupStackNavProp } from "../Navigations";
 import { useState } from "react";
+import axios from "axios";
+import useCookies from "react-cookie";
 
 export const login: React.FC = () => {
     const navigation = useNavigation<SignupStackNavProp<'Signup'>>()
@@ -19,6 +21,17 @@ export const login: React.FC = () => {
         }
         if ( pas == "") {
             setPAlert("パスワードを入力してください")
+        }
+
+        if(name !="" && pas != ""){
+            axios.post('/login', {
+                userId: name,
+                userPass: pas,
+            }).then(function (response) {
+                console.log(response);
+            }).catch(function (error) {
+                console.log(error)
+            })
         }
         // Homenavigation.navigate('Home')
     }
