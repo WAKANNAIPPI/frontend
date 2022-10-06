@@ -4,7 +4,8 @@ import { StarsStackNavProp } from "../Navigations";
 import { useNavigation } from "@react-navigation/native";
 import Canvas from "react-native-canvas";
 
-const canvasRef: any = React.createRef();
+export const canvasRef: any = React.createRef();
+
 let returnLine_i: number = 0;
 export let replaceStoredLines: any = [{
     sx: "",
@@ -13,6 +14,7 @@ export let replaceStoredLines: any = [{
     fy: ""
 }];
 export let replaceStoredStars: any;
+export let completionFlag: boolean = false
 
 const LineComponent = (props: any) => {
     useEffect (() => {
@@ -251,7 +253,6 @@ const LineComponent = (props: any) => {
             </View>
         )
     }
-
 
     return (
         <View>
@@ -571,7 +572,11 @@ export const create = () => {
             }
             returnLine_i = 0;
 
-            
+            replaceStoredStars = storedStars.slice();
+
+            completionFlag = true;
+
+            navigation.navigate('Constellation');
         }
     }
 
@@ -602,6 +607,7 @@ export const create = () => {
             : 
                 <TouchableOpacity
                     style={styles.completion}
+                    onPress={completionButtonAction}
                 >
                     <Text style={styles.completionText}>
                         完了

@@ -1,14 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Animated } from 'react-native';
-import { useNavigation } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { RootStackNavProp } from "../Navigations";
 import { StarsStackNavProp } from "../Navigations";
-import Swiper from "react-native-swiper/src";
-
+import { CreatedConstellation } from "../Compoents/createdConstellation";
+import { completionFlag } from "../Screen/create";
 
 export const Constellation: React.FC = () => {
+    const [ createdConsteFlag, setCreatedConsteFlag ] = useState(false);
     const navigation = useNavigation< RootStackNavProp<'Constellation'> >();
     const starsNavigation = useNavigation< StarsStackNavProp<'Constellation'> >();
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if ( completionFlag ){
+                setCreatedConsteFlag(true);
+            }
+            else {
+                setCreatedConsteFlag(false);
+            }
+
+            return () => {
+                if ( completionFlag ){
+                    setCreatedConsteFlag(true);
+                }
+                else {
+                    setCreatedConsteFlag(false);
+                }
+            }
+        }, [])
+    )
     return (
         <View style={styles.container}>
            <View style={styles.header}>
@@ -21,23 +42,18 @@ export const Constellation: React.FC = () => {
                         </Text>
                 </TouchableOpacity>
             </View>
-            <Swiper showsButtons={true} loop={false}>
-                <View style={styles.slide}>
-                    <Text style={styles.testText}>
-                       Test1 画像                   
-                    </Text>
+            <View style={styles.slide}>
+                {createdConsteFlag ?
+                <View style={styles.list}>
+                    <CreatedConstellation />
+                    <CreatedConstellation />
+                    <CreatedConstellation />
                 </View>
-                <View style={styles.slide}>
-                    <Text style={styles.testText}>
-                        Test2
-                    </Text>
-                </View>
-                <View style={styles.slide}>
-                    <Text style={styles.testText}>
-                        Test3
-                    </Text>
-                </View>
-            </Swiper>
+
+                    :
+                    <View></View>
+                }
+            </View>
             <View
                 style={styles.editArea}
             >
@@ -78,7 +94,12 @@ const styles = StyleSheet.create({
     },
     slide: {
         flex: 1,
-        padding: 30
+    },
+    list: {
+        width: 500,
+        height: 500,
+        flexDirection: 'row',
+        
     },
     testText: {
         color: 'white',
