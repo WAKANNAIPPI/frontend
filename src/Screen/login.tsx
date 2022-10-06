@@ -10,24 +10,28 @@ export const login: React.FC = () => {
 
     const [name, setName] = useState("");
     const [pas, setPas] = useState("")
-    const [alert, setAlert] = useState("")
+    const [nameAlert, setNAlert] = useState("")
+    const [pasAlert, setPAlert] = useState("")
 
     const click = () => {
-        if (name == "" || pas == "" ) {
-            setAlert("ユーザー名・パスワードを入力してください")
-            console.log(setAlert)
-            Homenavigation.navigate('Home')
+        if (name == "" ) {
+            setNAlert("ユーザー名を入力してください")
         }
+        if ( pas == "") {
+            setPAlert("パスワードを入力してください")
+        }
+        // Homenavigation.navigate('Home')
     }
     return (
         <View style={styles.container}>
-            <Text style={styles.red}>{alert}</Text>
+            <Text style={styles.red}>{nameAlert}</Text>
             <TextInput
                 style={styles.input}
                 placeholder='ユーザーを入力してください'
                 onChangeText={(val) => setName(val)}
                 keyboardType='default'
             />
+            <Text style={styles.red}>{pasAlert}</Text>
             <TextInput
                 style={styles.input}
                 placeholder='パスワードを入力してください'
