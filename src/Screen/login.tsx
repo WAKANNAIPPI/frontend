@@ -1,24 +1,37 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Text, View, TextInput, TouchableOpacity, StyleSheet} from "react-native";
-import { SignupStackNavProp } from "../Navigations";
+import { RootStackNavProp, SignupStackNavProp } from "../Navigations";
 import { useState } from "react";
 
 export const login: React.FC = () => {
     const navigation = useNavigation<SignupStackNavProp<'Signup'>>()
+    const Homenavigation = useNavigation<RootStackNavProp<'Home'>>()
 
     const [name, setName] = useState("");
     const [pas, setPas] = useState("")
+    const [nameAlert, setNAlert] = useState("")
+    const [pasAlert, setPAlert] = useState("")
 
+    const click = () => {
+        if (name == "" ) {
+            setNAlert("ユーザー名を入力してください")
+        }
+        if ( pas == "") {
+            setPAlert("パスワードを入力してください")
+        }
+        // Homenavigation.navigate('Home')
+    }
     return (
         <View style={styles.container}>
-            <Text style={styles.red}>{alert}</Text>
+            <Text style={styles.red}>{nameAlert}</Text>
             <TextInput
                 style={styles.input}
                 placeholder='ユーザーを入力してください'
                 onChangeText={(val) => setName(val)}
                 keyboardType='default'
             />
+            <Text style={styles.red}>{pasAlert}</Text>
             <TextInput
                 style={styles.input}
                 placeholder='パスワードを入力してください'
@@ -26,7 +39,7 @@ export const login: React.FC = () => {
                 keyboardType='default'
             />
 
-            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Home")}>
+            <TouchableOpacity style={styles.button} onPress={click}>
                 <Text style={styles.btntext}>作成</Text>
             </TouchableOpacity>
 
@@ -36,6 +49,7 @@ export const login: React.FC = () => {
         </View>
     )
 }
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

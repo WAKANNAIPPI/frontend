@@ -2,9 +2,11 @@ import { useNavigation } from "@react-navigation/native";
 import React, {useState, useEffect} from "react";
 import { View, Text, TextInput, StyleSheet, Button, TouchableOpacity } from "react-native";
 import { SignupStackNavProp } from "../Navigations";
+import { RootStackNavProp } from "../Navigations";
 
 export const Signup: React.FC = () => {
     const navigation = useNavigation<SignupStackNavProp<'Signup'>>()
+    const Homenavigation = useNavigation<RootStackNavProp<'Home'>>()
     
     const [name, setName] = useState("0");
     const [pas, setPas] = useState("0")
@@ -17,7 +19,7 @@ export const Signup: React.FC = () => {
             console.log(alert)
         }
         else if(pas == checkPas){
-            navigation.navigate('Home')
+            Homenavigation.navigate('Home')
         }
     }
     return(
