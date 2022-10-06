@@ -1,4 +1,26 @@
-export const chartData = [
+import React from "react";
+import { View,Dimensions } from "react-native"
+import ScatterChart from "react-native-scatter-chart";
+
+const { width, height } = Dimensions.get("window");
+type Props ={
+    color: string
+}
+export class StarrySky extends React.Component<Props, {}>{
+    render(): React.ReactNode {
+        return(
+            <View>
+                <ScatterChart
+                    backgroundColor={this.props.color}
+                    data={chartData}
+                    chartHeight={height}
+                    chartWidth={width}
+                />
+            </View>
+        )
+    }
+}
+const chartData = [
     {
         color: 'white',
         unit: '%',
@@ -95,3 +117,4 @@ export const chartData = [
         ]
     }
 ];
+
