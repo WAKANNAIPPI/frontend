@@ -44,11 +44,12 @@ export const Constellation: React.FC = () => {
             </View>
             <View style={styles.slide}>
                 {createdConsteFlag ?
-                <View style={styles.list}>
+
+                <TouchableOpacity 
+                    style={styles.list}
+                >
                     <CreatedConstellation />
-                    <CreatedConstellation />
-                    <CreatedConstellation />
-                </View>
+                </TouchableOpacity>
 
                     :
                     <View></View>
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
         width: 500,
         height: 500,
         flexDirection: 'row',
-        
+        alignItems: 'baseline',
     },
     testText: {
         color: 'white',
