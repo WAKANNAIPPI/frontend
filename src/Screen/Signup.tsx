@@ -8,35 +8,44 @@ export const Signup: React.FC = () => {
     const navigation = useNavigation<SignupStackNavProp<'Signup'>>()
     const Homenavigation = useNavigation<RootStackNavProp<'Home'>>()
     
-    const [name, setName] = useState("0");
-    const [pas, setPas] = useState("0")
-    const [checkPas, setCheckPas] = useState("0")
-    const [alert, setAlert] = useState("")   
+    const [name, setName] = useState("");
+    const [pas, setPas] = useState("")
+    const [checkPas, setCheckPas] = useState("")
+    const [nameAlert, setNAlert] = useState("")
+    const [pasAlert, setPAlert] = useState("")
+    const [CpasAlert, setCPAlert] = useState("")   
     
     const click = () =>{
-        if(name == "0" || pas == "0" || checkPas == "0"){
-            setAlert("ユーザー名・パスワードを入力してください")
-            console.log(alert)
+        if (name == "") {
+            setNAlert("ユーザー名を入力してください")
         }
-        else if(pas == checkPas){
-            Homenavigation.navigate('Home')
+        if (pas == "") {
+            setPAlert("パスワードを入力してください")
+        }
+        if(checkPas == ""){
+            setCPAlert("確認パスワードを入力してください")
+        }
+        if(pas == checkPas){
+            // Homenavigation.navigate('Home')
         }
     }
     return(
         <View style={styles.container}>
-            <Text style={styles.red}>{alert}</Text>
+            <Text style={styles.red}>{nameAlert}</Text>
             <TextInput 
                 style={styles.input}
                 placeholder='ユーザーを入力してください'
                 onChangeText={(val) => setName(val)}
                 keyboardType='default'
             />
+            <Text style={styles.red}>{pasAlert}</Text>
             <TextInput 
                 style={styles.input}
                 placeholder='パスワードを入力してください'
                 onChangeText={(val) => setPas(val)}
                 keyboardType='default'
             />
+            <Text style={styles.red}>{CpasAlert}</Text>
             <TextInput 
                 style={styles.input}
                 placeholder='パスワードを再入力してください'
