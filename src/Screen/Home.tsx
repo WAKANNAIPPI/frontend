@@ -2,8 +2,8 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { RootStackNavProp } from "../Navigations";
-import ScatterChart from "react-native-scatter-chart";
-import { chartData } from "../Compoents/dot";
+import { StarrySky } from "../Compoents/dot";
+
 
 const { width, height } = Dimensions.get("window");
 export const HomeScreen: React.FC = () => {
@@ -11,13 +11,7 @@ export const HomeScreen: React.FC = () => {
 
     return (
         <View style={styles.container}>
-            <ScatterChart
-                backgroundColor='#282C3E'
-                data={chartData}
-                style={styles.chart}
-                chartHeight={height}
-                chartWidth={width}
-            />
+            <StarrySky color="#282C3E" />
             <View style={styles.buttonLayout}>
                 <View style={styles.constellation}>
                     <TouchableOpacity onPress={() => navigation.navigate('Constellation')} style={styles.button} >
