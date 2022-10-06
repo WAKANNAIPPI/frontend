@@ -60,9 +60,6 @@ const styles = StyleSheet.create({
         position: 'relative',
 
     },
-    chart: {
-        position: 'absolute',
-    },
     buttonLayout: {
         position: 'absolute',
         alignSelf: 'center',
