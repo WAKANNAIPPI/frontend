@@ -44,7 +44,7 @@ export const login: React.FC = () => {
             </TouchableOpacity>
 
 
-            <TouchableOpacity onPress={() => navigation.navigate('login')} >
+            <TouchableOpacity onPress={() => navigation.navigate('Signup')} >
                 <Text>signup</Text></TouchableOpacity>
         </View>
     )
