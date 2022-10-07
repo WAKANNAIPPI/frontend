@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Animated } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Animated, Modal, Pressable } from 'react-native';
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { RootStackNavProp } from "../Navigations";
 import { StarsStackNavProp } from "../Navigations";
@@ -7,9 +7,11 @@ import { CreatedConstellation } from "../Compoents/createdConstellation";
 import { completionFlag } from "../Screen/create";
 
 export const Constellation: React.FC = () => {
-    const [ createdConsteFlag, setCreatedConsteFlag ] = useState(false);
     const navigation = useNavigation< RootStackNavProp<'Constellation'> >();
     const starsNavigation = useNavigation< StarsStackNavProp<'Constellation'> >();
+
+    const [ createdConsteFlag, setCreatedConsteFlag ] = useState(false);
+    const [ consteModalVisible, setConsteModalVisible ] = useState(false);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -30,6 +32,40 @@ export const Constellation: React.FC = () => {
             }
         }, [])
     )
+    
+    const ConsteEdition = () => {
+        return (
+            <View >
+              <Modal
+                animationType="slide"
+                transparent={true}
+                visible={consteModalVisible}
+                onRequestClose={() => {
+                  setConsteModalVisible(!consteModalVisible);
+                }}
+              >
+                <View style={styles.centeredView}>
+                  <View style={styles.modalView}>
+                    <Text style={styles.modalText}>Hello World!</Text>
+                    <Pressable
+                      style={[styles.button, styles.buttonClose]}
+                      onPress={() => setConsteModalVisible(!consteModalVisible)}
+                    >
+                      <Text style={styles.textStyle}>Hide Modal</Text>
+                    </Pressable>
+                  </View>
+                </View>
+              </Modal>
+              <Pressable
+                style={[styles.button, styles.buttonOpen]}
+                onPress={() => setConsteModalVisible(true)}
+              >
+                <Text style={styles.textStyle}>Show Modal</Text>
+              </Pressable>
+            </View>
+          );
+    }
+
     return (
         <View style={styles.container}>
            <View style={styles.header}>
@@ -43,28 +79,27 @@ export const Constellation: React.FC = () => {
                 </TouchableOpacity>
             </View>
             <View style={styles.slide}>
-                {createdConsteFlag ?
-
+                {createdConsteFlag 
+                ?
                 <TouchableOpacity 
                     style={styles.list}
                 >
-                    <CreatedConstellation />
+                    <CreatedConstellation listing={true}/>
                 </TouchableOpacity>
-
-                    :
-                    <View></View>
+                :
+                <View></View>
                 }
             </View>
             <View
-                style={styles.editArea}
+                style={styles.newEditArea}
             >
                 <TouchableOpacity
-                    style={styles.editButton}
+                    style={styles.newEditButton}
                     onPress={() => starsNavigation.navigate("create")}
                 >
                     <Image
                         source={require("../Assets/Constellation/edit.png")}
-                        style={styles.editImage}
+                        style={styles.newEditImage}
                     />
                 </TouchableOpacity>
             </View>
@@ -107,17 +142,26 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
     },
-    editArea: {
+    newEditArea: {
         flex: 0.25,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    editButton: {
+    newEditButton: {
         marginLeft: 200,
         marginBottom: 30,
     },
-    editImage: {
+    newEditImage: {
         width: 60,
         height: 60,
     },
 });
+
+const modalStyles = StyleSheet.create({
+    centerdView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22
+    }
+})
