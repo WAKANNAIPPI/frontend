@@ -20,7 +20,7 @@ export const HomeScreen: React.FC = () => {
                             style={{ width: 50, height: 50 }}
                         />
                     </TouchableOpacity>
-                    <Text style={{ color: 'white' }}>Constellation</Text>
+                    <Text style={{ color: 'white' }}>星座作成</Text>
                 </View>
                 <View style={styles.quiz}>
                     <TouchableOpacity onPress={() => navigation.navigate('Quiz')} style={styles.button} >
@@ -29,7 +29,7 @@ export const HomeScreen: React.FC = () => {
                             style={{ width: 50, height: 50 }}
                         />
                     </TouchableOpacity>
-                    <Text style={{ color: 'white' }}>Quiz</Text>
+                    <Text style={{ color: 'white' }}>クイズ</Text>
                 </View>
                 <View style={styles.projection}>
                     <TouchableOpacity onPress={() => navigation.navigate('Projection')} style={styles.button}>
@@ -38,7 +38,7 @@ export const HomeScreen: React.FC = () => {
                             style={{ width: 50, height: 50 }}
                         />
                     </TouchableOpacity>
-                    <Text style={{ color: 'white' }}>Prpjection</Text>
+                    <Text style={{ color: 'white' }}>キャスト</Text>
                 </View>
                 <View style={styles.login}>
                     <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.button}>
@@ -47,7 +47,7 @@ export const HomeScreen: React.FC = () => {
                             style={{ width: 50, height: 50 }}
                         />
                     </TouchableOpacity>
-                    <Text style={{ color: 'white' }}>Login</Text>
+                    <Text style={{ color: 'white' }}>ログイン</Text>
                 </View>
             </View>
 
@@ -63,10 +63,10 @@ const styles = StyleSheet.create({
     buttonLayout: {
         position: 'absolute',
         alignSelf: 'center',
-        marginTop: Dimensions.get('window').width ,
+        marginTop: Dimensions.get('window').width *0.8 ,
         Radius: Math.round(Dimensions.get('window').width + Dimensions.get('window').height) / 2,
-        width: Dimensions.get('window').width * 0.5,
-        height: Dimensions.get('window').width * 0.5,
+        width: Dimensions.get('window').width * 0.6,
+        height: Dimensions.get('window').width * 0.6,
         justifyContent: 'center',
         alignItems: 'center',
     },
