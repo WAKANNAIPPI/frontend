@@ -44,23 +44,23 @@ export const Constellation: React.FC = () => {
                   setConsteModalVisible(!consteModalVisible);
                 }}
               >
-                <View style={styles.centeredView}>
-                  <View style={styles.modalView}>
-                    <Text style={styles.modalText}>Hello World!</Text>
+                <View style={modalStyles.centeredView}>
+                  <View style={modalStyles.modalView}>
+                    <Text style={modalStyles.modalText}>Hello World!</Text>
                     <Pressable
-                      style={[styles.button, styles.buttonClose]}
+                      style={[modalStyles.button, modalStyles.buttonClose]}
                       onPress={() => setConsteModalVisible(!consteModalVisible)}
                     >
-                      <Text style={styles.textStyle}>Hide Modal</Text>
+                      <Text style={modalStyles.textStyle}>Hide Modal</Text>
                     </Pressable>
                   </View>
                 </View>
               </Modal>
               <Pressable
-                style={[styles.button, styles.buttonOpen]}
+                style={[modalStyles.button, modalStyles.buttonOpen]}
                 onPress={() => setConsteModalVisible(true)}
               >
-                <Text style={styles.textStyle}>Show Modal</Text>
+                <Text style={modalStyles.textStyle}>Show Modal</Text>
               </Pressable>
             </View>
           );
@@ -83,12 +83,14 @@ export const Constellation: React.FC = () => {
                 ?
                 <TouchableOpacity 
                     style={styles.list}
+                    onPress={() => setConsteModalVisible(true)}
                 >
                     <CreatedConstellation listing={true}/>
                 </TouchableOpacity>
                 :
                 <View></View>
                 }
+                <ConsteEdition />
             </View>
             <View
                 style={styles.newEditArea}
@@ -158,10 +160,44 @@ const styles = StyleSheet.create({
 });
 
 const modalStyles = StyleSheet.create({
-    centerdView: {
+    centeredView: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        marginTop: 22
-    }
+    },
+    modalView: {
+        borderColor: "white",
+        borderRadius: 20,
+        padding: 100,
+        justifyContent: 'center',
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2
+      },
+      buttonOpen: {
+        backgroundColor: "#F194FF",
+      },
+      buttonClose: {
+        backgroundColor: "#2196F3",
+      },
+      textStyle: {
+        color: "white",
+        fontWeight: "bold",
+        textAlign: "center"
+      },
+      modalText: {
+        marginBottom: 15,
+        textAlign: "center"
+      }
 })
