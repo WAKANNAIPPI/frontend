@@ -3,23 +3,20 @@ import { View, Text, Image, Modal, TouchableOpacity, StyleSheet } from "react-na
 import { replaceStoredStars, replaceStoredLines } from "../Screen/create";
 import Canvas from 'react-native-canvas';
 
-const originalConsteRef: any = React.createRef();
-
 export function CreatedConstellation(config: any) {
     let starIdPath: any[] = [];
 
-    useEffect (() => {
-        const ctx: CanvasRenderingContext2D = originalConsteRef.current.getContext('2d');
-        originalConsteRef.current.width = 100;
-        originalConsteRef.current.height = 100;
-        ctx.strokeStyle = "white";
-        ctx.lineWidth = 2;
-        Redraw();
-    });
+    function Redraw(originalConsteRef: Canvas){
+        const ctx = originalConsteRef.getContext('2d');
 
-    function Redraw(){
-        const ctx: CanvasRenderingContext2D = originalConsteRef.current.getContext('2d');
-        ctx.clearRect(0, 0, originalConsteRef.current.width, originalConsteRef.current.height);
+        useEffect (() => {
+            originalConsteRef.width = 100;
+            originalConsteRef.height = 100;
+            ctx.strokeStyle = "white";
+            ctx.lineWidth = 2;
+        });
+
+        ctx.clearRect(0, 0, originalConsteRef.width, originalConsteRef.height);
         if(replaceStoredLines.length == 1){
             return;
         }
@@ -81,7 +78,7 @@ export function CreatedConstellation(config: any) {
         <View
             style={styles.container}
         >
-            <Canvas ref={originalConsteRef}/>
+            <Canvas ref={Redraw}/>
             <StarsRedraw />
         </View>
     )
@@ -97,10 +94,9 @@ const styles = StyleSheet.create({
         shadowColor: "rgba(0, 0, 0, 256)",
         shadowOffset: {
         width: 0,
-        height: 3,
+        height: 5,
         },
         shadowRadius: 0,
         shadowOpacity: 1,
-        elevation: 3
     }
 })

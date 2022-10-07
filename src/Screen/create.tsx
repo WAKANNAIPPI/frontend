@@ -4,7 +4,6 @@ import { StarsStackNavProp } from "../Navigations";
 import { useNavigation } from "@react-navigation/native";
 import Canvas from "react-native-canvas";
 
-export const canvasRef: any = React.createRef();
 
 let returnLine_i: number = 0;
 export let replaceStoredLines: any = [{
@@ -16,11 +15,11 @@ export let replaceStoredLines: any = [{
 export let replaceStoredStars: any;
 export let completionFlag: boolean = false
 
-const LineComponent = (props: any) => {
+const LineComponent = (props: any, canvasRef: Canvas) => {
+    const ctx = canvasRef.getContext('2d');
     useEffect (() => {
-        const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
-        canvasRef.current.width =  600;
-        canvasRef.current.height = 600;
+        canvasRef.width =  600;
+        canvasRef.height = 600;
         ctx.strokeStyle = "white",
         ctx.lineWidth = 1
         Redraw();
@@ -55,7 +54,6 @@ const LineComponent = (props: any) => {
 
         
     function onTouch(e: any) {
-        const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
         const pre_currentX = e.nativeEvent.locationX;
         const pre_currentY = e.nativeEvent.locationY;
 
@@ -74,7 +72,6 @@ const LineComponent = (props: any) => {
     }
 
     function onMove(e: any){
-        const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
         const pre_currentX = e.nativeEvent.locationX;
         const pre_currentY = e.nativeEvent.locationY;
 
@@ -109,8 +106,7 @@ const LineComponent = (props: any) => {
     }
 
     function Redraw(){
-        const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
-        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        ctx.clearRect(0, 0, canvasRef.width, canvasRef.height);
         if(storedLines.length == 1){
             return;
         }
@@ -124,7 +120,6 @@ const LineComponent = (props: any) => {
     }
 
     const onTouchEnd = (e: any) => {
-        const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
         setTouchedStarMarkFlag(0);
 
         const pre_currentX = e.nativeEvent.locationX;
@@ -264,7 +259,7 @@ const LineComponent = (props: any) => {
                 onTouchMove = {onMove}
                 onTouchEnd = {onTouchEnd}
             >
-                <Canvas ref = {canvasRef} />
+                <Canvas ref={Redraw} />
             </View>
         </View>
     )
