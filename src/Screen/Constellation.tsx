@@ -90,7 +90,6 @@ export const Constellation: React.FC = () => {
                 :
                 <View></View>
                 }
-                <ConsteEdition />
             </View>
             <View
                 style={styles.newEditArea}
