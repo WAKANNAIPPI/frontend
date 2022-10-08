@@ -1,18 +1,20 @@
 import React, { useEffect, useState, useRef } from "react";
-import { View, Text, StyleSheet, Button, TouchableOpacity, Image, PanResponder, Animated } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, PanResponder, Animated } from "react-native";
 import { StarsStackNavProp } from "../Navigations";
-import { CurrentRenderContext, useNavigation } from "@react-navigation/native";
-import Canvas from "react-native-canvas"
+import { useNavigation } from "@react-navigation/native";
+import Canvas from "react-native-canvas";
 
+export const canvasRef: any = React.createRef();
 
-const canvasRef: any = React.createRef();
 let returnLine_i: number = 0;
-let replaceStoredLines: any = [{
+export let replaceStoredLines: any = [{
     sx: "",
     sy: "",
     fx: "",
     fy: ""
 }];
+export let replaceStoredStars: any;
+export let completionFlag: boolean = false
 
 const LineComponent = (props: any) => {
     useEffect (() => {
@@ -35,7 +37,6 @@ const LineComponent = (props: any) => {
     const [ startY, setStartY ] = useState("");
     const [ currentX, setCurrentX ] = useState("");
     const [ currentY, setCurrentY ] = useState("");
-    const [ returnLineOn, setReturnLineOn] = useState(0); //returnボタンが押されたときにタッチ描画が行われたときに加算される。
     const [ touchedStarIdPath, setTouchedStarIdPath ] = useState<any>();
     const [ stampedStarIdPath, setStampedStarIdPath ] = useState<any>();
 
@@ -46,7 +47,6 @@ const LineComponent = (props: any) => {
         fy: ""
     }]);
 
-
     let touchedStar_i: number;
     let releasedStar_i: number;
     let stampedStar_i: number;
@@ -55,7 +55,6 @@ const LineComponent = (props: any) => {
 
         
     function onTouch(e: any) {
-        const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
         const pre_currentX = e.nativeEvent.locationX;
         const pre_currentY = e.nativeEvent.locationY;
 
@@ -124,7 +123,6 @@ const LineComponent = (props: any) => {
     }
 
     const onTouchEnd = (e: any) => {
-        const ctx: CanvasRenderingContext2D = canvasRef.current.getContext('2d');
         setTouchedStarMarkFlag(0);
 
         const pre_currentX = e.nativeEvent.locationX;
@@ -254,7 +252,6 @@ const LineComponent = (props: any) => {
         )
     }
 
-
     return (
         <View>
             <TouchedStar />
@@ -265,7 +262,7 @@ const LineComponent = (props: any) => {
                 onTouchMove = {onMove}
                 onTouchEnd = {onTouchEnd}
             >
-                <Canvas ref = {canvasRef} />
+                <Canvas ref={canvasRef}/>
             </View>
         </View>
     )
@@ -295,8 +292,10 @@ export const create = () => {
     const [ updateReturnLine_i, setUpdateReturnLine_i ] = useState(0);
     const [ completionButtonActionBoolean, setCompletionButtonActionBoolean] = useState(true);
 
+    const [post, setPost] = React.useState(null);
+
     useEffect(() => {
-        
+
     }, [returnLine_i])
 
     //ここから星描画
@@ -371,7 +370,7 @@ export const create = () => {
         setStarListCount(starListCount + 1); 
     }
 
-    function StarsPut(props: any){
+    function StarsPut(){
         const panResponder = useRef(
             PanResponder.create({
                 onMoveShouldSetPanResponder: () => true,
@@ -556,20 +555,30 @@ export const create = () => {
     }
 
     function completionButtonAction() {
-        if (returnStar_i) {
+        if (starDrawFlag){
             for (let i = 0; i < returnStar_i; i++) {
                 storedStars.pop();
             }
             setReturnStar_i(0);
-        }
-
-        if (starDrawFlag){
             setstarDrawFlag(false);
             setCompletionButtonActionBoolean(false);
         }
+        
+        if (!starDrawFlag){
+            for (let i = 0; i < returnLine_i; i++){
+                replaceStoredLines.pop();
+            }
+            returnLine_i = 0;
+
+            replaceStoredStars = storedStars.slice();
+
+            completionFlag = true;
+
+            navigation.navigate('Constellation');
+        }
     }
 
-    function handleReturnLine_iChange(changed: number) {
+    function handleReturnLine_iChange(changed: number) { //親コンポーネントに値を渡すための関数
         setUpdateReturnLine_i(changed) //dummyデータ
     }
 
@@ -596,6 +605,7 @@ export const create = () => {
             : 
                 <TouchableOpacity
                     style={styles.completion}
+                    onPress={completionButtonAction}
                 >
                     <Text style={styles.completionText}>
                         完了
