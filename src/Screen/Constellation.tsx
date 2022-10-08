@@ -46,7 +46,6 @@ export const Constellation: React.FC = () => {
               >
                 <View style={modalStyles.centeredView}>
                   <View style={modalStyles.modalView}>
-                    <Text style={modalStyles.modalText}>Hello World!</Text>
                     <Pressable
                       style={[modalStyles.button, modalStyles.buttonClose]}
                       onPress={() => setConsteModalVisible(!consteModalVisible)}
@@ -56,12 +55,12 @@ export const Constellation: React.FC = () => {
                   </View>
                 </View>
               </Modal>
-              <Pressable
-                style={[modalStyles.button, modalStyles.buttonOpen]}
-                onPress={() => setConsteModalVisible(true)}
-              >
-                <Text style={modalStyles.textStyle}>Show Modal</Text>
-              </Pressable>
+              <TouchableOpacity 
+                    style={styles.list}
+                    onPress={() => setConsteModalVisible(true)}
+                >
+                    <CreatedConstellation listing={true}/>
+                </TouchableOpacity>
             </View>
           );
     }
@@ -81,12 +80,7 @@ export const Constellation: React.FC = () => {
             <View style={styles.slide}>
                 {createdConsteFlag 
                 ?
-                <TouchableOpacity 
-                    style={styles.list}
-                    onPress={() => setConsteModalVisible(true)}
-                >
-                    <CreatedConstellation listing={true}/>
-                </TouchableOpacity>
+                <ConsteEdition/>
                 :
                 <View></View>
                 }
