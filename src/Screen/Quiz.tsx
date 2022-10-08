@@ -11,7 +11,6 @@ import { StyleSheet,
 
 export const QuizScreen: React.FC = () => {
     const navigation = useNavigation<QuizStackNavProp<"Quiz">>()
-
     return (
         <>
         <View style={styles.Container}>
@@ -26,7 +25,7 @@ export const QuizScreen: React.FC = () => {
                   onPress={() => navigation.navigate("Answer")}
                 >
                     <Text style= {styles.Textfont}>
-                        ボタンをタップしてね
+                        ボタンをタップ★
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -44,16 +43,14 @@ const styles = StyleSheet.create({
     Button:{
         backgroundColor: '#806BFF',
         alignItems: 'center',
-        paddingTop: 10,
-        paddingRight: 30,
-        paddingLeft: 30,
-        paddingBottom: 10,
-        margin: 150,
-        borderRadius: 100,
+        margin: 90,
+        borderRadius: 50,
     },
     Textfont:{
         color: 'white',
         fontWeight: 'normal',
+        fontSize: 20,
+        padding: 10,
     },
     
 });

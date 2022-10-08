@@ -11,7 +11,8 @@ import { QuizScreen } from "../Screen/Quiz";
 import { Answer } from "../Screen/Answer";
 import { Gift } from "../Screen/Gift";
 
-import { Projection } from "../Screen/Projection"
+import { Projection } from "../Screen/Projection";
+import { Choice } from "../Screen/Choice";
 
 import { Signup } from "../Screen/Signup";
 import { login } from "../Screen/login";
@@ -49,9 +50,9 @@ export const RootNavivgator: React.FC = () =>{
                     name="Quiz"
                     component={QuizNav}
                 />
-                <HomeStack.Screen
+                <ProjectionStack.Screen
                     name="Projection"
-                    component={Projection}
+                    component={ProjectionNavigator}
                     options={{ headerShown: false }}
                 />
                 <HomeStack.Screen
@@ -114,6 +115,30 @@ export const QuizNav: React.FC = () => {
                 component={Gift}
             />
         </QuizStack.Navigator>
+    )
+}
+
+type ProjectionStackParamList ={
+    Projection: undefined;
+    Choice: undefined;
+}
+export type ProjectionStackNavProp<T extends keyof ProjectionStackParamList> = NativeStackNavigationProp<ProjectionStackParamList, T>
+const ProjectionStack = createNativeStackNavigator<ProjectionStackParamList>();
+
+export const ProjectionNavigator: React.FC = () => {
+    return(
+        <ProjectionStack.Navigator initialRouteName="Projection" screenOptions={{ headerShown: false }}>
+            <ProjectionStack.Screen 
+                name="Projection"
+                component={Projection}
+
+            />
+            <ProjectionStack.Screen 
+                name="Choice"
+                component={Choice}
+                options={{ headerShown: true, headerTitle: '', headerStyle: styles.header, }}
+            />
+        </ProjectionStack.Navigator>
     )
 }
 
