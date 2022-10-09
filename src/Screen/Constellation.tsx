@@ -35,16 +35,48 @@ export const Constellation: React.FC = () => {
                   setConsteModalVisible(!consteModalVisible);
                 }}
               >
-                <View style={modalStyles.centeredView}>
-                  <View style={modalStyles.modalView}>
-                    <Pressable
-                      style={[modalStyles.button, modalStyles.buttonClose]}
-                      onPress={() => setConsteModalVisible(!consteModalVisible)}
+              <>
+                <View style={modalStyles.modalHeaderHeader}>
+                  <TouchableOpacity
+                        style={modalStyles.modalCloseButton}
+                        onPress={() => setConsteModalVisible(!consteModalVisible)}
                     >
-                      <Text style={modalStyles.textStyle}>Hide Modal</Text>
-                    </Pressable>
-                  </View>
+                        <Text style={{
+                            fontSize: 35,
+                            fontWeight: 'bold',
+                            color: 'white',
+                        }}>
+                            ＜
+                        </Text>
+                  </TouchableOpacity>
                 </View>
+                <View style={modalStyles.modalHeader}>
+                    <TouchableOpacity
+                        style={modalStyles.modalEditButton}
+                    >
+                        <Text style={{
+                            fontSize: 30,
+                            color: 'white',
+                        }}>
+                            編集
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={modalStyles.modalCreatedConste}>
+                </View>
+                <View style={modalStyles.modalFooter}>
+                <TouchableOpacity
+                        style={modalStyles.modalDeleteButton}
+                    >
+                        <Text style={{
+                            fontSize: 30,
+                            color: 'white',
+                        }}>
+                            削除
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+              </>
               </Modal>
               <View style={styles.list}>
                 <TouchableOpacity 
@@ -52,8 +84,8 @@ export const Constellation: React.FC = () => {
                         onPress={() => setConsteModalVisible(true)}
                     >
                         <CreatedConstellation listing={true}/>
-                    </TouchableOpacity>
-                </View>
+                </TouchableOpacity>
+              </View>
             </View>
           );
     }
@@ -151,44 +183,60 @@ const styles = StyleSheet.create({
 });
 
 const modalStyles = StyleSheet.create({
-    centeredView: {
+    modalView: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: 'white',
     },
-    modalView: {
-        borderColor: "white",
-        borderRadius: 20,
-        padding: 100,
-        justifyContent: 'center',
+    modalHeaderHeader: {
+        flex: 1.3,
+        backgroundColor: '#806BFF',
+        justifyContent: "center",
         alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-          width: 0,
-          height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5
     },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2
-      },
-      buttonOpen: {
-        backgroundColor: "#F194FF",
-      },
-      buttonClose: {
-        backgroundColor: "#2196F3",
-      },
-      textStyle: {
-        color: "white",
-        fontWeight: "bold",
-        textAlign: "center"
-      },
-      modalText: {
-        marginBottom: 15,
-        textAlign: "center"
-      }
+    modalHeader: {
+        flex: 2,
+        flexDirection: 'row',
+        backgroundColor: '#BDBAFA',
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    modalCreatedConste: {
+        flex: 14,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: '#232946',
+    },
+    modalFooter: {
+        flex: 2,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: '#BDBAFA'
+    },
+    modalCloseButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 300,
+        width: 50,
+        height: 50,
+    },
+    modalEditButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 250,
+        backgroundColor: '#43C58C',
+        borderRadius: 30,
+        width: 130,
+        height: 40,
+    },
+    modalDeleteButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 250,
+        backgroundColor: '#43C58C',
+        borderRadius: 30,
+        width: 130,
+        height: 40,
+    }
 })
