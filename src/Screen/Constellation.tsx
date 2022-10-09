@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Animated, Modal, Pressable } from 'react-native';
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { NavigationHelpersContext, useFocusEffect, useNavigation } from "@react-navigation/native";
 import { RootStackNavProp } from "../Navigations";
 import { StarsStackNavProp } from "../Navigations";
 import { CreatedConstellation } from "../Compoents/createdConstellation";
@@ -24,6 +24,11 @@ export const Constellation: React.FC = () => {
         }, [])
     )
     
+    function originalConsteEditButtonAction() {
+        setConsteModalVisible(!consteModalVisible)
+        starsNavigation.navigate('create')
+    }
+
     const ConsteEdition = () => {
         return (
             <View >
@@ -50,9 +55,12 @@ export const Constellation: React.FC = () => {
                         </Text>
                   </TouchableOpacity>
                 </View>
-                <View style={modalStyles.modalHeader}>
+
+                <View style={modalStyles.modalHeader}> 
+                    {/* サーバーとの接続時、表示している星座のIDをcreateに渡して画面遷移 */}
                     <TouchableOpacity
                         style={modalStyles.modalEditButton}
+                        onPress={originalConsteEditButtonAction}
                     >
                         <Text style={{
                             fontSize: 30,
@@ -62,9 +70,14 @@ export const Constellation: React.FC = () => {
                         </Text>
                     </TouchableOpacity>
                 </View>
+
                 <View style={modalStyles.modalCreatedConste}>
+                {/* サーバーとの接続時、IDだけCreatedConstellationに渡す */}
+                    <CreatedConstellation listing={false}/>
                 </View>
+
                 <View style={modalStyles.modalFooter}>
+                {/* サーバーとの接続時、表示している星座の削除 */}
                 <TouchableOpacity
                         style={modalStyles.modalDeleteButton}
                     >
@@ -83,7 +96,7 @@ export const Constellation: React.FC = () => {
                         style={styles.listedConste}
                         onPress={() => setConsteModalVisible(true)}
                     >
-                        <CreatedConstellation listing={true}/>
+                    <CreatedConstellation listing={true}/>
                 </TouchableOpacity>
               </View>
             </View>
@@ -204,6 +217,8 @@ const modalStyles = StyleSheet.create({
     },
     modalCreatedConste: {
         flex: 14,
+        paddingBottom: 50,
+        paddingRight: 25,
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: '#232946',
