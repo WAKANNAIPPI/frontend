@@ -58,8 +58,8 @@ export function CreatedConstellation(config: any) {
                                 style={{
                                     transform: [
                                         //conste1座標調整　x + 35, y - 70
-                                        { translateX: ((replaceStoredStars[index + 1].starLocationX) / 6) + 35},
-                                        { translateY: ((replaceStoredStars[index + 1].starLocationY) / 6) + 25},
+                                        { translateX: ((replaceStoredStars[index + 1].starLocationX) / 8.5)+ 35},
+                                        { translateY: ((replaceStoredStars[index + 1].starLocationY) / 8.5) + 35},
                                     ],
                                     width: 25,      
                                     height: 25,
@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     container: {
         borderColor: 'white',
         borderWidth: 2,
+        borderRadius: 10,
         margin: 12,
         width: 100,
         height: 100,
