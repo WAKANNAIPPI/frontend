@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Animated, Modal, Pressable } from 'react-native';
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { NavigationHelpersContext, useFocusEffect, useNavigation } from "@react-navigation/native";
 import { RootStackNavProp } from "../Navigations";
 import { StarsStackNavProp } from "../Navigations";
 import { CreatedConstellation } from "../Compoents/createdConstellation";
@@ -10,29 +10,25 @@ export const Constellation: React.FC = () => {
     const navigation = useNavigation< RootStackNavProp<'Constellation'> >();
     const starsNavigation = useNavigation< StarsStackNavProp<'Constellation'> >();
 
-    const [ createdConsteFlag, setCreatedConsteFlag ] = useState(false);
+    const [ createdConsteDrawFlag, setCreatedConsteDrawFlag ] = useState(false);
     const [ consteModalVisible, setConsteModalVisible ] = useState(false);
 
     useFocusEffect(
         React.useCallback(() => {
-            if ( completionFlag ){
-                setCreatedConsteFlag(true);
+            if (completionFlag) {
+                setCreatedConsteDrawFlag(true);
             }
             else {
-                setCreatedConsteFlag(false);
-            }
-
-            return () => {
-                if ( completionFlag ){
-                    setCreatedConsteFlag(true);
-                }
-                else {
-                    setCreatedConsteFlag(false);
-                }
+                setCreatedConsteDrawFlag(false);
             }
         }, [])
     )
     
+    function originalConsteEditButtonAction() {
+        setConsteModalVisible(!consteModalVisible)
+        starsNavigation.navigate('create')
+    }
+
     const ConsteEdition = () => {
         return (
             <View >
@@ -44,23 +40,65 @@ export const Constellation: React.FC = () => {
                   setConsteModalVisible(!consteModalVisible);
                 }}
               >
-                <View style={modalStyles.centeredView}>
-                  <View style={modalStyles.modalView}>
-                    <Pressable
-                      style={[modalStyles.button, modalStyles.buttonClose]}
-                      onPress={() => setConsteModalVisible(!consteModalVisible)}
+              <>
+                <View style={modalStyles.modalHeaderHeader}>
+                  <TouchableOpacity
+                        style={modalStyles.modalCloseButton}
+                        onPress={() => setConsteModalVisible(!consteModalVisible)}
                     >
-                      <Text style={modalStyles.textStyle}>Hide Modal</Text>
-                    </Pressable>
-                  </View>
+                        <Text style={{
+                            fontSize: 35,
+                            fontWeight: 'bold',
+                            color: 'white',
+                        }}>
+                            ＜
+                        </Text>
+                  </TouchableOpacity>
                 </View>
+
+                <View style={modalStyles.modalHeader}> 
+                    {/* サーバーとの接続時、表示している星座のIDをcreateに渡して画面遷移 */}
+                    <TouchableOpacity
+                        style={modalStyles.modalEditButton}
+                        onPress={originalConsteEditButtonAction}
+                    >
+                        <Text style={{
+                            fontSize: 30,
+                            color: 'white',
+                        }}>
+                            編集
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+
+                <View style={modalStyles.modalCreatedConste}>
+                {/* サーバーとの接続時、IDだけCreatedConstellationに渡す */}
+                    <CreatedConstellation listing={false}/>
+                </View>
+
+                <View style={modalStyles.modalFooter}>
+                {/* サーバーとの接続時、表示している星座の削除 */}
+                <TouchableOpacity
+                        style={modalStyles.modalDeleteButton}
+                    >
+                        <Text style={{
+                            fontSize: 30,
+                            color: 'white',
+                        }}>
+                            削除
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+              </>
               </Modal>
-              <TouchableOpacity 
-                    style={styles.list}
-                    onPress={() => setConsteModalVisible(true)}
-                >
+              <View style={styles.list}>
+                <TouchableOpacity 
+                        style={styles.listedConste}
+                        onPress={() => setConsteModalVisible(true)}
+                    >
                     <CreatedConstellation listing={true}/>
                 </TouchableOpacity>
+              </View>
             </View>
           );
     }
@@ -78,11 +116,10 @@ export const Constellation: React.FC = () => {
                 </TouchableOpacity>
             </View>
             <View style={styles.slide}>
-                {createdConsteFlag 
-                ?
-                <ConsteEdition/>
+                {createdConsteDrawFlag ?
+                <ConsteEdition />
                 :
-                <View></View>
+                <></>
                 }
             </View>
             <View
@@ -127,10 +164,16 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     list: {
-        width: 500,
-        height: 500,
-        flexDirection: 'row',
-        alignItems: 'baseline',
+        flex: 1,
+        flexWrap: 'wrap',
+        flexDirection: 'row-reverse',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
+    },
+    listedConste: {
+        margin: 15,
+        width: 100,
+        height: 100,
     },
     testText: {
         color: 'white',
@@ -153,44 +196,62 @@ const styles = StyleSheet.create({
 });
 
 const modalStyles = StyleSheet.create({
-    centeredView: {
+    modalView: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: 'white',
     },
-    modalView: {
-        borderColor: "white",
-        borderRadius: 20,
-        padding: 100,
-        justifyContent: 'center',
+    modalHeaderHeader: {
+        flex: 1.3,
+        backgroundColor: '#806BFF',
+        justifyContent: "center",
         alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-          width: 0,
-          height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5
     },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2
-      },
-      buttonOpen: {
-        backgroundColor: "#F194FF",
-      },
-      buttonClose: {
-        backgroundColor: "#2196F3",
-      },
-      textStyle: {
-        color: "white",
-        fontWeight: "bold",
-        textAlign: "center"
-      },
-      modalText: {
-        marginBottom: 15,
-        textAlign: "center"
-      }
+    modalHeader: {
+        flex: 2,
+        flexDirection: 'row',
+        backgroundColor: '#BDBAFA',
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    modalCreatedConste: {
+        flex: 14,
+        paddingBottom: 50,
+        paddingRight: 25,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: '#232946',
+    },
+    modalFooter: {
+        flex: 2,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: '#BDBAFA'
+    },
+    modalCloseButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 300,
+        width: 50,
+        height: 50,
+    },
+    modalEditButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft: 250,
+        backgroundColor: '#43C58C',
+        borderRadius: 30,
+        width: 130,
+        height: 40,
+    },
+    modalDeleteButton: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 250,
+        backgroundColor: '#43C58C',
+        borderRadius: 30,
+        width: 130,
+        height: 40,
+    }
 })
