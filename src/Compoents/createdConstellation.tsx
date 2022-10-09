@@ -85,8 +85,8 @@ export function CreatedConstellation(config: any) {
 
             for(let i = 1; i < replaceStoredLines.length; i++){
                 ctx.beginPath();
-                ctx.moveTo( Number( replaceStoredLines[i].sx ), Number( replaceStoredLines[i].sy ) );
-                ctx.lineTo( Number( replaceStoredLines[i].fx ), Number( replaceStoredLines[i].fy ) );
+                ctx.moveTo( (Number( replaceStoredLines[i].sx ) / 1.5) + 125, (Number( replaceStoredLines[i].sy ) / 1.5) + 125 );
+                ctx.lineTo( (Number( replaceStoredLines[i].fx ) / 1.5) + 125, (Number( replaceStoredLines[i].fy ) / 1.5) + 125 );
                 ctx.stroke();
             }
         }
@@ -136,12 +136,14 @@ export function CreatedConstellation(config: any) {
         }
 
         return (
-        <View
-            style={styles.notListingContainer}
-        >
-            <Canvas ref={originalConsteRef}/>
-            <StarsRedraw />
-        </View>
+        <>
+            <View style={styles.notListingContainer}>
+                <View style={styles.canvas}>
+                    <Canvas ref={originalConsteRef}/>
+                </View>
+                <StarsRedraw />
+            </View>
+        </>
         )
     }
 }
@@ -158,5 +160,8 @@ const styles = StyleSheet.create({
     notListingContainer: {
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    canvas: {
+        position: 'absolute',
     }
 })
