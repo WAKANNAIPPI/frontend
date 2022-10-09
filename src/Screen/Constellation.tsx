@@ -10,25 +10,16 @@ export const Constellation: React.FC = () => {
     const navigation = useNavigation< RootStackNavProp<'Constellation'> >();
     const starsNavigation = useNavigation< StarsStackNavProp<'Constellation'> >();
 
-    const [ createdConsteFlag, setCreatedConsteFlag ] = useState(false);
+    const [ createdConsteDrawFlag, setCreatedConsteDrawFlag ] = useState(false);
     const [ consteModalVisible, setConsteModalVisible ] = useState(false);
 
     useFocusEffect(
         React.useCallback(() => {
-            if ( completionFlag ){
-                setCreatedConsteFlag(true);
+            if (completionFlag) {
+                setCreatedConsteDrawFlag(true);
             }
             else {
-                setCreatedConsteFlag(false);
-            }
-
-            return () => {
-                if ( completionFlag ){
-                    setCreatedConsteFlag(true);
-                }
-                else {
-                    setCreatedConsteFlag(false);
-                }
+                setCreatedConsteDrawFlag(false);
             }
         }, [])
     )
@@ -55,12 +46,14 @@ export const Constellation: React.FC = () => {
                   </View>
                 </View>
               </Modal>
-              <TouchableOpacity 
-                    style={styles.list}
-                    onPress={() => setConsteModalVisible(true)}
-                >
-                    <CreatedConstellation listing={true}/>
-                </TouchableOpacity>
+              <View style={styles.list}>
+                <TouchableOpacity 
+                        style={styles.listedConste}
+                        onPress={() => setConsteModalVisible(true)}
+                    >
+                        <CreatedConstellation listing={true}/>
+                    </TouchableOpacity>
+                </View>
             </View>
           );
     }
@@ -78,11 +71,10 @@ export const Constellation: React.FC = () => {
                 </TouchableOpacity>
             </View>
             <View style={styles.slide}>
-                {createdConsteFlag 
-                ?
-                <ConsteEdition/>
+                {createdConsteDrawFlag ?
+                <ConsteEdition />
                 :
-                <View></View>
+                <></>
                 }
             </View>
             <View
@@ -127,10 +119,16 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     list: {
-        width: 500,
-        height: 500,
-        flexDirection: 'row',
-        alignItems: 'baseline',
+        flex: 1,
+        flexWrap: 'wrap',
+        flexDirection: 'row-reverse',
+        justifyContent: 'flex-end',
+        alignItems: 'flex-start',
+    },
+    listedConste: {
+        margin: 15,
+        width: 100,
+        height: 100,
     },
     testText: {
         color: 'white',

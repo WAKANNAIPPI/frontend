@@ -6,15 +6,12 @@ import Canvas from 'react-native-canvas';
 const originalConsteRef: any = React.createRef();
 
 export function CreatedConstellation(config: any) {
+    
+    
     let starIdPath: any[] = [];
 
     useEffect (() => {
-        const ctx: CanvasRenderingContext2D = originalConsteRef.current.getContext('2d');
-        originalConsteRef.current.width = 100;
-        originalConsteRef.current.height = 100;
-        ctx.strokeStyle = "white";
-        ctx.lineWidth = 2;
-        Redraw();
+
     });
 
     function Redraw(){
@@ -62,11 +59,11 @@ export function CreatedConstellation(config: any) {
                                     transform: [
                                         //conste1座標調整　x + 35, y - 70
                                         { translateX: ((replaceStoredStars[index + 1].starLocationX) / 6) + 35},
-                                        { translateY: ((replaceStoredStars[index + 1].starLocationY) / 6) - 70},
+                                        { translateY: ((replaceStoredStars[index + 1].starLocationY) / 6) + 25},
                                     ],
                                     width: 25,      
                                     height: 25,
-                                    position: 'absolute',
+                                    position: 'absolute'
                                 }}
                                 source={element}
                             />
@@ -81,7 +78,6 @@ export function CreatedConstellation(config: any) {
         <View
             style={styles.container}
         >
-            <Canvas ref={originalConsteRef}/>
             <StarsRedraw />
         </View>
     )
@@ -94,13 +90,5 @@ const styles = StyleSheet.create({
         margin: 12,
         width: 100,
         height: 100,
-        shadowColor: "rgba(0, 0, 0, 256)",
-        shadowOffset: {
-        width: 0,
-        height: 3,
-        },
-        shadowRadius: 0,
-        shadowOpacity: 1,
-        elevation: 3
     }
 })
