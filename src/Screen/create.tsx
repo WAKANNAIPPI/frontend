@@ -3,6 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, PanResponder, Animated
 import { StarsStackNavProp } from "../Navigations";
 import { useNavigation } from "@react-navigation/native";
 import Canvas from "react-native-canvas";
+import axios from "axios";
+
+const baseURL: string = "http://172.20.10.7:8080/auth/OrigConste/Get"
 
 export const canvasRef: any = React.createRef();
 
@@ -298,8 +301,10 @@ export const create = () => {
     const [post, setPost] = React.useState(null);
 
     useEffect(() => {
-
-    }, [returnLine_i])
+        axios.get(`${baseURL}/1`).then((response) => {
+            setPost(response.data);
+          });
+      }, []);
 
     //ここから星描画
     let si: number = 0;
@@ -584,6 +589,15 @@ export const create = () => {
         setNamingModalVisible(!namingModalVisible)
 
         completionFlag = true;
+
+        axios
+            .post(baseURL, {
+                consteId:"conste1",
+                consteName:name
+            })
+            .then((response) => {
+            setPost(response.data);
+            });
 
         navigation.navigate('Constellation');
     }
