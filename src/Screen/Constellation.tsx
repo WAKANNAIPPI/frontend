@@ -5,6 +5,9 @@ import { RootStackNavProp } from "../Navigations";
 import { StarsStackNavProp } from "../Navigations";
 import { CreatedConstellation } from "../Compoents/createdConstellation";
 import { completionFlag } from "../Screen/create";
+import axios from 'axios';
+
+const baseURL = "http://172.20.10.7:8080/auth/OrigConste/Get"
 
 export const Constellation: React.FC = () => {
     const navigation = useNavigation< RootStackNavProp<'Constellation'> >();
@@ -13,14 +16,27 @@ export const Constellation: React.FC = () => {
     const [ createdConsteDrawFlag, setCreatedConsteDrawFlag ] = useState(false);
     const [ consteModalVisible, setConsteModalVisible ] = useState(false);
 
+    const [ consteName, setConsteName ] = useState<any>();
+    const [ Error, setError ] = useState<any>();
+
     useFocusEffect(
         React.useCallback(() => {
+
+            axios.get(baseURL)
+              .then((response) => {
+                setConsteName(response.data);
+              })
+              .catch((error) => {
+                setError(error);
+              });
+
             if (completionFlag) {
                 setCreatedConsteDrawFlag(true);
             }
             else {
                 setCreatedConsteDrawFlag(false);
             }
+
         }, [])
     )
     
@@ -73,6 +89,15 @@ export const Constellation: React.FC = () => {
 
                 <View style={modalStyles.modalCreatedConste}>
                 {/* サーバーとの接続時、IDだけCreatedConstellationに渡す */}
+                    <View style={{
+                        width: 100,
+                        height: 30,
+                        backgroundColor: 'black'
+                    }}>
+                        <Text>
+                            {consteName.consteName}
+                        </Text>
+                    </View>
                     <CreatedConstellation listing={false}/>
                 </View>
 

@@ -1,8 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, PanResponder, Animated } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, PanResponder, Animated, Modal, TextInput } from "react-native";
 import { StarsStackNavProp } from "../Navigations";
 import { useNavigation } from "@react-navigation/native";
 import Canvas from "react-native-canvas";
+import axios from "axios";
+
+const baseURL: string = "http://172.20.10.7:8080/auth/OrigConste/Get"
 
 export const canvasRef: any = React.createRef();
 
@@ -15,6 +18,7 @@ export let replaceStoredLines: any = [{
 }];
 export let replaceStoredStars: any;
 export let completionFlag: boolean = false
+export let ConsteName: string = ""
 
 const LineComponent = (props: any) => {
     useEffect (() => {
@@ -291,12 +295,16 @@ export const create = () => {
     const [ returnStar_i, setReturnStar_i ] = useState(0);
     const [ updateReturnLine_i, setUpdateReturnLine_i ] = useState(0);
     const [ completionButtonActionBoolean, setCompletionButtonActionBoolean] = useState(true);
+    const [ namingModalVisible, setNamingModalVisible ] = useState(false);
+    const [ name, onChangeName ] = useState("");
 
     const [post, setPost] = React.useState(null);
 
     useEffect(() => {
-
-    }, [returnLine_i])
+        axios.get(`${baseURL}/1`).then((response) => {
+            setPost(response.data);
+          });
+      }, []);
 
     //ここから星描画
     let si: number = 0;
@@ -571,11 +579,27 @@ export const create = () => {
             returnLine_i = 0;
 
             replaceStoredStars = storedStars.slice();
-
             completionFlag = true;
 
-            navigation.navigate('Constellation');
+            setNamingModalVisible(true);
         }
+    }
+
+    function nameCompletionButtonAction() {
+        setNamingModalVisible(!namingModalVisible)
+
+        completionFlag = true;
+
+        axios
+            .post(baseURL, {
+                consteId:"conste1",
+                consteName:name
+            })
+            .then((response) => {
+            setPost(response.data);
+            });
+
+        navigation.navigate('Constellation');
     }
 
     function handleReturnLine_iChange(changed: number) { //親コンポーネントに値を渡すための関数
@@ -615,6 +639,35 @@ export const create = () => {
         </View>
 
         <View style={paintStyles.paint}>
+            <Modal
+                animationType='slide'
+                transparent={true}
+                visible={namingModalVisible}
+                onRequestClose={() => {
+                    setNamingModalVisible(!namingModalVisible)
+                }}
+            >
+                <View style={modalStyles.modalView}>
+                    <View style={modalStyles.namingInsideView}>
+                        <View style={modalStyles.namingFrontView}>
+                            <Text style={modalStyles.namaewokimeyouText}>名前を決めよう</Text>
+                            <TextInput 
+                                style={modalStyles.nameInput}
+                                onChangeText={onChangeName}
+                                value={name}
+                                maxLength={10}
+                                textAlign={"center"}
+                            />
+                            <TouchableOpacity
+                                style={modalStyles.nameCompletionButton}
+                                onPress={nameCompletionButtonAction}
+                            >
+                                <Text style={modalStyles.nameCompletionText}>決定</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
             {starRedrawFlag
                 ? <View
                     style={{
@@ -828,6 +881,56 @@ const paintStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     }
+})
+
+const modalStyles = StyleSheet.create({
+    modalView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    namingInsideView: {
+        backgroundColor: '#806BFF',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10,
+        paddingTop: 10,
+        paddingBottom: 10,
+    },
+    namingFrontView: {
+        backgroundColor: '#FFFFFF',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        padding: 10,
+        width: 280,
+        height: 220,
+    },
+    namaewokimeyouText: {
+        fontSize: 25,
+    },
+    nameInput: {
+        height: 50,
+        width: 200,
+        margin: 20,
+        marginTop: 45,
+        padding: 10,
+        backgroundColor: '#C4C4C4'
+    },
+    nameCompletionButton: {
+        height: 35,
+        width: 100,
+        margin: 10,
+        marginTop: 17,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#43C58C',
+        borderRadius: 30,
+    },
+    nameCompletionText: {
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 25,
+    },
 })
 
 
