@@ -3,22 +3,40 @@ import { useNavigation } from "@react-navigation/native";
 import { Text, View, TextInput, TouchableOpacity, StyleSheet} from "react-native";
 import { RootStackNavProp, SignupStackNavProp } from "../Navigations";
 import { useState } from "react";
+import axios from "axios";
+
+const baseURL = "http://172.20.10.7:8080/login"
 
 export const login: React.FC = () => {
     const navigation = useNavigation<SignupStackNavProp<'Signup'>>()
     const Homenavigation = useNavigation<RootStackNavProp<'Home'>>()
 
     const [name, setName] = useState("");
-    const [pas, setPas] = useState("")
-    const [nameAlert, setNAlert] = useState("")
-    const [pasAlert, setPAlert] = useState("")
+    const [pas, setPas] = useState("");
+    const [nameAlert, setNAlert] = useState("");
+    const [pasAlert, setPAlert] = useState("");
+    const [ cookie, setCookie ] = useState<any>("");
+
+    let httpStatus: number;
 
     const click = () => {
         if (name == "" ) {
             setNAlert("ユーザー名を入力してください")
         }
-        if ( pas == "") {
+        else if ( pas == "" ) {
             setPAlert("パスワードを入力してください")
+        }
+        else {
+            axios.post(baseURL, {
+                "userId":name,
+                "userPass":pas
+            }, {withCredentials: true})
+            .then((response) => {
+                setCookie(response.headers['set-cookie'])
+            })
+            .catch((err) => {
+                setPAlert(String(err.response.status))
+            })
         }
         // Homenavigation.navigate('Home')
     }
@@ -31,7 +49,7 @@ export const login: React.FC = () => {
                 onChangeText={(val) => setName(val)}
                 keyboardType='default'
             />
-            <Text style={styles.red}>{pasAlert}</Text>
+            <Text style={styles.red}>{cookie}</Text>
             <TextInput
                 style={styles.input}
                 placeholder='パスワードを入力してください'
