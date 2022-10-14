@@ -1,182 +1,278 @@
-import React, { useState, useEffect, } from "react";
+import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { QuizStackNavProp } from "../Navigations";
-import { StyleSheet,
-         Text,
-         View,
-         TouchableOpacity,
-         Image,
-         Button,
-         Modal,
-         Alert,
-         Pressable,
-        } from 'react-native';
+import { questions } from "../Compoents/Question";
+import {
+    StyleSheet,
+    Text,
+    View,
+    TouchableOpacity,
+    Image,
+    Modal,
+    Pressable,
+} from 'react-native';
 
 export const Answer: React.FC = () => {
     const navigation = useNavigation<QuizStackNavProp<'Quiz'>>()
-    
-    return (
-        <View style={styles.container}>
-            <Text
-              style={{
-                backgroundColor: "#BDBAFA",
-                height: 200,
-                fontSize: 40,
-                fontWeight: 'bold',
-            }}
-            >
-                問題{"\n"}
-                <Text numberOfLines={3} style={{
-                    fontSize: 23,
-                    fontWeight: 'normal',
-                }}>
-                    人類で初めて宇宙飛行に成功し「地球は青かった」という言葉を残したのは誰？
-                </Text>
-            </Text>
-            
-            <TouchableOpacity
-                style ={styles.Button}
-                // onPress={() => navigation.navigate("")}
-            >
-                <Text style={styles.Textfont}>
-                    北欧神話
-                </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style ={styles.Button}
-                // onPress={() => navigation.navigate("")}
-            >
-                <Text style={styles.Textfont}>
-                    ギリシャ神話
-                </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style ={styles.Button}
-                // onPress={() => navigation.navigate("")}
-            >
-                <Text style={styles.Textfont}>
-                    日本神話
-                </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style ={{
-                    backgroundColor: '#806BFF',
-                    alignItems: 'center',
-                    width: 300,
-                    height: 40,
-                    borderRadius: 100,
-                    marginTop: 40,
-                }}
-                // onPress={() => navigation.navigate("")}
-            >
-                <Text style={styles.Textfont}>
-                    エジプト神話
-                </Text>
-            </TouchableOpacity>
-        </View>
-    );
+    const [CorrectAnswerflag, setModalCorrectAnswer] = useState(false) //正解画面を出すためのflag
+    const [IncorrectAnswerflag, setModalIncorrectAnswer] = useState(false) //不正解画面を出すためのflag
 
-    function modal(): JSX.Element {
-        const [modalVisible, setModalVisible] = useState(false);
+    function incorrectButtonAction() {
+        setModalIncorrectAnswer(true);
+
+        setTimeout(() => {
+            setModalCorrectAnswer(false);
+            navigation.navigate('Quiz')
+        }, 5 * 1000)
+    }
+
+    function correctButtonAction() {
+        setModalCorrectAnswer(true);
+    }
+
+    function ModalCorrectAnswer(): JSX.Element {
+
         return (
-            <View style={Modals.centeredView}>
+            <View>
                 <Modal
                     animationType="slide"
                     transparent={true}
-                    visible={modalVisible}
-                    onRequestClose={() => {
-                        Alert.alert("Modal has been closed.");
-                        setModalVisible(!modalVisible);
-                    } }
+                    visible={CorrectAnswerflag}
                 >
-                    <View style={Modals.centeredView}>
-                        <View style={Modals.modalView}>
-                            <Text style={Modals.modalText}>Hello World!</Text>
-                            <Pressable
-                                style={[Modals.button, Modals.buttonClose]}
-                                onPress={() => setModalVisible(!modalVisible)}
-                            >
-                                <Text style={Modals.textStyle}>Hide Modal</Text>
-                            </Pressable>
+                    <View style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                        <View style={{
+                            alignItems: 'center',
+                            backgroundColor: "#806BFF",
+                            paddingTop: 10,
+                            paddingBottom: 10,
+                            borderRadius: 20,
+                        }}>
+                            <View style={Modals.modalView}>
+                                <Text style={[
+                                    Modals.modalText,
+                                    {
+                                        fontSize: 50,
+                                        fontWeight: '300',
+                                    }
+                                ]}>
+                                    正解{'\n'}
+                                </Text>
+                                <View>
+                                    <Image style={{ width: 100, height: 100 }}
+                                        source={require("../Assets/Quiz/double-circle.png")}
+                                    />
+                                </View>
+                                <Text style={[
+                                    Modals.modalText,
+                                    {
+                                        fontSize: 30,
+                                    }
+                                ]}>
+                                    おめでとう！{"\n"}明日も挑戦してね
+                                </Text>
+
+                                <Pressable
+                                    style={[Modals.button, Modals.buttonClose]}
+                                    onPress={() => {
+                                        setModalCorrectAnswer(!CorrectAnswerflag);
+                                        navigation.navigate("Gift");
+                                    }}
+                                >
+                                    <Text style={{
+                                        color: 'white',
+                                        textAlign: 'center',
+                                        fontSize: 22,
+                                        paddingTop: 8,
+                                    }}>
+                                        アイテムを受け取る
+                                    </Text>
+                                </Pressable>
+                            </View>
                         </View>
                     </View>
                 </Modal>
-                <Pressable
-                    style={[Modals.button, Modals.button]}
-                    onPress={() => setModalVisible(true)}
-                >
-                    <Text style={Modals.textStyle}>Show Modal</Text>
-                </Pressable>
+
             </View>
-        );    }
-}
-    
-const Modals= StyleSheet.create({
-    centeredView: {
-        flex: 1,
-        jusifyContent: "center",
-        alignItems: "center",
-        marginTop: 22
-    },
-    modalView: {
-        margin: 20,
-        backgroundColor: "white",
-        borderRadius: 20,
-        padding: 35,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-        width: 0,
-        height: 2
+        );
+    };
+
+    function ModalIncorrectAnswer(): JSX.Element {
+        return (
+            <View>
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={IncorrectAnswerflag}
+                >
+                    <View style={{
+                        flex: 1,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}>
+                        <View style={{
+                            alignItems: 'center',
+                            backgroundColor: "#806BFF",
+                            paddingTop: 10,
+                            paddingBottom: 10,
+                            borderRadius: 20,
+                        }}>
+                            <View style={Modals.modalView}>
+                                <Text style={[
+                                    Modals.modalText,
+                                    {
+                                        fontSize: 50,
+                                        fontWeight: '300',
+                                    }
+                                ]}>
+                                    不正解{'\n'}
+                                </Text>
+                                <View>
+                                    <Image style={{ width: 100, height: 100 }}
+                                        source={require("../Assets/Quiz/bad.png")}
+                                    />
+                                </View>
+                                <Text style={[
+                                    Modals.modalText,
+                                    {
+                                        fontSize: 30,
+                                    }
+                                ]}>
+                                    {"\n"}残念！{"\n"}明日も挑戦してね
+                                </Text>
+                                <Text style={[
+                                    Modals.modalText,
+                                    {
+                                        fontSize: 15,
+                                    }
+                                ]}>
+                                    {"\n"}{"\n"} ~5秒後にスタート画面に戻ります~
+                                </Text>
+
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
+
+            </View>
+        );
+    };
+
+    const Modals = StyleSheet.create({
+        modalView: {
+            width: 280,
+            height: 400,
+            marginTop: 10,
+            marginBottom: 10,
+            backgroundColor: "white",
+            alignItems: 'center',
+            justifyContent: 'flex-start'
         },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5
-    },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2
-    },
-    buttonOpen: {
-        backgroundColor: "#F194FF",
-    },
-    buttonClose: {
-        backgroundColor: "#2196F3",
-    },
-    textStyle: {
-        color: "white",
-        fontWeight: "bold",
-        textAlign: "center"
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: "center"
-    },
-});
+        button: {
+            width: 220,
+            height: 50,
+            borderRadius: 20,
+            marginTop: 70,
+        },
+        buttonOpen: {
+            backgroundColor: "#F194FF",
+        },
+        buttonClose: {
+            backgroundColor: "#43C58C",
+        },
+        textStyle: {
+            color: "black",
+            fontWeight: "bold",
+            textAlign: "center"
+        },
+        modalText: {
+            textAlign: "center"
+        },
+
+    });
 
 
-const styles = StyleSheet.create({
-    container:{
-        alignItems: 'center',
-        paddingBottom: 80,
-    
-    },
-    Answer:{
-        alignItems: 'center',
-        paddingTop: 300,
-    },
-    Button:{
-        backgroundColor: '#806BFF',
-        alignItems: 'center',
-        width: 300,
-        height: 40,
-        borderRadius: 100,
-        margin: 50,
-    },
-    Textfont:{
-        color: 'white',
-        fontWeight: 'normal',
-        fontSize: 30,
-    },
-});
+    const styles = StyleSheet.create({
+        container: {
+            alignItems: 'center',
+            paddingBottom: 80,
+
+        },
+        Answer: {
+            alignItems: 'center',
+            paddingTop: 300,
+        },
+        Button: {
+            backgroundColor: '#BDBAFA',
+            alignItems: 'center',
+            width: 300,
+            height: 40,
+            borderRadius: 100,
+            margin: 50,
+        },
+        Textfont: {
+            color: 'black',
+            fontWeight: 'normal',
+            fontSize: 30,
+        },
+    });
+
+    const number = Math.floor(Math.random() * 4) + 0;
+    let arr: number[] = [1, 2, 3, 4];
+    let a = arr.length;
+
+    while (a) {
+        let j = Math.floor(Math.random() * a);
+        let t = arr[--a];
+        arr[a] = arr[j];
+        arr[j] = t;
+    }
+
+    arr.forEach(function (value) { console.log(value) });
+
+    return (
+        <>
+            <View style={styles.container}>
+                <Text
+                    style={{
+                        backgroundColor: "#BDBAFA",
+                        height: 200,
+                        fontSize: 40,
+                        fontWeight: 'bold',
+                    }}
+                >
+                    問題{"\n"}
+                    <Text numberOfLines={3} style={{
+                        fontSize: 28,
+                        fontWeight: 'normal',
+                    }}>
+                        {questions[number].questionText}
+                    </Text>
+                </Text>
+
+                {
+                    arr.map((data, index) => 
+                        (questions[number].answerOptions[data - 1].setModalCorrectAnswer) ? 
+                        <TouchableOpacity style={styles.Button} onPress = {correctButtonAction}>
+                            <Text style={styles.Textfont} key={index}>
+                                {questions[number].answerOptions[data - 1].answerText}
+                            </Text>
+                        </TouchableOpacity>
+                        
+                        : 
+                        <TouchableOpacity style={styles.Button} onPress = {incorrectButtonAction}>
+                        <Text style={styles.Textfont} key={index}>
+                            {questions[number].answerOptions[data - 1].answerText}
+                        </Text>
+                    </TouchableOpacity>
+                    )
+                }
+                <ModalCorrectAnswer />
+                <ModalIncorrectAnswer />
+            </View>
+        </>
+    );
+};
