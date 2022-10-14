@@ -22,13 +22,6 @@ export const Constellation: React.FC = () => {
     useFocusEffect(
         React.useCallback(() => {
 
-            axios.get(baseURL)
-              .then((response) => {
-                setConsteName(response.data);
-              })
-              .catch((error) => {
-                setError(error);
-              });
 
             if (completionFlag) {
                 setCreatedConsteDrawFlag(true);

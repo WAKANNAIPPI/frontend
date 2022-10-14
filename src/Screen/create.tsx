@@ -298,12 +298,7 @@ export const create = () => {
     const [ namingModalVisible, setNamingModalVisible ] = useState(false);
     const [ name, onChangeName ] = useState("");
 
-    const [post, setPost] = React.useState(null);
-
     useEffect(() => {
-        axios.get(`${baseURL}/1`).then((response) => {
-            setPost(response.data);
-          });
       }, []);
 
     //ここから星描画
@@ -590,14 +585,6 @@ export const create = () => {
 
         completionFlag = true;
 
-        axios
-            .post(baseURL, {
-                consteId:"conste1",
-                consteName:name
-            })
-            .then((response) => {
-            setPost(response.data);
-            });
 
         navigation.navigate('Constellation');
     }

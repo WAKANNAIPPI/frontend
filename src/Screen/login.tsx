@@ -28,17 +28,6 @@ export const login: React.FC = () => {
             setPAlert("パスワードを入力してください")
         }
         else {
-            axios.post(baseURL, {
-                "userId":name,
-                "userPass":pas
-            })
-            .then((response) => {
-                setCookie("name", response.headers['set-cookie'])
-                userName = name;
-            })
-            .catch((err) => {
-                setCookie("name", String(err.status))
-            })
         }
         // Homenavigation.navigate('Home')
     }
