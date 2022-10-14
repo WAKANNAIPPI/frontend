@@ -3,9 +3,12 @@ import { useNavigation } from "@react-navigation/native";
 import { Text, View, TextInput, TouchableOpacity, StyleSheet} from "react-native";
 import { RootStackNavProp, SignupStackNavProp } from "../Navigations";
 import { useState } from "react";
+import { useCookies } from "react-cookie" ;
 import axios from "axios";
 
 const baseURL = "http://172.20.10.7:8080/login"
+
+export let userName: string;
 
 export const login: React.FC = () => {
     const navigation = useNavigation<SignupStackNavProp<'Signup'>>()
@@ -15,9 +18,7 @@ export const login: React.FC = () => {
     const [pas, setPas] = useState("");
     const [nameAlert, setNAlert] = useState("");
     const [pasAlert, setPAlert] = useState("");
-    const [ cookie, setCookie ] = useState<any>("");
-
-    let httpStatus: number;
+    const [cookies, setCookie, removeCookie] = useCookies();
 
     const click = () => {
         if (name == "" ) {
@@ -30,12 +31,13 @@ export const login: React.FC = () => {
             axios.post(baseURL, {
                 "userId":name,
                 "userPass":pas
-            }, {withCredentials: true})
+            })
             .then((response) => {
-                setCookie(response.headers['set-cookie'])
+                setCookie("name", response.headers['set-cookie'])
+                userName = name;
             })
             .catch((err) => {
-                setPAlert(String(err.response.status))
+                setCookie("name", String(err.status))
             })
         }
         // Homenavigation.navigate('Home')
@@ -49,7 +51,7 @@ export const login: React.FC = () => {
                 onChangeText={(val) => setName(val)}
                 keyboardType='default'
             />
-            <Text style={styles.red}>{cookie}</Text>
+            <Text style={styles.red}>{String( cookies.name )}</Text>
             <TextInput
                 style={styles.input}
                 placeholder='パスワードを入力してください'
