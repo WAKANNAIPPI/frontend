@@ -13,6 +13,7 @@ import { Gift } from "../Screen/Gift";
 
 import { Projection } from "../Screen/Projection";
 import { Choice } from "../Screen/Choice";
+import { ProjectionScreen } from "../Screen/ProjectionScreen";
 
 import { Signup } from "../Screen/Signup";
 import { login } from "../Screen/login";
@@ -121,6 +122,7 @@ export const QuizNav: React.FC = () => {
 type ProjectionStackParamList ={
     Projection: undefined;
     Choice: undefined;
+    ProjectionScreen: undefined;
 }
 export type ProjectionStackNavProp<T extends keyof ProjectionStackParamList> = NativeStackNavigationProp<ProjectionStackParamList, T>
 const ProjectionStack = createNativeStackNavigator<ProjectionStackParamList>();
@@ -138,6 +140,12 @@ export const ProjectionNavigator: React.FC = () => {
                 component={Choice}
                 options={{ headerShown: true, headerTitle: '', headerStyle: styles.header, }}
             />
+            <ProjectionStack.Screen 
+                name="ProjectionScreen"
+                component={ProjectionScreen}
+                options={{ headerShown: false, headerTitle: '', headerStyle: styles.header, }}
+            />
+            
         </ProjectionStack.Navigator>
     )
 }
