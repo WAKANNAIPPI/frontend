@@ -4,7 +4,7 @@ import { NavigationHelpersContext, useFocusEffect, useNavigation } from "@react-
 import { RootStackNavProp } from "../Navigations";
 import { StarsStackNavProp } from "../Navigations";
 import { CreatedConstellation } from "../Compoents/createdConstellation";
-import { completionFlag } from "../Screen/create";
+import { completionFlag, consteName } from "../Screen/create";
 import axios from 'axios';
 
 const baseURL = "http://172.20.10.7:8080/auth/OrigConste/Get"
@@ -15,13 +15,14 @@ export const Constellation: React.FC = () => {
 
     const [ createdConsteDrawFlag, setCreatedConsteDrawFlag ] = useState(false);
     const [ consteModalVisible, setConsteModalVisible ] = useState(false);
+    const [ stateConsteName, setStateConsteName ] = useState("");
+    const [stateCompletionFlag, setStateCompletionFlag ] = useState(false)
 
-    const [ consteName, setConsteName ] = useState<any>();
     const [ Error, setError ] = useState<any>();
 
     useFocusEffect(
         React.useCallback(() => {
-
+            setStateConsteName(consteName);
 
             if (completionFlag) {
                 setCreatedConsteDrawFlag(true);
@@ -30,7 +31,7 @@ export const Constellation: React.FC = () => {
                 setCreatedConsteDrawFlag(false);
             }
 
-        }, [])
+        }, [stateCompletionFlag])
     )
     
     function originalConsteEditButtonAction() {
@@ -39,6 +40,7 @@ export const Constellation: React.FC = () => {
     }
 
     const ConsteEdition = () => {
+        setStateCompletionFlag(true);
         return (
             <View >
               <Modal
@@ -83,29 +85,27 @@ export const Constellation: React.FC = () => {
                 <View style={modalStyles.modalCreatedConste}>
                 {/* サーバーとの接続時、IDだけCreatedConstellationに渡す */}
                     <View style={{
-                        width: 100,
-                        height: 30,
-                        backgroundColor: 'black'
+                        marginLeft: 30,
+                        marginBottom: 500,
+                        width: 300,
+                        height: 60,
+                        backgroundColor: 'white',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 20,
                     }}>
-                        <Text>
-                            {consteName.consteName}
+                        <Text style={{fontSize: 20}}>
+                            星座名  {stateConsteName}
                         </Text>
                     </View>
-                    <CreatedConstellation listing={false}/>
+                    <View style={{position: 'absolute'}}>
+                        <CreatedConstellation listing={false}/>
+                    </View>
                 </View>
 
                 <View style={modalStyles.modalFooter}>
                 {/* サーバーとの接続時、表示している星座の削除 */}
-                <TouchableOpacity
-                        style={modalStyles.modalDeleteButton}
-                    >
-                        <Text style={{
-                            fontSize: 30,
-                            color: 'white',
-                        }}>
-                            削除
-                        </Text>
-                    </TouchableOpacity>
+
                 </View>
               </>
               </Modal>

@@ -6,6 +6,7 @@ import Canvas from 'react-native-canvas';
 const originalConsteRef: any = React.createRef();
 
 export function CreatedConstellation(config: any) {
+    const [ updateState, setUpdateState ] = useState(true);
     
     if (config.listing){
         let starIdPath: any[] = [];

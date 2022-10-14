@@ -55,16 +55,14 @@ export const Answer: React.FC = () => {
                                 <Text style={[
                                     Modals.modalText,
                                     {
-                                        fontSize: 50,
+                                        fontSize: 40,
                                         fontWeight: '300',
                                     }
                                 ]}>
                                     正解{'\n'}
                                 </Text>
-                                <View>
-                                    <Image style={{ width: 100, height: 100 }}
-                                        source={require("../Assets/Quiz/double-circle.png")}
-                                    />
+                                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                                    <Text style={{color: "#43C588", fontSize: 100}}>◎</Text>
                                 </View>
                                 <Text style={[
                                     Modals.modalText,
@@ -130,10 +128,8 @@ export const Answer: React.FC = () => {
                                 ]}>
                                     不正解{'\n'}
                                 </Text>
-                                <View>
-                                    <Image style={{ width: 100, height: 100 }}
-                                        source={require("../Assets/Quiz/bad.png")}
-                                    />
+                                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                                    <Text style={{fontSize: 100, padding: -40}}>×</Text>
                                 </View>
                                 <Text style={[
                                     Modals.modalText,
@@ -164,7 +160,7 @@ export const Answer: React.FC = () => {
     const Modals = StyleSheet.create({
         modalView: {
             width: 280,
-            height: 400,
+            height: 450,
             marginTop: 10,
             marginBottom: 10,
             backgroundColor: "white",
@@ -176,6 +172,7 @@ export const Answer: React.FC = () => {
             height: 50,
             borderRadius: 20,
             marginTop: 70,
+            margin: 50,
         },
         buttonOpen: {
             backgroundColor: "#F194FF",
@@ -210,8 +207,8 @@ export const Answer: React.FC = () => {
             alignItems: 'center',
             width: 300,
             height: 40,
-            borderRadius: 100,
             margin: 50,
+            borderRadius: 100,
         },
         Textfont: {
             color: 'black',

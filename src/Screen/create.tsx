@@ -18,7 +18,7 @@ export let replaceStoredLines: any = [{
 }];
 export let replaceStoredStars: any;
 export let completionFlag: boolean = false
-export let ConsteName: string = ""
+export let consteName: string = ""
 
 const LineComponent = (props: any) => {
     useEffect (() => {
@@ -297,8 +297,10 @@ export const create = () => {
     const [ completionButtonActionBoolean, setCompletionButtonActionBoolean] = useState(true);
     const [ namingModalVisible, setNamingModalVisible ] = useState(false);
     const [ name, onChangeName ] = useState("");
+    const [ updateState, setUpdateState ] = useState(true);
 
     useEffect(() => {
+        setUpdateState(false);
       }, []);
 
     //ここから星描画
@@ -585,6 +587,7 @@ export const create = () => {
 
         completionFlag = true;
 
+        consteName = name;
 
         navigation.navigate('Constellation');
     }

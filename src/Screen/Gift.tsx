@@ -1,7 +1,10 @@
 import React from "react";
 import { View, StyleSheet, TouchableOpacity, Text, Image } from "react-native";
+import { useNavigation } from "@react-navigation/native"
+import { QuizStackNavProp } from "../Navigations/index"
 
 export const Gift: React.FC = () => {
+    const navigation = useNavigation<QuizStackNavProp<'Quiz'>>()
     return (
         <View style={styles.Container}>
             <TouchableOpacity style={styles.btn}>
@@ -28,7 +31,7 @@ export const Gift: React.FC = () => {
                             style={{ width: 50, height: 50,  margin: 5 }} />
                 <Text style={styles.txt}>レアな星×３</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.receive}>
+            <TouchableOpacity style={styles.receive} onPress={() => navigation.navigate('Quiz')}>
                 <Text style={{ color: 'white' , padding: 15,}}>受け取る</Text>
             </TouchableOpacity>
         </View>
