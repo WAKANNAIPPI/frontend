@@ -5,7 +5,7 @@ import { NavigationContainer } from "@react-navigation/native";
 
 import { HomeScreen } from '../Screen/Home';
 import { Constellation } from "../Screen/Constellation";
-import { create } from "../Screen/create";
+import { Creation } from "../Screen/create";
 
 import { QuizScreen } from "../Screen/Quiz";
 import { Answer } from "../Screen/Answer";
@@ -24,7 +24,7 @@ type RootStackParamList = {
     Home: undefined;
     Constellation: undefined;
     Quiz: undefined;
-    Projection: undefined;
+    ProjectionNavigate: undefined;
     Login: undefined;
 }
 
@@ -51,8 +51,8 @@ export const RootNavivgator: React.FC = () =>{
                     name="Quiz"
                     component={QuizNav}
                 />
-                <ProjectionStack.Screen
-                    name="Projection"
+                <HomeStack.Screen
+                    name="ProjectionNavigate"
                     component={ProjectionNavigator}
                     options={{ headerShown: false }}
                 />
@@ -68,8 +68,8 @@ export const RootNavivgator: React.FC = () =>{
 
 // 星座作成セット
 type StarsStackParamList = {
-    Constellation: undefined;
-    create: undefined;
+    ConstellationNav: undefined;
+    createNav: undefined;
 }
 
 export type StarsStackNavProp<T extends keyof StarsStackParamList> = NativeStackNavigationProp<StarsStackParamList, T>
@@ -77,14 +77,14 @@ const StarsStack = createNativeStackNavigator<StarsStackParamList>();
 
 export const StarsNavigator: React.FC = ()=>{
     return(
-        <StarsStack.Navigator initialRouteName="Constellation" screenOptions={{ headerShown: false }}>
+        <StarsStack.Navigator initialRouteName="ConstellationNav" screenOptions={{ headerShown: false }}>
             <StarsStack.Screen
-                name="Constellation"
+                name="ConstellationNav"
                 component={Constellation}
             />
             <StarsStack.Screen
-                name="create"
-                component={create}
+                name="createNav"
+                component={Creation}
             />
         </StarsStack.Navigator>
     )
