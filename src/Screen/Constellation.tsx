@@ -7,11 +7,17 @@ import { CreatedConstellation } from "../Compoents/createdConstellation";
 import { completionFlag, consteName } from "../Screen/create";
 import axios from 'axios';
 
-const baseURL = "http://172.20.10.7:8080/auth/OrigConste/Get"
+import { replaceStoredStars, replaceStoredLines } from '../Screen/create';
+
+
+export let completionFlagHere: boolean = true;
+export let editFlag: boolean = false;
+export let storedStars_constellation: any;
+export let storedLines_constellation: any;
 
 export const Constellation: React.FC = () => {
-    const navigation = useNavigation< RootStackNavProp<'Constellation'> >();
-    const starsNavigation = useNavigation< StarsStackNavProp<'Constellation'> >();
+    const navigation = useNavigation< RootStackNavProp<'Home'> >();
+    const starsNavigation = useNavigation< StarsStackNavProp<'ConstellationNav'> >();
 
     const [ createdConsteDrawFlag, setCreatedConsteDrawFlag ] = useState(false);
     const [ consteModalVisible, setConsteModalVisible ] = useState(false);
@@ -23,6 +29,8 @@ export const Constellation: React.FC = () => {
     useFocusEffect(
         React.useCallback(() => {
             setStateConsteName(consteName);
+            
+            editFlag = false;
 
             if (completionFlag) {
                 setCreatedConsteDrawFlag(true);
@@ -36,7 +44,23 @@ export const Constellation: React.FC = () => {
     
     function originalConsteEditButtonAction() {
         setConsteModalVisible(!consteModalVisible)
-        starsNavigation.navigate('create')
+
+        editFlag = true;
+
+        storedStars_constellation = replaceStoredStars
+
+        starsNavigation.navigate('createNav')
+    }
+
+    function removeOriginaConsteButtonAction() {
+
+        storedStars_constellation;
+
+        storedStars_constellation;
+
+        setCreatedConsteDrawFlag(false);
+
+        setConsteModalVisible(!consteModalVisible);
     }
 
     const ConsteEdition = () => {
@@ -104,8 +128,17 @@ export const Constellation: React.FC = () => {
                 </View>
 
                 <View style={modalStyles.modalFooter}>
-                {/* サーバーとの接続時、表示している星座の削除 */}
-
+                <TouchableOpacity
+                        style={modalStyles.modalDeleteButton}
+                        onPress={removeOriginaConsteButtonAction}
+                    >
+                        <Text style={{
+                            fontSize: 30,
+                            color: 'white',
+                        }}>
+                            削除
+                        </Text>
+                    </TouchableOpacity>
                 </View>
               </>
               </Modal>
@@ -145,7 +178,7 @@ export const Constellation: React.FC = () => {
             >
                 <TouchableOpacity
                     style={styles.newEditButton}
-                    onPress={() => starsNavigation.navigate("create")}
+                    onPress={() => starsNavigation.navigate("createNav")}
                 >
                     <Image
                         source={require("../Assets/Constellation/edit.png")}

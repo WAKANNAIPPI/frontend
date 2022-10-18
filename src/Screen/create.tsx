@@ -5,6 +5,8 @@ import { useNavigation } from "@react-navigation/native";
 import Canvas from "react-native-canvas";
 import axios from "axios";
 
+import { storedStars_constellation, editFlag } from "../Screen/Constellation";
+
 const baseURL: string = "http://172.20.10.7:8080/auth/OrigConste/Get"
 
 export const canvasRef: any = React.createRef();
@@ -19,6 +21,7 @@ export let replaceStoredLines: any = [{
 export let replaceStoredStars: any;
 export let completionFlag: boolean = false
 export let consteName: string = ""
+
 
 const LineComponent = (props: any) => {
     useEffect (() => {
@@ -41,8 +44,6 @@ const LineComponent = (props: any) => {
     const [ startY, setStartY ] = useState("");
     const [ currentX, setCurrentX ] = useState("");
     const [ currentY, setCurrentY ] = useState("");
-    const [ touchedStarIdPath, setTouchedStarIdPath ] = useState<any>();
-    const [ stampedStarIdPath, setStampedStarIdPath ] = useState<any>();
 
     const [ storedLines, setStoredLines ] = useState([{
         sx: "",
@@ -56,6 +57,9 @@ const LineComponent = (props: any) => {
     let stampedStar_i: number;
     let touchedId: number;
     let stampedId: number;
+
+    let touchedStarIdPath: any;
+    let stampedStarIdPath: any;
 
         
     function onTouch(e: any) {
@@ -175,16 +179,16 @@ const LineComponent = (props: any) => {
         else {
             switch(touchedStarMarkFlag) {
             case 1:
-                setTouchedStarIdPath(require("../Assets/Create/red.png"));
+                touchedStarIdPath = require("../Assets/Create/red.png");
                 break;
             case 2:
-                setTouchedStarIdPath(require("../Assets/Create/blue.png"));
+                touchedStarIdPath = require("../Assets/Create/blue.png");
                 break;
             case 3:
-                setTouchedStarIdPath(require("../Assets/Create/yellow.png"));
+                touchedStarIdPath = require("../Assets/Create/yellow.png");
                 break;
             case 4:
-                setTouchedStarIdPath(require("../Assets/Create/rare.png"));
+                touchedStarIdPath = require("../Assets/Create/rare.png");
                 break;
         }}
 
@@ -219,16 +223,16 @@ const LineComponent = (props: any) => {
         else {
             switch(stampedId) {
             case 1:
-                setStampedStarIdPath(require("../Assets/Create/red.png"));
+                stampedStarIdPath = (require("../Assets/Create/red.png"));
                 break;
             case 2:
-                setStampedStarIdPath(require("../Assets/Create/blue.png"));
+                stampedStarIdPath = (require("../Assets/Create/blue.png"));
                 break;
             case 3:
-                setStampedStarIdPath(require("../Assets/Create/yellow.png"));
+                stampedStarIdPath = (require("../Assets/Create/yellow.png"));
                 break;
             case 4:
-                setStampedStarIdPath(require("../Assets/Create/rare.png"));
+                stampedStarIdPath = (require("../Assets/Create/rare.png"));
                 break;
         }}
 
@@ -273,8 +277,8 @@ const LineComponent = (props: any) => {
 }
 
 
-export const create = () => {
-    const navigation = useNavigation< StarsStackNavProp<'create'> >();
+export const Creation = () => {
+    const navigation = useNavigation< StarsStackNavProp<'ConstellationNav'> >();
     const pan: any = useRef(new Animated.ValueXY()).current;
 
     //星に関するstateと変数
@@ -301,6 +305,11 @@ export const create = () => {
 
     useEffect(() => {
         setUpdateState(false);
+        if (editFlag){
+            setStoredStars(storedStars_constellation);
+
+            setStarRedrawFlag(true);
+        }
       }, []);
 
     //ここから星描画
@@ -589,7 +598,7 @@ export const create = () => {
 
         consteName = name;
 
-        navigation.navigate('Constellation');
+        navigation.navigate('ConstellationNav');
     }
 
     function handleReturnLine_iChange(changed: number) { //親コンポーネントに値を渡すための関数
@@ -600,7 +609,7 @@ export const create = () => {
         <>
         <View style={styles.header}>
             <TouchableOpacity
-                onPress={() => navigation.navigate('Constellation')}
+                onPress={() => navigation.navigate('ConstellationNav')}
                 style={styles.backButton}
             >
                     <Text style={styles.direction}>
