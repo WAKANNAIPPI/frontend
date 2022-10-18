@@ -20,15 +20,6 @@ export const ProjectionScreen: React.FC = () => {
         <View style={styles.container}>
             <StarrySky color="black" />
             <View style={styles.body}>
-                <View style={{
-                    position: 'absolute', 
-                    bottom: 300, width: 400, height: 100, end: -200, paddingLeft: 30, paddingTop: 30,
-                    justifyContent: 'center', alignItems: 'flex-start'
-                }}>
-                        <TouchableOpacity onPress={() => {homeNavigation.navigate('Home')}}>
-                            <Text style={{color: 'white', fontSize: 35 }}>＜</Text>
-                        </TouchableOpacity>
-                </View>
                 {consteFlag ?
                     <View style={{position: 'absolute'}}>
                         <CreatedConstellation listing={false}/>
