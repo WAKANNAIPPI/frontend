@@ -3,7 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 import { StarrySky } from "../Compoents/dot";
 import { useNavigation } from "@react-navigation/native";
 import { ProjectionStackNavProp } from "../Navigations";
-import { RootStackNavProp } from "../Navigations";
+
 
 export const Projection: React.FC = () => {
     const proNavigation = useNavigation<ProjectionStackNavProp<'Projection'>>();
@@ -23,13 +23,13 @@ export const Projection: React.FC = () => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.selbtn}>
-                    <TouchableOpacity style={styles.btn} onPress={() => proNavigation.navigate('Choice')}>
-                        <Text style={styles.txt}>星座を選択</Text>
+                    <TouchableOpacity style={styles.btn} onPress={() => proNavigation.navigate('ProjectionScreen')}>
+                        <Text style={styles.txt}>プロジェクタ投影用画面</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.choice}>
-                    <TouchableOpacity style={styles.btn} onPress={() => proNavigation.navigate('ProjectionScreen')}>
-                        <Text style={styles.txt}>プロジェクタ投影用画面</Text>
+                    <TouchableOpacity style={styles.btn} onPress={() => proNavigation.navigate('Choice')}>
+                        <Text style={styles.txt}>星座を選択</Text>
                     </TouchableOpacity>
                 </View>
             </View>
