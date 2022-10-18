@@ -243,7 +243,7 @@ export const Answer: React.FC = () => {
                 >
                     問題{"\n"}
                     <Text numberOfLines={3} style={{
-                        fontSize: 28,
+                        fontSize: 25,
                         fontWeight: 'normal',
                     }}>
                         {questions[number].questionText}
