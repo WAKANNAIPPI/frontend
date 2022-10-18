@@ -32,7 +32,7 @@ export const HomeScreen: React.FC = () => {
                     <Text style={{ color: 'white' }}>クイズ</Text>
                 </View>
                 <View style={styles.projection}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Projection')} style={styles.button}>
+                    <TouchableOpacity onPress={() => navigation.navigate('ProjectionNavigate')} style={styles.button}>
                         <Image
                             source={require('../Assets/Frame3.png')}
                             style={{ width: 50, height: 50 }}
@@ -41,7 +41,7 @@ export const HomeScreen: React.FC = () => {
                     <Text style={{ color: 'white' }}>キャスト</Text>
                 </View>
                 <View style={styles.login}>
-                    <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.button}>
+                    <TouchableOpacity style={styles.button}>
                         <Image
                             source={require('../Assets/Frame4.png')}
                             style={{ width: 50, height: 50 }}

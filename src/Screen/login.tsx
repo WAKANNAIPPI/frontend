@@ -11,7 +11,7 @@ const baseURL = "http://172.20.10.7:8080/login"
 export let userName: string;
 
 export const login: React.FC = () => {
-    const navigation = useNavigation<SignupStackNavProp<'Signup'>>()
+    const navigation = useNavigation<SignupStackNavProp<'login'>>()
     const Homenavigation = useNavigation<RootStackNavProp<'Home'>>()
 
     const [name, setName] = useState("");
