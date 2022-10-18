@@ -6,19 +6,17 @@ const { width, height } = Dimensions.get("window");
 type Props ={
     color: string
 }
-export class StarrySky extends React.Component<Props, {}>{
-    render(): React.ReactNode {
+export const StarrySky = (props: any) => {
         return(
             <View>
                 <ScatterChart
-                    backgroundColor={this.props.color}
+                    backgroundColor={props.color}
                     data={chartData}
                     chartHeight={height}
                     chartWidth={width}
                 />
             </View>
         )
-    }
 }
 const chartData = [
     {
